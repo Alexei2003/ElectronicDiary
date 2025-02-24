@@ -79,5 +79,17 @@ namespace ElectronicDiary.Web
                 Message = await response.Content.ReadAsStringAsync(),
             };
         }
+
+        //public static string SerializeCookies()
+        //{
+        //    var cookiesList = _handler.CookieContainer.GetAllCookies();
+        //    return JsonSerializer.Serialize(cookiesList);
+        //}
+
+        //public static void DeserializeCookies(string json)
+        //{
+        //    var cookiesList = JsonSerializer.Deserialize<CookieCollection>(json);
+        //    _handler.CookieContainer.Add(cookiesList);
+        //}
     }
 }

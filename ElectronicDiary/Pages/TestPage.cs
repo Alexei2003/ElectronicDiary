@@ -2,12 +2,12 @@
 
 namespace ElectronicDiary.Pages
 {
-    public class LogPage : ContentPage
+    public class TestPage : ContentPage
     {
         private string _login = "";
         private string _password = "";
 
-        public LogPage()
+        public TestPage()
         {
             var namePageLabel = new Label
             {
@@ -18,7 +18,7 @@ namespace ElectronicDiary.Pages
                 // Текст
                 TextColor = PageConstants.TEXR_COLOR,
                 FontSize = 20,
-                Text = "Вход",
+                Text = "Вход успешен",
             };
 
             var loginField = new Entry
