@@ -17,6 +17,7 @@ namespace ElectronicDiary.SaveData
         }
 
 
+
         private static readonly string USER_INFO_PATH = Path.Combine(FileSystem.AppDataDirectory, "UserInfo.ed");
         public static UserInfo UserInfo { get; set; } = new();
         public static void SaveUserInfo()
@@ -30,7 +31,11 @@ namespace ElectronicDiary.SaveData
             if (File.Exists(USER_INFO_PATH))
             {
                 var json = File.ReadAllText(USER_INFO_PATH);
-                UserInfo = JsonSerializer.Deserialize<UserInfo>(json);
+                var obj = JsonSerializer.Deserialize<UserInfo>(json);
+                if (obj != null)
+                {
+                    UserInfo = obj;
+                }
             }
         }
 
@@ -50,7 +55,11 @@ namespace ElectronicDiary.SaveData
             if (File.Exists(USER_SETTINGS_PATH))
             {
                 var json = File.ReadAllText(USER_SETTINGS_PATH);
-                UserSettings = JsonSerializer.Deserialize<UserSettings>(json);
+                var obj = JsonSerializer.Deserialize<UserSettings>(json);
+                if (obj != null)
+                {
+                    UserSettings = obj;
+                }
             }
         }
     }
