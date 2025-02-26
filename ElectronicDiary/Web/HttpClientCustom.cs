@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using ElectronicDiary.Pages;
+using ElectronicDiary.Pages.Otherts;
+using System.Net;
 
 namespace ElectronicDiary.Web
 {
@@ -25,8 +27,6 @@ namespace ElectronicDiary.Web
         {
             public bool Error { get; set; }
             public string Message { get; set; } = "";
-
-            public HttpStatusCode? StatusCode { get; set; } = HttpStatusCode.OK;
         }
 
         public static async Task<Response> CheckResponse(HttpTypes httpTypes, string url, HttpContent? context = null)
@@ -48,6 +48,11 @@ namespace ElectronicDiary.Web
             }
             catch (Exception ex)
             {
+                if (((HttpRequestException)ex).StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    Application.Current.MainPage = new ThemedNavigationPage(new LogPage());
+                }
+
                 return new Response()
                 {
                     Error = true,
@@ -65,7 +70,6 @@ namespace ElectronicDiary.Web
                         },
                         _ => "Что-то пошло не так. Если ошибка повторяется, сообщите в поддержку"
                     },
-                    StatusCode = ((HttpRequestException)ex).StatusCode,
                 };
             }
 

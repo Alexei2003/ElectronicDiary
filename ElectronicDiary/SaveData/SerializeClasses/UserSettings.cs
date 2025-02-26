@@ -21,7 +21,7 @@
             /// <summary> Фон для контейнеров, карточек и элементов интерфейса </summary>
             public Color BACKGROUND_FILL_COLOR { get; set; } = Color.FromRgb(30, 30, 30);
             /// <summary> Цвет для выделенных поверхностей (модальные окна, всплывающие панели) </summary>
-            public Color PRIMARY_SURFACE_COLOR { get; set; } = Color.FromRgb(37, 37, 38);
+            public Color PRIMARY_SURFACE_COLOR { get; set; } = Color.FromRgb(37, 37, 37);
 
             // АКЦЕНТНЫЕ И ИНТЕРАКТИВНЫЕ ЭЛЕМЕНТЫ
             /// <summary> Основной акцентный цвет для кнопок, переключателей, выделения </summary>

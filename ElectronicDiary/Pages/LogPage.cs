@@ -18,11 +18,8 @@ namespace ElectronicDiary.Pages
             // Цвета
             BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
-            var loginField = new Entry
+            var loginEntry = new Entry
             {
-                // Положение
-                HorizontalOptions = LayoutOptions.Fill,
-
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
                 TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
@@ -32,16 +29,13 @@ namespace ElectronicDiary.Pages
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Логин",
             };
-            loginField.TextChanged += (sender, e) =>
+            loginEntry.TextChanged += (sender, e) =>
             {
                 _login = e.NewTextValue;
             };
 
-            var passwordField = new Entry
+            var passwordEntry = new Entry
             {
-                // Положение
-                HorizontalOptions = LayoutOptions.Fill,
-
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
                 TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
@@ -51,7 +45,7 @@ namespace ElectronicDiary.Pages
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Пароль",
             };
-            passwordField.TextChanged += (sender, e) =>
+            passwordEntry.TextChanged += (sender, e) =>
             {
                 _password = e.NewTextValue;
             };
@@ -60,7 +54,6 @@ namespace ElectronicDiary.Pages
             {
                 // Положение
                 HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
 
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
@@ -74,13 +67,16 @@ namespace ElectronicDiary.Pages
 
             Content = new VerticalStackLayout
             {
+                // Положение
                 VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
                 Padding = PageConstants.PADDING_ALL_PAGES,
                 Spacing = PageConstants.SPACING_ALL_PAGES,
+
                 Children =
                 {
-                    loginField,
-                    passwordField,
+                    loginEntry,
+                    passwordEntry,
                     toProfilePageButton
                 }
             };
@@ -91,11 +87,7 @@ namespace ElectronicDiary.Pages
             var response = await Sessions.LogIn(_login, _password);
             if (response.Error)
             {
-                await DisplayAlert("Ошибка", response.Message, "OK");
-                //if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                //{
-                //    Navigation.PushAsync(new LogPage());
-                //}
+                DisplayAlert("Ошибка", response.Message, "OK");
             }
             else
             {

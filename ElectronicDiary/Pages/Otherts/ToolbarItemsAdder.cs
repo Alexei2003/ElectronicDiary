@@ -12,7 +12,7 @@ namespace ElectronicDiary.Pages.Otherts
 
             #if WINDOWS
                 item.Text = title;          
-            #elif OTHER_PLATFORM
+            #else
                 item.IconImageSource = ImageSource.FromFile(imagePath);               
             #endif
 

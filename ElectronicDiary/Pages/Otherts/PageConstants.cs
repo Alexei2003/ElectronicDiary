@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Pages
+﻿namespace ElectronicDiary.Pages.Otherts
 {
     public static class PageConstants
     {
