@@ -1,4 +1,7 @@
-﻿using ElectronicDiary.Web;
+﻿using ElectronicDiary.Pages.Otherts;
+using ElectronicDiary.SaveData;
+using ElectronicDiary.SaveData.SerializeClasses;
+using ElectronicDiary.Web.Api;
 
 namespace ElectronicDiary.Pages
 {
@@ -9,26 +12,24 @@ namespace ElectronicDiary.Pages
 
         public LogPage()
         {
-            var namePageLabel = new Label
-            {
-                // Положение
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
+            Title = "Авторизация";
+            ToolbarItemsAdder.AddSettings(ToolbarItems);
 
-                // Текст
-                TextColor = PageConstants.TEXR_COLOR,
-                FontSize = 20,
-                Text = "Вход",
-            };
+            // Цвета
+            BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
             var loginField = new Entry
             {
                 // Положение
                 HorizontalOptions = LayoutOptions.Fill,
 
+                // Цвета
+                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
+
                 // Текст
-                TextColor = PageConstants.TEXR_COLOR,
-                PlaceholderColor = PageConstants.PLACEHOLDER_COLOR,
+                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Логин",
             };
             loginField.TextChanged += (sender, e) =>
@@ -41,9 +42,13 @@ namespace ElectronicDiary.Pages
                 // Положение
                 HorizontalOptions = LayoutOptions.Fill,
 
+                // Цвета
+                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
+
                 // Текст
-                TextColor = PageConstants.TEXR_COLOR,
-                PlaceholderColor = PageConstants.PLACEHOLDER_COLOR,
+                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Пароль",
             };
             passwordField.TextChanged += (sender, e) =>
@@ -57,20 +62,23 @@ namespace ElectronicDiary.Pages
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
 
+                // Цвета
+                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
+                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
                 // Текст
-                TextColor = PageConstants.TEXR_COLOR,
-                Text = "Вход"
+                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                Text = "Вход",
             };
-            toProfilePageButton.Clicked += ButtonClickedToProfilePage;
+            toProfilePageButton.Clicked += ToProfilePageButtonClicked;
 
             Content = new VerticalStackLayout
             {
                 VerticalOptions = LayoutOptions.Center,
-                Padding = new Thickness(PageConstants.PADDING_ALL_PAGES),
-                Spacing = 10,
+                Padding = PageConstants.PADDING_ALL_PAGES,
+                Spacing = PageConstants.SPACING_ALL_PAGES,
                 Children =
                 {
-                    namePageLabel,
                     loginField,
                     passwordField,
                     toProfilePageButton
@@ -78,22 +86,27 @@ namespace ElectronicDiary.Pages
             };
         }
 
-        private async void ButtonClickedToProfilePage(object? sender, EventArgs e)
+        private async void ToProfilePageButtonClicked(object? sender, EventArgs e)
         {
-            var response = await HttpClientCustom.LogIn(_login, _password);
+            var response = await Sessions.LogIn(_login, _password);
             if (response.Error)
             {
                 await DisplayAlert("Ошибка", response.Message, "OK");
+                //if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                //{
+                //    Navigation.PushAsync(new LogPage());
+                //}
             }
             else
             {
-                SaveData.UserData.UserInfo = new SaveData.UserInfo()
+                UserData.UserInfo = new UserInfo()
                 {
                     Role = response.Message,
                     Login = _login,
                     Password = _password
                 };
-                SaveData.UserData.SaveUserInfo();
+                UserData.SaveUserInfo();
+                Application.Current.MainPage = new ThemedNavigationPage(new AdminPage());
             }
         }
     }

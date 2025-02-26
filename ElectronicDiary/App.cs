@@ -1,6 +1,7 @@
 ﻿using ElectronicDiary.Pages;
+using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
-using ElectronicDiary.Web;
+using ElectronicDiary.Web.Api;
 
 namespace ElectronicDiary
 {
@@ -10,19 +11,19 @@ namespace ElectronicDiary
         {
             UserData.LoadAll();
 
-            var startPage = new NavigationPage(new LogPage());
+            var startPage = new ThemedNavigationPage(new LogPage());
 
             Task.Run(async () =>
             {
-                if (UserData.UserInfo.Login != null && UserData.UserInfo.Password != null)
+                if (UserData.UserInfo.Role != null)
                 {
-                    var response = await HttpClientCustom.LogIn(UserData.UserInfo.Login, UserData.UserInfo.Password);
+                    var response = await Sessions.LogIn(UserData.UserInfo.Login, UserData.UserInfo.Password);
 
                     if (!response.Error)
                     {
                         Dispatcher.Dispatch(() =>
                         {
-                            startPage.Navigation.PushAsync(new TestPage());
+                            Application.Current.MainPage = new ThemedNavigationPage(new AdminPage());
                         });
                     }
                 }

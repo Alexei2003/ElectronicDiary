@@ -1,6 +1,6 @@
-﻿using ElectronicDiary.Web;
+﻿using ElectronicDiary.SaveData;
 
-namespace ElectronicDiary.Pages
+namespace ElectronicDiary.Pages.Otherts
 {
     public class TestPage : ContentPage
     {
@@ -13,7 +13,7 @@ namespace ElectronicDiary.Pages
                 VerticalOptions = LayoutOptions.Center,
 
                 // Текст
-                TextColor = PageConstants.TEXR_COLOR,
+                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
                 FontSize = 20,
                 Text = "GOOD",
             };
@@ -21,7 +21,7 @@ namespace ElectronicDiary.Pages
             Content = new VerticalStackLayout
             {
                 VerticalOptions = LayoutOptions.Center,
-                Padding = new Thickness(PageConstants.PADDING_ALL_PAGES),
+                Padding = PageConstants.PADDING_ALL_PAGES,
                 Spacing = 10,
                 Children =
                 {

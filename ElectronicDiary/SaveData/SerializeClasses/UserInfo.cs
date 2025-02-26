@@ -1,10 +1,10 @@
-﻿namespace ElectronicDiary.SaveData
+﻿namespace ElectronicDiary.SaveData.SerializeClasses
 {
     public class UserInfo
     {
         public string? Role { get; set; } = null;
 
-        // Security
+        // Авторизация
         public string? Login { get; set; } = null;
         public string? Password { get; set; } = null;
     }

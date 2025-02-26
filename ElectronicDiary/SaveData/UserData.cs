@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using ElectronicDiary.SaveData.SerializeClasses;
+using System.Text.Json;
 
 namespace ElectronicDiary.SaveData
 {

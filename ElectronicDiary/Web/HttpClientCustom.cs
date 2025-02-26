@@ -16,14 +16,7 @@ namespace ElectronicDiary.Web
             Timeout = TimeSpan.FromSeconds(30)
         };
 
-        public static Task<Response> LogIn(string login, string password)
-        {
-            var url = $"/login?login={WebUtility.UrlEncode(login)}&password={WebUtility.UrlEncode(password)}";
-
-            return CheckResponse(HttpTypes.POST, url);
-        }
-
-        private enum HttpTypes
+        public enum HttpTypes
         {
             GET, POST, PUT, DELETE
         }
@@ -32,9 +25,11 @@ namespace ElectronicDiary.Web
         {
             public bool Error { get; set; }
             public string Message { get; set; } = "";
+
+            public HttpStatusCode? StatusCode { get; set; } = HttpStatusCode.OK;
         }
 
-        private static async Task<Response> CheckResponse(HttpTypes httpTypes, string url, HttpContent? context = null)
+        public static async Task<Response> CheckResponse(HttpTypes httpTypes, string url, HttpContent? context = null)
         {
             HttpResponseMessage response;
             try
@@ -70,6 +65,7 @@ namespace ElectronicDiary.Web
                         },
                         _ => "Что-то пошло не так. Если ошибка повторяется, сообщите в поддержку"
                     },
+                    StatusCode = ((HttpRequestException)ex).StatusCode,
                 };
             }
 
