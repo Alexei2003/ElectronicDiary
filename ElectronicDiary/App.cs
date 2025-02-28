@@ -23,7 +23,7 @@ namespace ElectronicDiary
                     {
                         Dispatcher.Dispatch(() =>
                         {
-                            Application.Current.MainPage = new ThemedNavigationPage(new AdminPage());
+                            Application.Current.MainPage = new ThemedNavigationPage(new EmptyPage());
                         });
                     }
                 }

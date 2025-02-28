@@ -98,7 +98,7 @@ namespace ElectronicDiary.Pages
                     Password = _password
                 };
                 UserData.SaveUserInfo();
-                Application.Current.MainPage = new ThemedNavigationPage(new AdminPage());
+                Application.Current.MainPage = new ThemedNavigationPage(new EmptyPage());
             }
         }
     }
