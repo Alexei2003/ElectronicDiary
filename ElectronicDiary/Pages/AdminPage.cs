@@ -10,7 +10,7 @@ namespace ElectronicDiary.Pages
     public class AdminPage : ContentPage
     {
         private readonly HorizontalStackLayout _mainStack;
-        private readonly List<VerticalStackLayout> _stacksList = [];
+        private readonly List<ScrollView> _viewList = [];
         private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public AdminPage()
@@ -27,7 +27,7 @@ namespace ElectronicDiary.Pages
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };
 
-            _stacksList.Add(CreateEducationalInstitutionListStack());
+            _viewList.Add(CreateEducationalInstitutionListView());
 
             _mainStack = new HorizontalStackLayout
             {
@@ -35,6 +35,8 @@ namespace ElectronicDiary.Pages
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Fill,
             };
+
+            RepaintPage();
 
             Content = _mainStack;
             SizeChanged += WindowSizeChanged;
@@ -47,11 +49,13 @@ namespace ElectronicDiary.Pages
             _mainStack.Clear();
 
             double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
-            var countColumn = int.Min((int)(Width / dpi / 2), 3);
 
-            for (var i = int.Max(_stacksList.Count - countColumn, 0); i < _stacksList.Count; i++)
+            var countColumn = int.Min((int)(DeviceDisplay.MainDisplayInfo.Width / dpi / 2), 3);
+
+            for (var i = int.Max(_viewList.Count - countColumn, 0); i < _viewList.Count; i++)
             {
-                _mainStack.Add(_stacksList[i]);
+                _viewList[i].WidthRequest = DeviceDisplay.MainDisplayInfo.Width / countColumn * 0.5;
+                _mainStack.Add(_viewList[i]);
             }
         }
 
@@ -62,9 +66,9 @@ namespace ElectronicDiary.Pages
 
         protected override bool OnBackButtonPressed()
         {
-            if(_stacksList.Count > 1)
+            if(_viewList.Count > 1)
             {
-                _stacksList.RemoveAt(_stacksList.Count-1);
+                _viewList.RemoveAt(_viewList.Count-1);
                 RepaintPage();
             }
 
@@ -141,16 +145,22 @@ namespace ElectronicDiary.Pages
         private string _educationalInstitutionSettlement = "";
         private string _educationalInstitutionName = "";
         private VerticalStackLayout _educationalInstitutionVerticalStackLayout;
-        private VerticalStackLayout CreateEducationalInstitutionListStack()
+        private ScrollView CreateEducationalInstitutionListView()
         {
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
-                HorizontalOptions = LayoutOptions.Start,
                 Padding = PageConstants.PADDING_ALL_PAGES,
                 Spacing = PageConstants.SPACING_ALL_PAGES,
             };
-            verticalStack.BindingContext = PageType.EducationalInstitutionList;
+
+            var scrollView = new ScrollView()
+            {
+                // Доп инфа
+                BindingContext = PageType.EducationalInstitutionList,
+
+                Content = verticalStack
+            };
 
             var grid = new Grid
             {
@@ -236,7 +246,7 @@ namespace ElectronicDiary.Pages
             };
             verticalStack.Add(_educationalInstitutionVerticalStackLayout);
 
-            return verticalStack;
+            return scrollView;
         }
         private async void AddEducationalInstitutionButtonClicked(object? sender, EventArgs e)
         {
@@ -281,8 +291,10 @@ namespace ElectronicDiary.Pages
 
                         // Цвета
                         BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+
+                        // Доп инфа
+                        BindingContext = _educationalInstitutionDTOList[i].Id,
                     };
-                    grid.BindingContext = _educationalInstitutionDTOList[i].Id;
                     grid.GestureRecognizers.Add(tapGesture);
 
                     var rowIndex = 0;
@@ -333,16 +345,16 @@ namespace ElectronicDiary.Pages
             var id = (int)((Grid)sender).BindingContext;
 
 
-            VerticalStackLayout verticalStack;
+            ScrollView scrollView;
             switch (action)
             {
                 case "Описание":
-                    verticalStack = CreateEducationalInstitutionStack(id);
-                    if ((PageType)_stacksList[^1].BindingContext == PageType.EducationalInstitution)
+                    scrollView = CreateEducationalInstitutionView(id);
+                    if ((PageType)_viewList[^1].BindingContext == PageType.EducationalInstitution)
                     {
-                        _stacksList.RemoveAt(_stacksList.Count - 1);
+                        _viewList.RemoveAt(_viewList.Count - 1);
                     }
-                    _stacksList.Add(verticalStack);
+                    _viewList.Add(scrollView);
                     break;
                 case "Перейти":
 
@@ -361,16 +373,22 @@ namespace ElectronicDiary.Pages
             RepaintPage();
         }
 
-        private VerticalStackLayout CreateEducationalInstitutionStack(int id)
+        private ScrollView CreateEducationalInstitutionView(int id)
         {
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
-                HorizontalOptions = LayoutOptions.Start,
                 Padding = PageConstants.PADDING_ALL_PAGES,
                 Spacing = PageConstants.SPACING_ALL_PAGES,
             };
-            verticalStack.BindingContext = PageType.EducationalInstitution;
+
+            var scrollView = new ScrollView()
+            {
+                // Доп инфа
+                BindingContext = PageType.EducationalInstitution,
+
+                Content = verticalStack
+            };
 
             var grid = new Grid
             {
@@ -441,7 +459,7 @@ namespace ElectronicDiary.Pages
             );
 
             verticalStack.Add(grid);
-            return verticalStack;
+            return scrollView;
         }
     }
 }

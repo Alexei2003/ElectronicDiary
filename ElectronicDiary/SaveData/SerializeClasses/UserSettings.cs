@@ -7,8 +7,8 @@
 
         public class FontsClass
         {
-            public int TITLE_FONT_SIZE { get; set; } = 20;
-            public int BASE_FONT_SIZE { get; set; } = 14;
+            public int TITLE_FONT_SIZE { get; set; } = 16;
+            public int BASE_FONT_SIZE { get; set; } = 12;
         }
 
         public class ColorsClass
