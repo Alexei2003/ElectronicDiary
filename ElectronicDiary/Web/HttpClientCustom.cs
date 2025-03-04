@@ -29,7 +29,7 @@ namespace ElectronicDiary.Web
             public string Message { get; set; } = "";
         }
 
-        public static async Task<Response> CheckResponse(HttpTypes httpTypes, string url, HttpContent? context = null)
+        public static async Task<Response> CheckResponse(HttpTypes httpTypes, string url, HttpContent? content = null)
         {
             HttpResponseMessage response;
             try
@@ -37,8 +37,8 @@ namespace ElectronicDiary.Web
                 response = httpTypes switch
                 {
                     HttpTypes.GET => await _httpClient.GetAsync(url),
-                    HttpTypes.POST => await _httpClient.PostAsync(url, context),
-                    HttpTypes.PUT => await _httpClient.PutAsync(url, context),
+                    HttpTypes.POST => await _httpClient.PostAsync(url, content),
+                    HttpTypes.PUT => await _httpClient.PutAsync(url, content),
                     HttpTypes.DELETE => await _httpClient.DeleteAsync(url),
                     _ => throw new ArgumentOutOfRangeException(nameof(httpTypes), httpTypes, null)
                 };
@@ -51,7 +51,7 @@ namespace ElectronicDiary.Web
                 if (((HttpRequestException)ex).StatusCode == HttpStatusCode.Unauthorized)
                 {
                     var windows = Application.Current?.Windows;
-                    if(windows != null)
+                    if (windows != null)
                     {
                         windows[0].Page = new ThemedNavigationPage(new LogPage());
                     }

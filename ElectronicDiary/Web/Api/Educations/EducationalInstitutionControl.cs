@@ -1,6 +1,7 @@
-﻿using ElectronicDiary.Web.DTO;
-using System.Text.Json;
+﻿using ElectronicDiary.Web.DTO.Requests;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 
 namespace ElectronicDiary.Web.Api.Educations
 {
@@ -18,13 +19,10 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public static Task<HttpClientCustom.Response> AddEducationalInstitution(EducationalInstitutionDTO dto)
+        public static Task<HttpClientCustom.Response> AddEducationalInstitution(EducationalInstitutionRequest dto)
         {
             const string url = "/addEducationalInstitution";
-            using var content = new StringContent(
-                JsonSerializer.Serialize(dto),
-                Encoding.UTF8,
-                "application/json");
+            using var content = JsonContent.Create(dto);
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 

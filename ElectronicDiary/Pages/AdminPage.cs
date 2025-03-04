@@ -1,7 +1,8 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api.Educations;
-using ElectronicDiary.Web.DTO;
+using ElectronicDiary.Web.DTO.Requests;
+using ElectronicDiary.Web.DTO.Responses;
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages
@@ -40,8 +41,7 @@ namespace ElectronicDiary.Pages
             Content = _mainStack;
             SizeChanged += WindowSizeChanged;
 
-            var task = GetEducationalInstitutionList();
-            task.Wait();
+            GetEducationalInstitutionList();
         }
 
         // Обновление видов
@@ -51,11 +51,19 @@ namespace ElectronicDiary.Pages
 
             double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
 
-            var countColumn = int.Min((int)(DeviceDisplay.MainDisplayInfo.Width / dpi / 2), 3);
+            double width;
+
+#if WINDOWS
+            width = Width;
+#else
+            width = DeviceDisplay.MainDisplayInfo.Width;
+#endif
+
+            var countColumn = int.Min((int)(width / dpi / 2), 3);
 
             for (var i = int.Max(_viewList.Count - countColumn, 0); i < _viewList.Count; i++)
             {
-                _viewList[i].WidthRequest = DeviceDisplay.MainDisplayInfo.Width / countColumn * 0.5;
+                _viewList[i].WidthRequest = width / countColumn * 0.95;
                 _mainStack.Add(_viewList[i]);
             }
         }
@@ -182,7 +190,7 @@ namespace ElectronicDiary.Pages
             var rowIndex = 0;
 
             AddLineElems(
-                readOnly: true,
+                readOnly: false,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -192,17 +200,17 @@ namespace ElectronicDiary.Pages
             );
 
             AddLineElems(
-                readOnly: true,
+                readOnly: false,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Населённый пункт",
-                placeholder: "Солигорск",
+                placeholder: "г.Солигорск",
                 textChangedAction: newText => _educationalInstitutionSettlement = newText
             );
 
             AddLineElems(
-                readOnly: true,
+                readOnly: false,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -250,7 +258,7 @@ namespace ElectronicDiary.Pages
         }
 
         // Получение списка школ
-        private List<EducationalInstitutionDTO> _educationalInstitutionDTOList = new();
+        private List<EducationalInstitutionResponse> _educationalInstitutionDTOList = new();
         private async Task GetEducationalInstitutionList()
         {
             var response = await EducationalInstitutionControl.GetSchools();
@@ -260,7 +268,7 @@ namespace ElectronicDiary.Pages
             }
             else
             {
-                _educationalInstitutionDTOList = JsonSerializer.Deserialize<List<EducationalInstitutionDTO>>(response.Message, _jsonSerializerOptions) ?? new List<EducationalInstitutionDTO>();
+                _educationalInstitutionDTOList = JsonSerializer.Deserialize<List<EducationalInstitutionResponse>>(response.Message, _jsonSerializerOptions) ?? new List<EducationalInstitutionResponse>();
                 _educationalInstitutionDTOList = _educationalInstitutionDTOList
                     .Where(e =>
                         (_educationalInstitutionRegion?.Length == 0 || e.Settlement.Region.Name.Contains(_educationalInstitutionRegion ?? "", StringComparison.OrdinalIgnoreCase)) &&
@@ -374,7 +382,7 @@ namespace ElectronicDiary.Pages
                     _viewList.Add(scrollView);
                     break;
                 case "Удалить":
-                    var response = EducationalInstitutionControl.DeleteEducationalInstitution(id).Result;
+                    var response = await EducationalInstitutionControl.DeleteEducationalInstitution(id);
                     if (response.Error)
                     {
                         await DisplayAlert("Ошибка", response.Message, "OK");
@@ -395,8 +403,9 @@ namespace ElectronicDiary.Pages
                 _viewList.RemoveAt(_viewList.Count - 1);
             }
             _viewList.Add(scrollView);
+            RepaintPage();
         }
-        private EducationalInstitutionDTO? _educationalInstitution = null;
+        private EducationalInstitutionRequest _educationalInstitutionRequest = new();
         private ScrollView CreateEducationalInstitutionView(int id = -1, bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
@@ -431,15 +440,16 @@ namespace ElectronicDiary.Pages
             };
 
             bool readOnly;
+            EducationalInstitutionResponse? educationalInstitutionResponse = new();
             if (id == -1)
             {
-                _educationalInstitution = new();
+                _educationalInstitutionRequest = new();
                 readOnly = false;
             }
             else
             {
-                _educationalInstitution = _educationalInstitutionDTOList.FirstOrDefault(x => x.Id == id);
-                if (_educationalInstitution == null)
+                educationalInstitutionResponse = _educationalInstitutionDTOList.FirstOrDefault(x => x.Id == id);
+                if (educationalInstitutionResponse == null)
                 {
                     return scrollView;
                 }
@@ -454,9 +464,9 @@ namespace ElectronicDiary.Pages
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Название",
-                value: _educationalInstitution.Name,
-                placeholder: "",
-                textChangedAction: newText => _educationalInstitution.Name = newText
+                value: educationalInstitutionResponse.Name,
+                placeholder: "ГУО ...",
+                textChangedAction: newText => _educationalInstitutionRequest.Name = newText
             );
 
             AddLineElems(
@@ -465,7 +475,9 @@ namespace ElectronicDiary.Pages
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Регион",
-                value: _educationalInstitution.Settlement.Region.Name
+                value: educationalInstitutionResponse.Settlement.Region.Name,
+                placeholder: "Минская область",
+                textChangedAction: newText => _educationalInstitutionRequest.RegionId = int.Parse(newText)
             );
 
             AddLineElems(
@@ -474,7 +486,9 @@ namespace ElectronicDiary.Pages
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Населённый пункт",
-                value: _educationalInstitution.Settlement.Name
+                value: educationalInstitutionResponse.Settlement.Name,
+                placeholder: "г.Солигорск",
+                textChangedAction: newText => _educationalInstitutionRequest.SettlementId = int.Parse(newText)
             );
 
             AddLineElems(
@@ -483,7 +497,9 @@ namespace ElectronicDiary.Pages
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Адресс",
-                value: _educationalInstitution.Address
+                value: educationalInstitutionResponse.Address,
+                placeholder: "ул. Ленина, 12",
+                textChangedAction: newText => _educationalInstitutionRequest.Address = newText
             );
 
             AddLineElems(
@@ -492,7 +508,9 @@ namespace ElectronicDiary.Pages
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Email",
-                value: _educationalInstitution.Email
+                value: educationalInstitutionResponse.Email,
+                placeholder: "sh4@edus.by",
+                textChangedAction: newText => _educationalInstitutionRequest.Email = newText
             );
 
             AddLineElems(
@@ -501,11 +519,52 @@ namespace ElectronicDiary.Pages
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Телефон",
-                value: _educationalInstitution.PhoneNumber
+                value: educationalInstitutionResponse.PhoneNumber,
+                placeholder: "+375 17 433-09-02",
+                textChangedAction: newText => _educationalInstitutionRequest.PhoneNumber = newText
             );
+
+            if (id == -1)
+            {
+                var saveEducationalInstitutionButton = new Button
+                {
+                    // Положение
+                    HorizontalOptions = LayoutOptions.Center,
+
+                    // Цвета
+                    BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
+                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                    // Текст
+                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                    Text = "Сохранить",
+                };
+                saveEducationalInstitutionButton.Clicked += SaveEducationalInstitutionButtonClicked;
+
+                grid.Add(saveEducationalInstitutionButton, 0, rowIndex++);
+            }
 
             verticalStack.Add(grid);
             return scrollView;
+        }
+        private async void SaveEducationalInstitutionButtonClicked(object? sender, EventArgs e)
+        {
+            if (_educationalInstitutionRequest == null)
+            {
+                return;
+            }
+
+            var response = await EducationalInstitutionControl.AddEducationalInstitution(_educationalInstitutionRequest);
+            if (response.Error)
+            {
+                await DisplayAlert("Ошибка", response.Message, "OK");
+            }
+            else
+            {
+                await DisplayAlert("Успех", "Школа добавлена", "OK");
+                await GetEducationalInstitutionList();
+                OnBackButtonPressed();
+            }
         }
     }
 }

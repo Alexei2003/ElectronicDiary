@@ -82,7 +82,7 @@ namespace ElectronicDiary.Pages
             var response = await AuthorizationControl.LogIn(_login, _password);
             if (response.Error)
             {
-                DisplayAlert("Ошибка", response.Message, "OK");
+                await DisplayAlert("Ошибка", response.Message, "OK");
             }
             else
             {
@@ -93,7 +93,7 @@ namespace ElectronicDiary.Pages
                     Password = _password
                 };
                 UserData.SaveUserInfo();
-                 Application.Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
+                Application.Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
             }
         }
     }

@@ -11,7 +11,7 @@ namespace ElectronicDiary.Pages.Otherts
             var item = new ToolbarItem();
 
 #if WINDOWS
-            item.Text = title;          
+            item.Text = title;
 #else
             item.IconImageSource = ImageSource.FromFile(imagePath);
 #endif
@@ -26,7 +26,7 @@ namespace ElectronicDiary.Pages.Otherts
         {
             AddElem(toolbarItems, "Настройки", "settings_icon.svg", SettingsClicked);
         }
-        private async static void SettingsClicked(object sender, EventArgs e)
+        private static void SettingsClicked(object? sender, EventArgs e)
         {
             Application.Current.Windows[0].Page.Navigation.PushAsync(new SettignsPage());
         }
@@ -37,7 +37,7 @@ namespace ElectronicDiary.Pages.Otherts
         {
             AddElem(toolbarItems, "Выход", "log_out_icon.svg", LogOutClicked);
         }
-        private async static void LogOutClicked(object sender, EventArgs e)
+        private async static void LogOutClicked(object? sender, EventArgs e)
         {
             var response = await AuthorizationControl.logOut();
             if (!response.Error)
