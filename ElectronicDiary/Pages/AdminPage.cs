@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.Otherts;
+﻿using CoreML;
+using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests;
@@ -93,10 +94,30 @@ namespace ElectronicDiary.Pages
             EducationalInstitutionList, EducationalInstitution
         }
 
+        private enum ComponentType
+        {
+            Label, Entity, Picker
+        }
 
 
+        
         // Добавление линий элементов в таблицах
-        private static void AddLineElems(bool readOnly, Grid grid, int startColumn, int startRow, string title, string? value = null, string? placeholder = null, Action<string>? textChangedAction = null)
+        private sealed class Item()
+        {
+            public int Id { get; set; } = -1;
+            public string Name { get; set; } = "";
+        }
+        private static void AddLineElems(ComponentType componentType,
+                                         Grid grid,
+                                         int startColumn,
+                                         int startRow,
+                                         string title,
+                                         string? value = null,
+                                         string? placeholder = null,
+                                         Action<string>? textChangedAction = null,
+                                         List<Item>? items = null,
+                                         Action<int>? indexChangedAction = null
+                                         )
         {
             var titleLabel = new Label
             {
@@ -109,39 +130,59 @@ namespace ElectronicDiary.Pages
             };
             grid.Add(titleLabel, startColumn, startRow);
 
-            if (readOnly)
+            switch (componentType)
             {
-                var valueLabel = new Label
-                {
-                    // Цвета
-                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                case ComponentType.Label:
+                    var valueLabel = new Label
+                    {
+                        // Цвета
+                        TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
 
-                    // Текст
-                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                    Text = value ?? "",
-                };
+                        // Текст
+                        FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                        Text = value ?? "",
+                    };
 
-                grid.Add(valueLabel, startColumn + 1, startRow);
-            }
-            else
-            {
-                var entryEntry = new Entry
-                {
-                    // Цвета
-                    BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-                    PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
+                    grid.Add(valueLabel, startColumn + 1, startRow);
+                    break;
+                case ComponentType.Entity:
+                    var entryEntry = new Entry
+                    {
+                        // Цвета
+                        BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                        TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                        PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
 
-                    // Текст
-                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                    Placeholder = placeholder ?? ""
-                };
-                if (textChangedAction != null)
-                {
-                    entryEntry.TextChanged += (sender, e) => textChangedAction(e.NewTextValue);
-                }
+                        // Текст
+                        FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                        Placeholder = placeholder ?? ""
+                    };
+                    if (textChangedAction != null)
+                    {
+                        entryEntry.TextChanged += (sender, e) => textChangedAction(e.NewTextValue);
+                    }
 
-                grid.Add(entryEntry, startColumn + 1, startRow);
+                    grid.Add(entryEntry, startColumn + 1, startRow);
+                    break;
+                case ComponentType.Picker:
+                    var valuePicker = new Picker
+                    {
+                        // Цвета
+                        TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                        // Текст
+                        FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+
+                        ItemsSource = items,
+                        ItemDisplayBinding = Binding.Create(static (Item item) => item.Name),
+                    };
+                    if (indexChangedAction != null)
+                    {
+                        valuePicker.SelectedIndexChanged += (sender, e) => indexChangedAction(valuePicker.SelectedIndex);
+                    }
+
+                    grid.Add(valuePicker, startColumn + 1, startRow);
+                    break;
             }
         }
 
@@ -190,31 +231,34 @@ namespace ElectronicDiary.Pages
             var rowIndex = 0;
 
             AddLineElems(
-                readOnly: false,
+                componentType: ComponentType.Entity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Область",
+
                 placeholder: "Минская область",
                 textChangedAction: newText => _educationalInstitutionRegion = newText
             );
 
             AddLineElems(
-                readOnly: false,
+                componentType: ComponentType.Entity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Населённый пункт",
+
                 placeholder: "г.Солигорск",
                 textChangedAction: newText => _educationalInstitutionSettlement = newText
             );
 
             AddLineElems(
-                readOnly: false,
+                componentType: ComponentType.Entity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Название",
+
                 placeholder: "ГУО ...",
                 textChangedAction: newText => _educationalInstitutionName = newText
             );
@@ -305,29 +349,32 @@ namespace ElectronicDiary.Pages
                     var rowIndex = 0;
 
                     AddLineElems(
-                        readOnly: true,
+                        componentType: ComponentType.Label,
                         grid: grid,
                         startColumn: 0,
                         startRow: rowIndex++,
                         title: "Название",
+
                         value: _educationalInstitutionDTOList[i].Name
                     );
 
                     AddLineElems(
-                        readOnly: true,
+                        componentType: ComponentType.Label,
                         grid: grid,
                         startColumn: 0,
                         startRow: rowIndex++,
                         title: "Регион",
+
                         value: _educationalInstitutionDTOList[i].Settlement.Region.Name
                     );
 
                     AddLineElems(
-                        readOnly: true,
+                        componentType: ComponentType.Label,
                         grid: grid,
                         startColumn: 0,
                         startRow: rowIndex++,
                         title: "Город",
+
                         value: _educationalInstitutionDTOList[i].Settlement.Name
                     );
 
@@ -439,12 +486,14 @@ namespace ElectronicDiary.Pages
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
 
-            bool readOnly;
+            ComponentType componentTypeEntity;
+            ComponentType componentTypePicker;
             EducationalInstitutionResponse? educationalInstitutionResponse = new();
             if (id == -1)
             {
                 _educationalInstitutionRequest = new();
-                readOnly = false;
+                componentTypeEntity = ComponentType.Entity;
+                componentTypePicker = ComponentType.Picker;
             }
             else
             {
@@ -453,73 +502,84 @@ namespace ElectronicDiary.Pages
                 {
                     return scrollView;
                 }
-                readOnly = true;
+                componentTypeEntity = ComponentType.Label;
+                componentTypePicker = ComponentType.Label;
             }
 
             var rowIndex = 0;
 
             AddLineElems(
-                readOnly: readOnly,
+                componentType: componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Название",
+
                 value: educationalInstitutionResponse.Name,
+
                 placeholder: "ГУО ...",
                 textChangedAction: newText => _educationalInstitutionRequest.Name = newText
             );
 
             AddLineElems(
-                readOnly: readOnly,
+                componentType: componentTypePicker,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Регион",
+
                 value: educationalInstitutionResponse.Settlement.Region.Name,
+
                 placeholder: "Минская область",
-                textChangedAction: newText => _educationalInstitutionRequest.RegionId = int.Parse(newText)
+                indexChangedAction: selectedwIndex => _educationalInstitutionRequest.RegionId = selectedwIndex
             );
 
             AddLineElems(
-                readOnly: readOnly,
+                componentType: componentTypePicker,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Населённый пункт",
+
                 value: educationalInstitutionResponse.Settlement.Name,
-                placeholder: "г.Солигорск",
-                textChangedAction: newText => _educationalInstitutionRequest.SettlementId = int.Parse(newText)
+
+                indexChangedAction: selectedwIndex => _educationalInstitutionRequest.SettlementId = selectedwIndex
             );
 
             AddLineElems(
-                readOnly: readOnly,
+                componentType: componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Адресс",
+
                 value: educationalInstitutionResponse.Address,
-                placeholder: "ул. Ленина, 12",
+
                 textChangedAction: newText => _educationalInstitutionRequest.Address = newText
             );
 
             AddLineElems(
-                readOnly: readOnly,
+                componentType: componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Email",
+
                 value: educationalInstitutionResponse.Email,
+
                 placeholder: "sh4@edus.by",
                 textChangedAction: newText => _educationalInstitutionRequest.Email = newText
             );
 
             AddLineElems(
-                readOnly: readOnly,
+                componentType: componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Телефон",
+
                 value: educationalInstitutionResponse.PhoneNumber,
+
                 placeholder: "+375 17 433-09-02",
                 textChangedAction: newText => _educationalInstitutionRequest.PhoneNumber = newText
             );
