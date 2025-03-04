@@ -29,6 +29,8 @@ namespace ElectronicDiary
                 }
             });
 
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+
             return new Window(startPage)
             {
                 Title = "Электронный дневник"

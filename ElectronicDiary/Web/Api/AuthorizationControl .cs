@@ -2,7 +2,7 @@
 
 namespace ElectronicDiary.Web.Api
 {
-    public static class Sessions
+    public static class AuthorizationControl
     {
         public static Task<HttpClientCustom.Response> LogIn(string login, string password)
         {

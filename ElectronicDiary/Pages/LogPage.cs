@@ -44,6 +44,7 @@ namespace ElectronicDiary.Pages
                 // Текст
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Пароль",
+                IsPassword = true,
             };
             passwordEntry.TextChanged += (sender, e) =>
             {
