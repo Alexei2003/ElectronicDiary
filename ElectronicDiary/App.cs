@@ -17,7 +17,7 @@ namespace ElectronicDiary
             {
                 if (UserData.UserInfo.Role != null)
                 {
-                    var response = await Sessions.LogIn(UserData.UserInfo.Login, UserData.UserInfo.Password);
+                    var response = await AuthorizationControl.LogIn(UserData.UserInfo.Login, UserData.UserInfo.Password);
 
                     if (!response.Error)
                     {

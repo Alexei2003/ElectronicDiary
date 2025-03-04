@@ -39,7 +39,7 @@ namespace ElectronicDiary.Pages.Otherts
         }
         private async static void LogOutClicked(object sender, EventArgs e)
         {
-            var response = await Sessions.logOut();
+            var response = await AuthorizationControl.logOut();
             if (!response.Error)
             {
                 UserData.UserInfo = new UserInfo();

@@ -85,7 +85,7 @@ namespace ElectronicDiary.Pages
 
         private async void ToProfilePageButtonClicked(object? sender, EventArgs e)
         {
-            var response = await Sessions.LogIn(_login, _password);
+            var response = await AuthorizationControl.LogIn(_login, _password);
             if (response.Error)
             {
                 DisplayAlert("Ошибка", response.Message, "OK");

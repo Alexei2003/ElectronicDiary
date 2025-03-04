@@ -1,6 +1,8 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
+using ElectronicDiary.Web.Api.Educations;
+using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO;
 using Microsoft.Maui.Controls.Shapes;
 using System.Text.Json;
@@ -256,7 +258,7 @@ namespace ElectronicDiary.Pages
         private List<EducationalInstitutionDTO> _educationalInstitutionDTOList = new();
         private async Task GetEducationalInstitutionList()
         {
-            var response = await Admin.GetSchools();
+            var response = await EducationalInstitutionControl.GetSchools();
             if (response.Error)
             {
                 await DisplayAlert("Ошибка", response.Message, "OK");
