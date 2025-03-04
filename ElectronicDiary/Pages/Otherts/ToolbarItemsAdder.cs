@@ -10,11 +10,11 @@ namespace ElectronicDiary.Pages.Otherts
         {
             var item = new ToolbarItem();
 
-            #if WINDOWS
-                item.Text = title;          
-            #else
-                item.IconImageSource = ImageSource.FromFile(imagePath);               
-            #endif
+#if WINDOWS
+            item.Text = title;          
+#else
+            item.IconImageSource = ImageSource.FromFile(imagePath);
+#endif
 
             item.Clicked += eventHandler;
             toolbarItems.Add(item);
@@ -28,7 +28,7 @@ namespace ElectronicDiary.Pages.Otherts
         }
         private async static void SettingsClicked(object sender, EventArgs e)
         {
-            Application.Current.MainPage.Navigation.PushAsync(new SettignsPage());
+            Application.Current.Windows[0].Page.Navigation.PushAsync(new SettignsPage());
         }
 
 
@@ -45,7 +45,7 @@ namespace ElectronicDiary.Pages.Otherts
                 UserData.UserInfo = new UserInfo();
                 UserData.SaveUserInfo();
 
-                Application.Current.MainPage = new ThemedNavigationPage(new LogPage());
+                Application.Current.Windows[0].Page = new ThemedNavigationPage(new LogPage());
             }
         }
     }

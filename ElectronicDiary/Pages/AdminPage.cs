@@ -1,10 +1,7 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
-using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.Api.Educations;
-using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO;
-using Microsoft.Maui.Controls.Shapes;
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages
@@ -43,9 +40,11 @@ namespace ElectronicDiary.Pages
             Content = _mainStack;
             SizeChanged += WindowSizeChanged;
 
-            GetEducationalInstitutionList();
+            var task = GetEducationalInstitutionList();
+            task.Wait();
         }
 
+        // Обновление видов
         private void RepaintPage()
         {
             _mainStack.Clear();
@@ -61,16 +60,17 @@ namespace ElectronicDiary.Pages
             }
         }
 
-        private async void WindowSizeChanged(object? sender, EventArgs e)
+        private void WindowSizeChanged(object? sender, EventArgs e)
         {
             RepaintPage();
         }
 
+        // Переопределение возврата
         protected override bool OnBackButtonPressed()
         {
-            if(_viewList.Count > 1)
+            if (_viewList.Count > 1)
             {
-                _viewList.RemoveAt(_viewList.Count-1);
+                _viewList.RemoveAt(_viewList.Count - 1);
                 RepaintPage();
             }
 
@@ -79,43 +79,16 @@ namespace ElectronicDiary.Pages
 
 
 
-        private enum PageType 
+        // Тип вида
+        private enum ViewType
         {
             EducationalInstitutionList, EducationalInstitution
         }
 
 
 
-        private void AddLineEntry(Grid grid, int startColumn, int startRow, string title, string placeholder, Action<string> textChangedAction)
-        {
-            var label = new Label
-            {
-                // Цвета
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Text = title,
-            };
-
-            var entry = new Entry
-            {
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-                PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
-
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Placeholder = placeholder
-            };
-            entry.TextChanged += (sender, e) => textChangedAction(e.NewTextValue);
-
-            grid.Add(label, startColumn, startRow);
-            grid.Add(entry, startColumn + 1, startRow);
-        }
-
-        private void AddLineLabel(Grid grid, int startColumn, int startRow, string title, string? value)
+        // Добавление линий элементов в таблицах
+        private static void AddLineElems(bool readOnly, Grid grid, int startColumn, int startRow, string title, string? value = null, string? placeholder = null, Action<string>? textChangedAction = null)
         {
             var titleLabel = new Label
             {
@@ -126,27 +99,53 @@ namespace ElectronicDiary.Pages
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Text = title,
             };
-
-            var valueLabel = new Label
-            {
-                // Цвета
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Text = value ?? "",
-            };
-
             grid.Add(titleLabel, startColumn, startRow);
-            grid.Add(valueLabel, startColumn + 1, startRow);
+
+            if (readOnly)
+            {
+                var valueLabel = new Label
+                {
+                    // Цвета
+                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                    // Текст
+                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                    Text = value ?? "",
+                };
+
+                grid.Add(valueLabel, startColumn + 1, startRow);
+            }
+            else
+            {
+                var entryEntry = new Entry
+                {
+                    // Цвета
+                    BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                    PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
+
+                    // Текст
+                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                    Placeholder = placeholder ?? ""
+                };
+                if (textChangedAction != null)
+                {
+                    entryEntry.TextChanged += (sender, e) => textChangedAction(e.NewTextValue);
+                }
+
+                grid.Add(entryEntry, startColumn + 1, startRow);
+            }
         }
 
 
-
+        // Список школ
         private string _educationalInstitutionRegion = "";
         private string _educationalInstitutionSettlement = "";
         private string _educationalInstitutionName = "";
-        private VerticalStackLayout _educationalInstitutionVerticalStackLayout;
+        private VerticalStackLayout _educationalInstitutionVerticalStackLayout = new()
+        {
+            Spacing = PageConstants.SPACING_ALL_PAGES
+        };
         private ScrollView CreateEducationalInstitutionListView()
         {
             var verticalStack = new VerticalStackLayout
@@ -159,7 +158,7 @@ namespace ElectronicDiary.Pages
             var scrollView = new ScrollView()
             {
                 // Доп инфа
-                BindingContext = PageType.EducationalInstitutionList,
+                BindingContext = ViewType.EducationalInstitutionList,
 
                 Content = verticalStack
             };
@@ -182,7 +181,8 @@ namespace ElectronicDiary.Pages
 
             var rowIndex = 0;
 
-            AddLineEntry(
+            AddLineElems(
+                readOnly: true,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -191,7 +191,8 @@ namespace ElectronicDiary.Pages
                 textChangedAction: newText => _educationalInstitutionRegion = newText
             );
 
-            AddLineEntry(
+            AddLineElems(
+                readOnly: true,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -200,7 +201,8 @@ namespace ElectronicDiary.Pages
                 textChangedAction: newText => _educationalInstitutionSettlement = newText
             );
 
-            AddLineEntry(
+            AddLineElems(
+                readOnly: true,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -242,19 +244,12 @@ namespace ElectronicDiary.Pages
             addEducationalInstitutionButton.Clicked += AddEducationalInstitutionButtonClicked;
             verticalStack.Add(addEducationalInstitutionButton);
 
-            _educationalInstitutionVerticalStackLayout = new VerticalStackLayout()
-            {
-                Spacing = PageConstants.SPACING_ALL_PAGES
-            };
             verticalStack.Add(_educationalInstitutionVerticalStackLayout);
 
             return scrollView;
         }
-        private async void AddEducationalInstitutionButtonClicked(object? sender, EventArgs e)
-        {
-            
-        }
 
+        // Получение списка школ
         private List<EducationalInstitutionDTO> _educationalInstitutionDTOList = new();
         private async Task GetEducationalInstitutionList()
         {
@@ -265,12 +260,12 @@ namespace ElectronicDiary.Pages
             }
             else
             {
-                _educationalInstitutionDTOList = JsonSerializer.Deserialize<List<EducationalInstitutionDTO>>(response.Message, _jsonSerializerOptions);
+                _educationalInstitutionDTOList = JsonSerializer.Deserialize<List<EducationalInstitutionDTO>>(response.Message, _jsonSerializerOptions) ?? new List<EducationalInstitutionDTO>();
                 _educationalInstitutionDTOList = _educationalInstitutionDTOList
                     .Where(e =>
-                        (_educationalInstitutionRegion == "" || e.Settlement.Region.Name.Contains(_educationalInstitutionRegion, StringComparison.OrdinalIgnoreCase)) &&
-                        (_educationalInstitutionSettlement == "" || e.Settlement.Name.Contains(_educationalInstitutionSettlement, StringComparison.OrdinalIgnoreCase)) &&
-                        (_educationalInstitutionName == "" || e.Name.Contains(_educationalInstitutionName, StringComparison.OrdinalIgnoreCase)))
+                        (_educationalInstitutionRegion?.Length == 0 || e.Settlement.Region.Name.Contains(_educationalInstitutionRegion ?? "", StringComparison.OrdinalIgnoreCase)) &&
+                        (_educationalInstitutionSettlement?.Length == 0 || e.Settlement.Name.Contains(_educationalInstitutionSettlement ?? "", StringComparison.OrdinalIgnoreCase)) &&
+                        (_educationalInstitutionName?.Length == 0 || e.Name.Contains(_educationalInstitutionName ?? "", StringComparison.OrdinalIgnoreCase)))
                     .ToList();
 
                 _educationalInstitutionVerticalStackLayout.Clear();
@@ -301,7 +296,8 @@ namespace ElectronicDiary.Pages
 
                     var rowIndex = 0;
 
-                    AddLineLabel(
+                    AddLineElems(
+                        readOnly: true,
                         grid: grid,
                         startColumn: 0,
                         startRow: rowIndex++,
@@ -309,7 +305,8 @@ namespace ElectronicDiary.Pages
                         value: _educationalInstitutionDTOList[i].Name
                     );
 
-                    AddLineLabel(
+                    AddLineElems(
+                        readOnly: true,
                         grid: grid,
                         startColumn: 0,
                         startRow: rowIndex++,
@@ -317,7 +314,8 @@ namespace ElectronicDiary.Pages
                         value: _educationalInstitutionDTOList[i].Settlement.Region.Name
                     );
 
-                    AddLineLabel(
+                    AddLineElems(
+                        readOnly: true,
                         grid: grid,
                         startColumn: 0,
                         startRow: rowIndex++,
@@ -333,9 +331,11 @@ namespace ElectronicDiary.Pages
         {
             await GetEducationalInstitutionList();
         }
+
+        // Действия с отдельными школами
         private async void GetEducationalInstitutionListGestureTapped(object? sender, EventArgs e)
         {
-            string action = await Application.Current.MainPage.DisplayActionSheet(
+            string action = await DisplayActionSheet(
                 "Выберите действие",    // Заголовок
                 "Отмена",               // Кнопка отмены
                 null,                   // Кнопка деструктивного действия (например, удаление)
@@ -344,7 +344,11 @@ namespace ElectronicDiary.Pages
                 "Редактировать",
                 "Удалить");
 
-            var id = (int)((Grid)sender).BindingContext;
+            if (sender is not Grid grid)
+            {
+                return;
+            }
+            var id = (int)(grid).BindingContext;
 
 
             ScrollView scrollView;
@@ -352,7 +356,7 @@ namespace ElectronicDiary.Pages
             {
                 case "Описание":
                     scrollView = CreateEducationalInstitutionView(id);
-                    if ((PageType)_viewList[^1].BindingContext == PageType.EducationalInstitution)
+                    if ((ViewType)_viewList[^1].BindingContext == ViewType.EducationalInstitution)
                     {
                         _viewList.RemoveAt(_viewList.Count - 1);
                     }
@@ -362,10 +366,19 @@ namespace ElectronicDiary.Pages
 
                     break;
                 case "Редактировать":
-
+                    scrollView = CreateEducationalInstitutionView(id);
+                    if ((ViewType)_viewList[^1].BindingContext == ViewType.EducationalInstitution)
+                    {
+                        _viewList.RemoveAt(_viewList.Count - 1);
+                    }
+                    _viewList.Add(scrollView);
                     break;
                 case "Удалить":
-
+                    var response = EducationalInstitutionControl.DeleteEducationalInstitution(id).Result;
+                    if (response.Error)
+                    {
+                        await DisplayAlert("Ошибка", response.Message, "OK");
+                    }
                     break;
                 default:
                     return;
@@ -374,8 +387,17 @@ namespace ElectronicDiary.Pages
             await GetEducationalInstitutionList();
             RepaintPage();
         }
-
-        private ScrollView CreateEducationalInstitutionView(int id)
+        private void AddEducationalInstitutionButtonClicked(object? sender, EventArgs e)
+        {
+            var scrollView = CreateEducationalInstitutionView();
+            if ((ViewType)_viewList[^1].BindingContext == ViewType.EducationalInstitution)
+            {
+                _viewList.RemoveAt(_viewList.Count - 1);
+            }
+            _viewList.Add(scrollView);
+        }
+        private EducationalInstitutionDTO? _educationalInstitution = null;
+        private ScrollView CreateEducationalInstitutionView(int id = -1, bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
             {
@@ -387,7 +409,7 @@ namespace ElectronicDiary.Pages
             var scrollView = new ScrollView()
             {
                 // Доп инфа
-                BindingContext = PageType.EducationalInstitution,
+                BindingContext = ViewType.EducationalInstitution,
 
                 Content = verticalStack
             };
@@ -408,56 +430,78 @@ namespace ElectronicDiary.Pages
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
 
-            var educationalInstitution = _educationalInstitutionDTOList.FirstOrDefault(x => x.Id == id);
+            bool readOnly;
+            if (id == -1)
+            {
+                _educationalInstitution = new();
+                readOnly = false;
+            }
+            else
+            {
+                _educationalInstitution = _educationalInstitutionDTOList.FirstOrDefault(x => x.Id == id);
+                if (_educationalInstitution == null)
+                {
+                    return scrollView;
+                }
+                readOnly = true;
+            }
 
             var rowIndex = 0;
 
-            AddLineLabel(
+            AddLineElems(
+                readOnly: readOnly,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Название",
-                value: educationalInstitution.Name
+                value: _educationalInstitution.Name,
+                placeholder: "",
+                textChangedAction: newText => _educationalInstitution.Name = newText
             );
 
-            AddLineLabel(
+            AddLineElems(
+                readOnly: readOnly,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Регион",
-                value: educationalInstitution.Settlement.Region.Name
+                value: _educationalInstitution.Settlement.Region.Name
             );
 
-            AddLineLabel(
+            AddLineElems(
+                readOnly: readOnly,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Населённый пункт",
-                value: educationalInstitution.Settlement.Name
+                value: _educationalInstitution.Settlement.Name
             );
 
-            AddLineLabel(
+            AddLineElems(
+                readOnly: readOnly,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Адресс",
-                value: educationalInstitution.Address
+                value: _educationalInstitution.Address
             );
 
-            AddLineLabel(
+            AddLineElems(
+                readOnly: readOnly,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Email",
-                value: educationalInstitution.Email
+                value: _educationalInstitution.Email
             );
 
-            AddLineLabel(
+            AddLineElems(
+                readOnly: readOnly,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
                 title: "Телефон",
-                value: educationalInstitution.PhoneNumber
+                value: _educationalInstitution.PhoneNumber
             );
 
             verticalStack.Add(grid);

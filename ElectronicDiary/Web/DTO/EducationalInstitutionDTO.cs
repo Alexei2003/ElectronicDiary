@@ -4,13 +4,13 @@ namespace ElectronicDiary.Web.DTO
 {
     public record EducationalInstitutionDTO
     {
-        public int Id { get; init; }
-        public string Name { get; init; } = default!;
-        public string Address { get; init; } = default!;
-        public string? PathImage { get; init; }
-        public string? Email { get; init; }
-        public string? PhoneNumber { get; init; }
-        public InstitutionTypeDTO EducationalInstitutionType { get; init; } = default!;
-        public SettlementDTO Settlement { get; init; } = default!;
+        public int Id { get; set; }
+        public string Name { get; set; } = default!;
+        public string Address { get; set; } = default!;
+        public string? PathImage { get; set; }
+        public string? Email { get; set; }
+        public string? PhoneNumber { get; set; }
+        public InstitutionTypeDTO EducationalInstitutionType { get; set; } = default!;
+        public SettlementDTO Settlement { get; set; } = default!;
     }
 }

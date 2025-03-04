@@ -8,8 +8,8 @@ namespace ElectronicDiary.Web.DTO
 {
     public record SettlementDTO
     {
-        public int Id { get; init; }
-        public string Name { get; init; } = default!;
-        public RegionDTO Region { get; init; } = default!;
+        public int Id { get; set; }
+        public string Name { get; set; } = default!;
+        public RegionDTO Region { get; set; } = default!;
     }
 }

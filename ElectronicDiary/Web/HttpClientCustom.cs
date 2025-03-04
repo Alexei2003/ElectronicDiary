@@ -48,9 +48,13 @@ namespace ElectronicDiary.Web
             }
             catch (Exception ex)
             {
-                if (((HttpRequestException)ex).StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                if (((HttpRequestException)ex).StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    Application.Current.MainPage = new ThemedNavigationPage(new LogPage());
+                    var windows = Application.Current?.Windows;
+                    if(windows != null)
+                    {
+                        windows[0].Page = new ThemedNavigationPage(new LogPage());
+                    }
                 }
 
                 return new Response()

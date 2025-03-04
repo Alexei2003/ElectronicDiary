@@ -29,10 +29,7 @@ namespace ElectronicDiary.Pages
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Логин",
             };
-            loginEntry.TextChanged += (sender, e) =>
-            {
-                _login = e.NewTextValue;
-            };
+            loginEntry.TextChanged += (sender, e) => _login = e.NewTextValue;
 
             var passwordEntry = new Entry
             {
@@ -46,10 +43,7 @@ namespace ElectronicDiary.Pages
                 Placeholder = "Пароль",
                 IsPassword = true,
             };
-            passwordEntry.TextChanged += (sender, e) =>
-            {
-                _password = e.NewTextValue;
-            };
+            passwordEntry.TextChanged += (sender, e) => _password = e.NewTextValue;
 
             var toProfilePageButton = new Button
             {
@@ -99,7 +93,7 @@ namespace ElectronicDiary.Pages
                     Password = _password
                 };
                 UserData.SaveUserInfo();
-                Application.Current.MainPage = new ThemedNavigationPage(new EmptyPage());
+                 Application.Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
             }
         }
     }

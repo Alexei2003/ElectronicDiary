@@ -8,7 +8,7 @@ namespace ElectronicDiary.Web.DTO
 {
     public record InstitutionTypeDTO
     {
-        public int Id { get; init; }
-        public string Name { get; init; } = default!;
+        public int Id { get; set; }
+        public string Name { get; set; } = default!;
     }
 }
