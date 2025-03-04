@@ -51,19 +51,19 @@ namespace ElectronicDiary.Pages
 
             double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
 
-            double width;
-
 #if WINDOWS
-            width = Width;
+            double coeff = 1;
+            double width = Width;
 #else
-            width = DeviceDisplay.MainDisplayInfo.Width;
+            double coeff = 2;
+            double width = DeviceDisplay.MainDisplayInfo.Width;
 #endif
 
             var countColumn = int.Min((int)(width / dpi / 2), 3);
 
             for (var i = int.Max(_viewList.Count - countColumn, 0); i < _viewList.Count; i++)
             {
-                _viewList[i].WidthRequest = width / countColumn * 0.95;
+                _viewList[i].MaximumWidthRequest = (width / coeff / countColumn) * 0.90;
                 _mainStack.Add(_viewList[i]);
             }
         }

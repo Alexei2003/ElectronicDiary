@@ -48,32 +48,37 @@ namespace ElectronicDiary.Web
             }
             catch (Exception ex)
             {
-                if (((HttpRequestException)ex).StatusCode == HttpStatusCode.Unauthorized)
+                var message = "Что-то пошло не так. Если ошибка повторяется, сообщите в поддержку";
+                if (ex is HttpRequestException httpEx)
                 {
-                    var windows = Application.Current?.Windows;
-                    if (windows != null)
+                    if (httpEx.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        windows[0].Page = new ThemedNavigationPage(new LogPage());
+                        MainThread.BeginInvokeOnMainThread(() =>
+                        {
+                            var window = Application.Current?.Windows.FirstOrDefault();
+                            if (window != null)
+                            {
+                                window.Page = new ThemedNavigationPage(new LogPage());
+                            }
+                        });
                     }
+
+                    message = httpEx.StatusCode switch
+                    {
+                        HttpStatusCode.Unauthorized => "Войдите в систему для доступа",
+                        HttpStatusCode.Forbidden => "Доступ к этому разделу запрещён",
+                        HttpStatusCode.NotFound => "Информация не найдена",
+                        HttpStatusCode.InternalServerError => "Проблема на сервере. Попробуйте позже",
+                        HttpStatusCode.ServiceUnavailable => "Сервис временно не работает",
+                        HttpStatusCode.GatewayTimeout or HttpStatusCode.RequestTimeout => "Слишком долгий ответ. Проверьте интернет и повторите",
+                        _ => "Ошибка связи с сервером"
+                    };
                 }
 
                 return new Response()
                 {
                     Error = true,
-                    Message = ex switch
-                    {
-                        HttpRequestException httpEx => httpEx.StatusCode switch
-                        {
-                            HttpStatusCode.Unauthorized => "Войдите в систему для доступа",
-                            HttpStatusCode.Forbidden => "Доступ к этому разделу запрещён",
-                            HttpStatusCode.NotFound => "Информация не найдена",
-                            HttpStatusCode.InternalServerError => "Проблема на сервере. Попробуйте позже",
-                            HttpStatusCode.ServiceUnavailable => "Сервис временно не работает",
-                            HttpStatusCode.GatewayTimeout or HttpStatusCode.RequestTimeout => "Слишком долгий ответ. Проверьте интернет и повторите",
-                            _ => "Ошибка связи с сервером"
-                        },
-                        _ => "Что-то пошло не так. Если ошибка повторяется, сообщите в поддержку"
-                    },
+                    Message = message
                 };
             }
 
