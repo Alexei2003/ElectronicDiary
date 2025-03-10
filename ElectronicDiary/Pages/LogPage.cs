@@ -79,16 +79,12 @@ namespace ElectronicDiary.Pages
 
         private async void ToProfilePageButtonClicked(object? sender, EventArgs e)
         {
-            var response = await AuthorizationControl.LogIn(_login, _password);
-            if (response.Error)
-            {
-                await DisplayAlert("Ошибка", response.Message, "OK");
-            }
-            else
+            var response = await AuthorizationСontroller.LogIn(_login, _password);
+            if (response != null)
             {
                 UserData.UserInfo = new UserInfo()
                 {
-                    Role = response.Message,
+                    Role = response,
                     Login = _login,
                     Password = _password
                 };

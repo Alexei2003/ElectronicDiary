@@ -23,13 +23,7 @@ namespace ElectronicDiary.Web
             GET, POST, PUT, DELETE
         }
 
-        public class Response
-        {
-            public bool Error { get; set; }
-            public string Message { get; set; } = "";
-        }
-
-        public static async Task<Response> CheckResponse(HttpTypes httpTypes, string url, HttpContent? content = null)
+        public static async Task<string?> CheckResponse(HttpTypes httpTypes, string url, HttpContent? content = null)
         {
             HttpResponseMessage response;
             try
@@ -75,18 +69,12 @@ namespace ElectronicDiary.Web
                     };
                 }
 
-                return new Response()
-                {
-                    Error = true,
-                    Message = message
-                };
+                await Application.Current.Windows[0].Page.DisplayAlert("Ошибка", message, "OK");
+
+                return null;
             }
 
-            return new Response()
-            {
-                Error = false,
-                Message = await response.Content.ReadAsStringAsync(),
-            };
+            return await response.Content.ReadAsStringAsync();
         }
 
         //public static string SerializeCookies()

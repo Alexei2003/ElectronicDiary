@@ -1,14 +1,14 @@
 ﻿namespace ElectronicDiary.Web.Api.Educations
 {
-    public static class AddressControl
+    public static class AddressСontroller
     {
-        public static Task<HttpClientCustom.Response> GetRegions()
+        public static Task<string?> GetRegions()
         {
             const string url = "/getRegions";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public static Task<HttpClientCustom.Response> GetSettlements(long regionId)
+        public static Task<string?> GetSettlements(long regionId)
         {
             string url = $"/getSettlements?region={regionId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

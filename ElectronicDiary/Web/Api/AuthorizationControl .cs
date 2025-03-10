@@ -2,16 +2,16 @@
 
 namespace ElectronicDiary.Web.Api
 {
-    public static class AuthorizationControl
+    public static class AuthorizationСontroller
     {
-        public static Task<HttpClientCustom.Response> LogIn(string login, string password)
+        public static Task<string?> LogIn(string login, string password)
         {
             var url = $"/login?login={WebUtility.UrlEncode(login)}&password={WebUtility.UrlEncode(password)}";
 
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url);
         }
 
-        public static Task<HttpClientCustom.Response> logOut()
+        public static Task<string?> logOut()
         {
             const string url = $"/logout";
 

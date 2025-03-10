@@ -1,33 +1,33 @@
-﻿using ElectronicDiary.Web.DTO.Requests;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
+using System.Text;
 
 namespace ElectronicDiary.Web.Api.Educations
 {
-    public static class EducationalInstitutionControl
+    public class EducationalInstitutionСontroller : Controller
     {
-        public static Task<HttpClientCustom.Response> GetSchools()
+        public override async Task<string?> GetAll()
         {
             const string url = "/getSchools";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public static Task<HttpClientCustom.Response> GetSchoolsById(long id)
+        public override async Task<string?> GetById(long id)
         {
             string url = $"/getSchoolsById?id={id}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public static Task<HttpClientCustom.Response> AddEducationalInstitution(EducationalInstitutionRequest dto)
+        public override async Task<string?> Add(string json)
         {
             const string url = "/addEducationalInstitution";
-            var content = JsonContent.Create(dto);
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 
-        public static Task<HttpClientCustom.Response> DeleteEducationalInstitution(long id)
+        public override async Task<string?> Delete(long id)
         {
             string url = $"/deleteEducationalInstitution?id={id}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
     }
 }
