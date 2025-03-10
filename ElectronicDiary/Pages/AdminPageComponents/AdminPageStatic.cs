@@ -4,12 +4,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 {
     public static class AdminPageStatic
     {
-        // Тип вида
-        public enum ViewType
-        {
-            EducationalInstitutionList, EducationalInstitution, LocalAdminList
-        }
-
         // Обновление видов
         public static void RepaintPage(HorizontalStackLayout mainStack, List<ScrollView> viewList)
         {
@@ -19,7 +13,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 #if WINDOWS
             double coeff = 1;
-            double widthLocal = Application.Current.Windows[0].Width;
+            double widthLocal = 0;
+            if(Application.Current.Windows.Count>0)
+            {
+               widthLocal = Application.Current.Windows[0].Width;
+            }
+
 #else
             double coeff = 2;
             double widthLocal = DeviceDisplay.MainDisplayInfo.Width;

@@ -5,18 +5,20 @@ using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class BaseView<Object, Request>
+    public class BaseView<Response, Request>
     {
         protected readonly HorizontalStackLayout _mainStack;
         protected readonly List<ScrollView> _viewList;
         protected VerticalStackLayout _listVerticalStack;
         protected Controller _controller;
-        protected AdminPageStatic.ViewType _objectViewType;
+        protected int _maxCountViews;
+        protected long _educationalInstitutionId;
 
         public BaseView(HorizontalStackLayout mainStack, List<ScrollView> viewList)
         {
             _mainStack = mainStack;
             _viewList = viewList;
+            _educationalInstitutionId = -1;
         }
 
         public ScrollView CreateMainView()
@@ -30,9 +32,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
             var scrollView = new ScrollView()
             {
-                // Доп инфа
-                BindingContext = AdminPageStatic.ViewType.EducationalInstitutionList,
-
                 Content = verticalStack
             };
 
@@ -109,10 +108,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
             var scrollView = CreateObjectView();
-            if ((AdminPageStatic.ViewType)_viewList[^1].BindingContext == _objectViewType)
+            while(_viewList.Count > _maxCountViews)
             {
                 _viewList.RemoveAt(_viewList.Count - 1);
             }
+
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
@@ -120,13 +120,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
         // Получение списка объектов
-        protected List<Object> _objectsList = new();
+        protected List<Response> _objectsList = new();
         protected virtual async Task CreateListView()
         {
-            var response = await _controller.GetAll();
+            var response = await _controller.GetAll(_educationalInstitutionId);
             if (response != null)
             {
-                _objectsList = JsonSerializer.Deserialize<List<Object>>(response, PageConstants.JsonSerializerOptions) ?? new List<Object>();
+                _objectsList = JsonSerializer.Deserialize<List<Response>>(response, PageConstants.JsonSerializerOptions) ?? new List<Response>();
             }
         }
 
@@ -148,7 +148,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             {
                 return;
             }
-            var id = (int)grid.BindingContext;
+            var id = (long)grid.BindingContext;
 
             ScrollView scrollView;
             switch (action)
@@ -176,7 +176,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected virtual async Task ShowInfo(long id)
         {
             var scrollView = CreateObjectView(id);
-            if ((AdminPageStatic.ViewType)_viewList[^1].BindingContext == _objectViewType)
+            while (_viewList.Count >= _maxCountViews)
             {
                 _viewList.RemoveAt(_viewList.Count - 1);
             }
@@ -185,12 +185,22 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
         protected virtual async Task MoveTo(long id)
         {
-
+            var administratorView = new AdministratorView(_mainStack, _viewList, id);
+            while (_viewList.Count >= _maxCountViews)
+            {
+                _viewList.RemoveAt(_viewList.Count - 1);
+            }
+            _viewList.Add(administratorView.CreateMainView());
         }
 
         protected virtual async Task Edit(long id)
         {
-
+            var scrollView = CreateObjectView(id, true);
+            while (_viewList.Count >= _maxCountViews)
+            {
+                _viewList.RemoveAt(_viewList.Count - 1);
+            }
+            _viewList.Add(scrollView);
         }
 
         protected virtual async Task Delete(long id)
@@ -201,6 +211,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
         // Вид объекта
+        protected Response? _response;
         protected virtual ScrollView CreateObjectView(long id = -1, bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
@@ -212,9 +223,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
             var scrollView = new ScrollView()
             {
-                // Доп инфа
-                BindingContext = AdminPageStatic.ViewType.EducationalInstitution,
-
                 Content = verticalStack
             };
 
@@ -242,7 +250,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
         protected virtual void CreateObjectInfoView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0, long id = -1, bool edit = false)
         {
-            if (id == -1)
+            if (id == -1 || edit)
             {
                 var saveButton = new Button
                 {
@@ -263,7 +271,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             }
         }
 
-        protected Request _request;
+        protected Request? _request;
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
             if (_request == null)

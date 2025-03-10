@@ -12,7 +12,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             VerticalOptions = LayoutOptions.Fill,
         };
         private readonly List<ScrollView> _viewList = [];
-        private EducationalInstitutionView _educationalInstitutionView;
+
         public AdminPage()
         {
             Title = "Панель администратора";
@@ -22,8 +22,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             // Цвета
             BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
-            _educationalInstitutionView = new EducationalInstitutionView(_mainStack, _viewList);
-            _viewList.Add(_educationalInstitutionView.CreateMainView());
+            var educationalInstitutionView = new EducationalInstitutionView(_mainStack, _viewList);
+            _viewList.Add(educationalInstitutionView.CreateMainView());
 
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
 

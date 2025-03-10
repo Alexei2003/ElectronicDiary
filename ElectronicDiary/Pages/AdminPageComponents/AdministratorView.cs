@@ -1,29 +1,29 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
-using ElectronicDiary.Web.Api.Educations;
+using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests;
 using ElectronicDiary.Web.DTO.Responses;
-using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class EducationalInstitutionView : BaseView<EducationalInstitutionResponse, EducationalInstitutionRequest>
+    public class AdministratorView : BaseView<AdministratorResponse, AdministratorRequest>
     {
-        public EducationalInstitutionView(
+        public AdministratorView(
             HorizontalStackLayout mainStack,
-            List<ScrollView> viewList
+            List<ScrollView> viewList,
+            long educationalInstitutionId
         ) : base(mainStack, viewList)
         {
-            _controller = new EducationalInstitutionСontroller();
+            _controller = new AdministratorController();
             _request = new();
-            _maxCountViews = 2;
+            _maxCountViews = 3;
+            _educationalInstitutionId = educationalInstitutionId;
         }
 
-
         // Фильтр объектов
-        private string _regionFilter = "";
-        private string _settlementFilter = "";
-        private string _nameFilter = "";
+        private string _lastNameFilter = "";
+        private string _firstNameFilter = "";
+        private string _patronymicFilter = "";
 
         protected override void CreateFilterView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0)
         {
@@ -32,10 +32,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
-                title: "Область",
+                title: "Фамилия",
 
-                placeholder: "Минская область",
-                textChangedAction: newText => _regionFilter = newText
+                placeholder: "Дубовский",
+                textChangedAction: newText => _lastNameFilter = newText
             );
 
             AdminPageStatic.AddLineElems(
@@ -43,10 +43,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
-                title: "Населённый пункт",
+                title: "Имя",
 
-                placeholder: "г.Солигорск",
-                textChangedAction: newText => _settlementFilter = newText
+                placeholder: "Алексей",
+                textChangedAction: newText => _firstNameFilter = newText
             );
 
             AdminPageStatic.AddLineElems(
@@ -54,10 +54,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
-                title: "Название",
+                title: "Отчество",
 
-                placeholder: "ГУО ...",
-                textChangedAction: newText => _nameFilter = newText
+                placeholder: "Владимирович",
+                textChangedAction: newText => _patronymicFilter = newText
             );
 
             base.CreateFilterView(verticalStack, grid, rowIndex);
@@ -70,9 +70,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
             _objectsList = _objectsList
                 .Where(e =>
-                    (_regionFilter?.Length == 0 || e.Settlement.Region.Name.Contains(_regionFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_settlementFilter?.Length == 0 || e.Settlement.Name.Contains(_settlementFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_nameFilter?.Length == 0 || e.Name.Contains(_nameFilter ?? "", StringComparison.OrdinalIgnoreCase)))
+                    (_lastNameFilter?.Length == 0 || e.LastName.Contains(_lastNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
+                    (_firstNameFilter?.Length == 0 || e.FirstName.Contains(_firstNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
+                    (_patronymicFilter?.Length == 0 || e.PathImage.Contains(_patronymicFilter ?? "", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
 
             _listVerticalStack.Clear();
@@ -108,9 +108,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     grid: grid,
                     startColumn: 0,
                     startRow: rowIndex++,
-                    title: "Название",
+                    title: "Фамилия",
 
-                    value: _objectsList[i].Name
+                    value: _objectsList[i].FirstName
                 );
 
                 AdminPageStatic.AddLineElems(
@@ -118,9 +118,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     grid: grid,
                     startColumn: 0,
                     startRow: rowIndex++,
-                    title: "Регион",
+                    title: "Имя",
 
-                    value: _objectsList[i].Settlement.Region.Name
+                    value: _objectsList[i].LastName
                 );
 
                 AdminPageStatic.AddLineElems(
@@ -128,9 +128,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     grid: grid,
                     startColumn: 0,
                     startRow: rowIndex++,
-                    title: "Город",
+                    title: "Отчество",
 
-                    value: _objectsList[i].Settlement.Name
+                    value: _objectsList[i].Patronymic
                 );
 
                 _listVerticalStack.Add(grid);
@@ -141,18 +141,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected override void CreateObjectInfoView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0, long id = -1, bool edit = false)
         {
             AdminPageStatic.ComponentType componentTypeEntity;
-            AdminPageStatic.ComponentType componentTypePicker;
+
+            _request = new();
+            _response = new();
+
             if (id == -1)
             {
-                _request = new();
+
                 componentTypeEntity = AdminPageStatic.ComponentType.Entity;
-                componentTypePicker = AdminPageStatic.ComponentType.Picker;
             }
             else
             {
-                _response = _objectsList.FirstOrDefault(x => x.Id == id);
+                _response = _objectsList.FirstOrDefault(x => x.Id == id) ?? new();
                 componentTypeEntity = AdminPageStatic.ComponentType.Label;
-                componentTypePicker = AdminPageStatic.ComponentType.Label;
             }
 
             AdminPageStatic.AddLineElems(
@@ -160,78 +161,39 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
-                title: "Название",
+                title: "Фамилия",
 
-                value: _response.Name,
+                value: _response.FirstName,
 
-                placeholder: "ГУО ...",
-                textChangedAction: newText => _request.Name = newText
+                placeholder: "Дубовский",
+                textChangedAction: newText => _request.FirstName = newText
             );
 
-            var objRegion = AdminPageStatic.AddLineElems(
-                componentType: componentTypePicker,
-                grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Регион",
-
-                value: _response.Settlement.Region.Name,
-
-                idChangedAction: selectedIndex => _request.RegionId = selectedIndex
-            );
-            if (componentTypePicker == AdminPageStatic.ComponentType.Picker)
-            {
-                Task.Run(async () =>
-                {
-                    var regionList = await GetRegion();
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        var pickerRegion = (Picker)objRegion;
-                        pickerRegion.ItemsSource = regionList;
-                    });
-                });
-            }
-
-            var objSettlement = AdminPageStatic.AddLineElems(
-                componentType: componentTypePicker,
-                grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Населённый пункт",
-
-                value: _response.Settlement.Name,
-
-                idChangedAction: selectedwId => _request.SettlementId = selectedwId
-            );
-            if (componentTypePicker == AdminPageStatic.ComponentType.Picker)
-            {
-                var pickerRegion = (Picker)objRegion;
-                pickerRegion.SelectedIndexChanged += async (sender, e) =>
-                {
-                    if (pickerRegion.SelectedItem is AdminPageStatic.ItemPicker selectedItem)
-                    {
-                        var pickerSettlement = (Picker)objSettlement;
-                        var settlementList = await GetSettlements(selectedItem.Id);
-
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            pickerSettlement.ItemsSource = settlementList;
-                        });
-                    }
-                };
-            }
 
             AdminPageStatic.AddLineElems(
                 componentType: componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
-                title: "Адресс",
+                title: "Имя",
 
-                value: _response.Address,
+                value: _response.LastName,
 
-                placeholder: "ул. Ленина, 12",
-                textChangedAction: newText => _request.Address = newText
+                placeholder: "Алексей",
+                textChangedAction: newText => _request.LastName = newText
+            );
+
+            AdminPageStatic.AddLineElems(
+                componentType: componentTypeEntity,
+                grid: grid,
+                startColumn: 0,
+                startRow: rowIndex++,
+                title: "Отчество",
+
+                value: _response.Patronymic,
+
+                placeholder: "Владимирович",
+                textChangedAction: newText => _request.Patronymic = newText
             );
 
             AdminPageStatic.AddLineElems(
@@ -260,28 +222,37 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 textChangedAction: newText => _request.PhoneNumber = newText
             );
 
+            if(id == -1 || edit)
+            {
+                AdminPageStatic.AddLineElems(
+                    componentType: componentTypeEntity,
+                    grid: grid,
+                    startColumn: 0,
+                    startRow: rowIndex++,
+                    title: "Логин",
+
+                    placeholder: "admin",
+                    textChangedAction: newText => _request.Login = newText
+                );
+
+                AdminPageStatic.AddLineElems(
+                    componentType: componentTypeEntity,
+                    grid: grid,
+                    startColumn: 0,
+                    startRow: rowIndex++,
+                    title: "Пароль",
+
+                    placeholder: "4Af7@adf",
+                    textChangedAction: newText => _request.Password = newText
+                );
+
+                _request.UniversityId = _educationalInstitutionId;
+            }
+
+
+
             base.CreateObjectInfoView(verticalStack, grid, rowIndex, id, edit);
         }
 
-        private async Task<List<AdminPageStatic.ItemPicker>> GetRegion()
-        {
-            List<AdminPageStatic.ItemPicker>? list = null;
-            var response = await AddressСontroller.GetRegions();
-            if (response != null)
-            {
-                list = JsonSerializer.Deserialize<List<AdminPageStatic.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
-            }
-            return list ?? [];
-        }
-        private static async Task<List<AdminPageStatic.ItemPicker>> GetSettlements(int regionId)
-        {
-            List<AdminPageStatic.ItemPicker>? list = null;
-            var response = await AddressСontroller.GetSettlements(regionId);
-            if (response != null)
-            {
-                list = JsonSerializer.Deserialize<List<AdminPageStatic.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
-            }
-            return list ?? [];
-        }
     }
 }

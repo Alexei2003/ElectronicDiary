@@ -2,7 +2,7 @@
 {
     public class Controller
     {
-        public virtual async Task<string?> GetAll()
+        public virtual async Task<string?> GetAll(long id = -1)
         {
             return null;
         }

@@ -1,23 +1,40 @@
-﻿namespace ElectronicDiary.Web.Api.Users
+﻿using System.Text;
+
+namespace ElectronicDiary.Web.Api.Users
 {
-    public static class AdministrationСontroller
+    public class AdministratorController : Controller
     {
-        public static Task<string?> GetAdministrators(long schoolId)
+        public override async Task<string?> GetAll(long id)
         {
-            string url = $"/getAdministrators?schoolId={schoolId}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+            string url = $"/getAdministrators?schoolId={id}";
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        //public static Task<string?> AddAdministrator(AdministratorDTO dto)
-        //{
-        //    const string url = "/addAdministrator";
-        //    return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, dto);
-        //}
+        public override async Task<string?> GetById(long id)
+        {
+            string url = $"/findAdministratorById?id={id}";
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
 
-        public static Task<string?> DeleteAdministrator(long id)
+        public override async Task<string?> Add(string json)
+        {
+            const string url = "/addAdministrator";
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+        }
+
+        public override async Task<string?> Delete(long id)
         {
             string url = $"/deleteAdministrator?id={id}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
+        }
+
+
+        // Стороние
+        public async Task<string?> GetSchoolByAdministratorId(long id)
+        {
+            string url = $"/findSchoolByAdministratorId?id={id}";
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
     }
 }

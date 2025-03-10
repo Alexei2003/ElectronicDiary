@@ -1,11 +1,10 @@
-﻿using System.Net.Http.Json;
-using System.Text;
+﻿using System.Text;
 
 namespace ElectronicDiary.Web.Api.Educations
 {
     public class EducationalInstitutionСontroller : Controller
     {
-        public override async Task<string?> GetAll()
+        public override async Task<string?> GetAll(long id)
         {
             const string url = "/getSchools";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

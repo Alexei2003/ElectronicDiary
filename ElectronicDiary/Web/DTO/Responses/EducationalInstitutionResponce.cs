@@ -2,7 +2,7 @@
 {
     public record EducationalInstitutionResponse
     {
-        public int Id { get; init; }
+        public long Id { get; init; }
         public string Name { get; init; } = "";
         public string Address { get; init; } = "";
         public string? PathImage { get; init; } = "";
