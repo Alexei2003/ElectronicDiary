@@ -7,15 +7,16 @@ using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class EducationalInstitutionView : BaseView<EducationalInstitutionResponse, EducationalInstitutionRequest>
+    public class EducationalInstitutionView : BaseView<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>
     {
         public EducationalInstitutionView(
             HorizontalStackLayout mainStack,
             List<ScrollView> viewList
         ) : base(mainStack, viewList)
         {
-            _controller = new EducationalInstitutionСontroller();
+            _controller = new();
             _request = new();
+            _response = new();
             _maxCountViews = 2;
         }
 

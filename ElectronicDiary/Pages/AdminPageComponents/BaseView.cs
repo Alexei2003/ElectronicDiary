@@ -1,16 +1,22 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
+using System;
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class BaseView<Response, Request>
+    public interface IMainViewCreator
+    {
+        ScrollView CreateMainView();
+    }
+
+    public class BaseView<TResponse, TRequest, TController> : IMainViewCreator where TController : IController
     {
         protected readonly HorizontalStackLayout _mainStack;
         protected readonly List<ScrollView> _viewList;
         protected VerticalStackLayout _listVerticalStack;
-        protected Controller _controller;
+        protected TController _controller;
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
 
@@ -120,13 +126,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
         // Получение списка объектов
-        protected List<Response> _objectsList = new();
+        protected List<TResponse> _objectsList = new();
         protected virtual async Task CreateListView()
         {
             var response = await _controller.GetAll(_educationalInstitutionId);
             if (response != null)
             {
-                _objectsList = JsonSerializer.Deserialize<List<Response>>(response, PageConstants.JsonSerializerOptions) ?? new List<Response>();
+                _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? new List<TResponse>();
             }
         }
 
@@ -135,14 +141,29 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         // Действия с отдельными объектами
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
-            string action = await Application.Current.Windows[0].Page.DisplayActionSheet(
-                "Выберите действие",    // Заголовок
-                "Отмена",               // Кнопка отмены
-                null,                   // Кнопка деструктивного действия (например, удаление)
-                "Описание",             // Остальные кнопки
-                "Перейти",
-                "Редактировать",
-                "Удалить");
+            string action;
+
+            if (_maxCountViews == 2)
+            {
+                action = await Application.Current.Windows[0].Page.DisplayActionSheet(
+                    "Выберите действие",    // Заголовок
+                    "Отмена",               // Кнопка отмены
+                    null,                   // Кнопка деструктивного действия (например, удаление)
+                    "Описание",             // Остальные кнопки
+                    "Перейти",
+                    "Редактировать",
+                    "Удалить");
+            }
+            else
+            {
+                action = await Application.Current.Windows[0].Page.DisplayActionSheet(
+                    "Выберите действие",    // Заголовок
+                    "Отмена",               // Кнопка отмены
+                    null,                   // Кнопка деструктивного действия (например, удаление)
+                    "Описание",             // Остальные кнопки
+                    "Редактировать",
+                    "Удалить");
+            }
 
             if (sender is not Grid grid)
             {
@@ -185,12 +206,43 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
         protected virtual async Task MoveTo(long id)
         {
-            var administratorView = new AdministratorView(_mainStack, _viewList, id);
+            var action = await Application.Current.Windows[0].Page.DisplayActionSheet(
+                "Выберите список",      // Заголовок
+                "Отмена",               // Кнопка отмены
+                null,                   // Кнопка деструктивного действия (например, удаление)
+                "Администраторы",       // Остальные кнопки
+                "Учителя",
+                "Классы",
+                "Ученики",
+                "Родители");
+
+            IMainViewCreator view;
+            switch (action)
+            {
+                case "Администраторы":
+                    view = new AdministratorView(_mainStack, _viewList, id);
+                    break;
+                case "Учителя":
+                    view = new AdministratorView(_mainStack, _viewList, id);
+                    break;
+                case "Классы":
+                    view = new AdministratorView(_mainStack, _viewList, id);
+                    break;
+                case "Ученики":
+                    view = new AdministratorView(_mainStack, _viewList, id);
+                    break;
+                case "Родители":
+                    view = new AdministratorView(_mainStack, _viewList, id);
+                    break;
+                default:
+                    return;
+            };
+
             while (_viewList.Count >= _maxCountViews)
             {
                 _viewList.RemoveAt(_viewList.Count - 1);
             }
-            _viewList.Add(administratorView.CreateMainView());
+            _viewList.Add(view.CreateMainView());
         }
 
         protected virtual async Task Edit(long id)
@@ -211,7 +263,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
         // Вид объекта
-        protected Response? _response;
+        protected TResponse? _response;
         protected virtual ScrollView CreateObjectView(long id = -1, bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
@@ -271,7 +323,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             }
         }
 
-        protected Request? _request;
+        protected TRequest? _request;
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
             if (_request == null)

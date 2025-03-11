@@ -6,7 +6,7 @@ using ElectronicDiary.Web.DTO.Responses;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class AdministratorView : BaseView<AdministratorResponse, AdministratorRequest>
+    public class AdministratorView : BaseView<AdministratorResponse, AdministratorRequest, AdministratorController>
     {
         public AdministratorView(
             HorizontalStackLayout mainStack,
@@ -14,8 +14,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             long educationalInstitutionId
         ) : base(mainStack, viewList)
         {
-            _controller = new AdministratorController();
+            _controller = new();
             _request = new();
+            _response = new(); 
             _maxCountViews = 3;
             _educationalInstitutionId = educationalInstitutionId;
         }
@@ -141,9 +142,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected override void CreateObjectInfoView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0, long id = -1, bool edit = false)
         {
             AdminPageStatic.ComponentType componentTypeEntity;
-
-            _request = new();
-            _response = new();
 
             if (id == -1)
             {
