@@ -1,7 +1,6 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
-using System;
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
@@ -114,7 +113,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
             var scrollView = CreateObjectView();
-            while(_viewList.Count > _maxCountViews)
+            while (_viewList.Count > _maxCountViews)
             {
                 _viewList.RemoveAt(_viewList.Count - 1);
             }
@@ -236,8 +235,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     break;
                 default:
                     return;
-            };
-
+            }
+           
             while (_viewList.Count >= _maxCountViews)
             {
                 _viewList.RemoveAt(_viewList.Count - 1);

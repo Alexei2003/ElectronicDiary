@@ -16,7 +16,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         {
             _controller = new();
             _request = new();
-            _response = new(); 
+            _response = new();
             _maxCountViews = 3;
             _educationalInstitutionId = educationalInstitutionId;
         }
@@ -220,7 +220,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 textChangedAction: newText => _request.PhoneNumber = newText
             );
 
-            if(id == -1 || edit)
+            if (id == -1 || edit)
             {
                 AdminPageStatic.AddLineElems(
                     componentType: componentTypeEntity,
