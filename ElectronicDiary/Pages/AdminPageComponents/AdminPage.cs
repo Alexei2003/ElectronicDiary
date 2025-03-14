@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.Otherts;
+﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
+using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 
 namespace ElectronicDiary.Pages.AdminPageComponents

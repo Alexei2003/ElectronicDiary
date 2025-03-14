@@ -1,6 +1,5 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
 using ElectronicDiary.Pages.Otherts;
-using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
@@ -28,42 +27,51 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         private string _settlementFilter = "";
         private string _nameFilter = "";
 
-        protected override void CreateFilterView(Grid grid, int rowIndex = 0)
+        protected override void CreateFilterView(Grid grid, ref int rowIndex)
         {
-            AdminPageStatic.AddLineElems(
-                componentType: AdminPageStatic.ComponentType.Entity,
-                grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Область",
+            base.CreateFilterView(grid, ref rowIndex);
 
-                placeholder: "Минская область",
-                textChangedAction: newText => _regionFilter = newText
+            LineElemsAdder.AddLineElems(
+                grid: grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Область",
+                    },
+                    new LineElemsAdder.EntryData{
+                        Placeholder = "Минская область",
+                        TextChangedAction = newText => _regionFilter = newText
+                    },
+                ]
             );
 
-            AdminPageStatic.AddLineElems(
-                componentType: AdminPageStatic.ComponentType.Entity,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Населённый пункт",
-
-                placeholder: "г.Солигорск",
-                textChangedAction: newText => _settlementFilter = newText
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Населённый пункт",
+                    },
+                    new LineElemsAdder.EntryData{
+                        Placeholder = "г.Солигорск",
+                        TextChangedAction = newText => _settlementFilter = newText
+                    },
+                ]
             );
 
-            AdminPageStatic.AddLineElems(
-                componentType: AdminPageStatic.ComponentType.Entity,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Название",
-
-                placeholder: "ГУО ...",
-                textChangedAction: newText => _nameFilter = newText
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Название",
+                    },
+                    new LineElemsAdder.EntryData{
+                        Placeholder = "ГУО ...",
+                        TextChangedAction = newText => _nameFilter = newText
+                    },
+                ]
             );
-
-            base.CreateFilterView(grid, rowIndex);
         }
 
         // Получение списка объектов
@@ -76,101 +84,129 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     (_nameFilter?.Length == 0 || e.Name.Contains(_nameFilter ?? "", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
         }
-
-        protected override void CreateListElemView(Grid grid, int indexElem, int rowIndex = 0)
+        protected override void CreateListElemView(Grid grid, ref int rowIndex, int indexElem)
         {
-            AdminPageStatic.AddLineElems(
-                componentType: AdminPageStatic.ComponentType.Label,
-                grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Название",
+            base.CreateListElemView(grid, ref rowIndex, indexElem);
 
-                value: _objectsList[indexElem].Name
+            LineElemsAdder.AddLineElems(
+                grid: grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Название",
+                    },
+                    new LineElemsAdder.LabelData{
+                        Title = _objectsList[indexElem].Name
+                    },
+                ]
             );
 
-            AdminPageStatic.AddLineElems(
-                componentType: AdminPageStatic.ComponentType.Label,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Регион",
-
-                value: _objectsList[indexElem].Settlement.Region.Name
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Регион",
+                    },
+                    new LineElemsAdder.LabelData{
+                        Title = _objectsList[indexElem].Settlement.Region.Name
+                    },
+                ]
             );
 
-            AdminPageStatic.AddLineElems(
-                componentType: AdminPageStatic.ComponentType.Label,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Город",
-
-                value: _objectsList[indexElem].Settlement.Name
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Населённый пункт",
+                    },
+                    new LineElemsAdder.LabelData{
+                        Title = _objectsList[indexElem].Settlement.Name
+                    },
+                ]
             );
         }
 
         // Действия с отдельными объектами
-        protected override void CreateObjectInfoView(Grid grid, int rowIndex = 0, bool edit = false)
+        protected override void CreateObjectInfoView(Grid grid, ref int rowIndex, bool edit = false)
         {
-            base.CreateObjectInfoView(grid, edit: edit);
+            base.CreateObjectInfoView(grid, ref rowIndex, edit);
 
-            AdminPageStatic.AddLineElems(
-                componentType: _componentTypeEntity,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Название",
-
-                value: _response.Name,
-
-                placeholder: "ГУО ...",
-                textChangedAction: newText => _request.Name = newText
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Название"
+                    },
+                    _componentConst ?
+                        new LineElemsAdder.LabelData{
+                            Title = _response?.Name
+                        }
+                    :
+                        new LineElemsAdder.EntryData{
+                            BaseText = _response?.Name,
+                            Placeholder = "ГУО ...",
+                            TextChangedAction = newText => _request.Name = newText
+                        }
+                ]
             );
 
-            var objRegion = AdminPageStatic.AddLineElems(
-                componentType: _componentTypePicker,
+            var regionElems = LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Регион",
-
-                value: _response.Settlement.Region.Name,
-
-                idChangedAction: selectedIndex => _request.RegionId = selectedIndex
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Регион"
+                    },
+                    _componentConst ?
+                        new LineElemsAdder.LabelData{
+                            Title = _response?.Settlement.Region.Name
+                        }
+                    :
+                        new LineElemsAdder.PickerData{
+                            BaseSelectedId =  _response?.Settlement.Region.Id,
+                            IdChangedAction = selectedIndex => _request.RegionId = selectedIndex
+                        }
+                ]
             );
-            if (_componentTypePicker == AdminPageStatic.ComponentType.Picker)
+
+            var settlementElems = LineElemsAdder.AddLineElems(
+                grid: grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Населённый пункт"
+                    },
+                    _componentConst ?
+                        new LineElemsAdder.LabelData{
+                            Title = _response?.Settlement.Name
+                        }
+                    :
+                        new LineElemsAdder.PickerData{
+                            BaseSelectedId = _response?.Settlement.Id,
+                            IdChangedAction = selectedIndex => _request.SettlementId = selectedIndex
+                        }
+                ]
+            );
+
+            if (regionElems[^1] is Picker pickerRegion)
             {
-                Task.Run(async() =>
+                Task.Run(async () =>
                 {
                     var regionList = await GetRegion();
                     MainThread.BeginInvokeOnMainThread(() =>
                     {
-                        var pickerRegion = (Picker)objRegion;
                         pickerRegion.ItemsSource = regionList;
                     });
                 });
-            }
 
-            var objSettlement = AdminPageStatic.AddLineElems(
-                componentType: _componentTypePicker,
-                grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Населённый пункт",
-
-                value: _response.Settlement.Name,
-
-                idChangedAction: selectedwId => _request.SettlementId = selectedwId
-            );
-            if (_componentTypePicker == AdminPageStatic.ComponentType.Picker)
-            {
-                var pickerRegion = (Picker)objRegion;
                 pickerRegion.SelectedIndexChanged += async (sender, e) =>
                 {
-                    if (pickerRegion.SelectedItem is AdminPageStatic.ItemPicker selectedItem)
+                    if (pickerRegion.SelectedItem is LineElemsAdder.ItemPicker selectedItem  &&
+                        settlementElems[^1] is Picker pickerSettlement)
                     {
-                        var pickerSettlement = (Picker)objSettlement;
                         var settlementList = await GetSettlements(selectedItem.Id);
 
                         MainThread.BeginInvokeOnMainThread(() =>
@@ -181,65 +217,84 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 };
             }
 
-            AdminPageStatic.AddLineElems(
-                componentType: _componentTypeEntity,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Адресс",
-
-                value: _response.Address,
-
-                placeholder: "ул. Ленина, 12",
-                textChangedAction: newText => _request.Address = newText
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Адресс"
+                    },
+                    _componentConst ?
+                        new LineElemsAdder.LabelData{
+                            Title = _response?.Address
+                        }
+                    :
+                        new LineElemsAdder.EntryData{
+                            BaseText = _response?.Address,
+                            Placeholder = "ул. Ленина, 12",
+                            TextChangedAction = newText => _request.Address = newText
+                        }
+                ]
             );
 
-            AdminPageStatic.AddLineElems(
-                componentType: _componentTypeEntity,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Email",
-
-                value: _response.Email,
-
-                placeholder: "sh4@edus.by",
-                textChangedAction: newText => _request.Email = newText
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Email"
+                    },
+                    _componentConst ?
+                        new LineElemsAdder.LabelData{
+                            Title = _response?.Email
+                        }
+                    :
+                        new LineElemsAdder.EntryData{
+                            BaseText = _response?.Email,
+                            Placeholder = "sh4@edus.by",
+                            TextChangedAction = newText => _request.Email = newText
+                        }
+                ]
             );
 
-            AdminPageStatic.AddLineElems(
-                componentType: _componentTypeEntity,
+            LineElemsAdder.AddLineElems(
                 grid: grid,
-                startColumn: 0,
-                startRow: rowIndex++,
-                title: "Телефон",
-
-                value: _response.PhoneNumber,
-
-                placeholder: "+375 17 433-09-02",
-                textChangedAction: newText => _request.PhoneNumber = newText
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Телефон"
+                    },
+                    _componentConst ?
+                        new LineElemsAdder.LabelData{
+                            Title = _response?.PhoneNumber
+                        }
+                    :
+                        new LineElemsAdder.EntryData{
+                            BaseText = _response?.PhoneNumber,
+                            Placeholder = "+375 17 433-09-02",
+                            TextChangedAction = newText => _request.PhoneNumber = newText
+                        }
+                ]
             );
-
-            base.CreateObjectInfoView(grid, rowIndex, edit);
         }
 
-        private static async Task<List<AdminPageStatic.ItemPicker>> GetRegion()
+        private static async Task<List<LineElemsAdder.ItemPicker>> GetRegion()
         {
-            List<AdminPageStatic.ItemPicker>? list = null;
+            List<LineElemsAdder.ItemPicker>? list = null;
             var response = await AddressСontroller.GetRegions();
             if (response != null)
             {
-                list = JsonSerializer.Deserialize<List<AdminPageStatic.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
+                list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
             }
             return list ?? [];
         }
-        private static async Task<List<AdminPageStatic.ItemPicker>> GetSettlements(int regionId)
+        private static async Task<List<LineElemsAdder.ItemPicker>> GetSettlements(int regionId)
         {
-            List<AdminPageStatic.ItemPicker>? list = null;
+            List<LineElemsAdder.ItemPicker>? list = null;
             var response = await AddressСontroller.GetSettlements(regionId);
             if (response != null)
             {
-                list = JsonSerializer.Deserialize<List<AdminPageStatic.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
+                list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
             }
             return list ?? [];
         }

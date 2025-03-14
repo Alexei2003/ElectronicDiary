@@ -69,7 +69,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
 
-            CreateFilterView(grid);
+            var rowIndex = 0;
+            CreateFilterView(grid, ref rowIndex);
             verticalStack.Add(grid);
 
             var getButton = new Button
@@ -117,7 +118,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         }
 
         // Пусто
-        protected virtual void CreateFilterView(Grid grid, int rowIndex = 0)
+        protected virtual void CreateFilterView(Grid grid, ref int rowIndex)
         {
         }
 
@@ -156,7 +157,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         }
 
         // Пусто
-        protected virtual void CreateListElemView(Grid grid, int indexElem, int rowIndex = 0)
+        protected virtual void CreateListElemView(Grid grid, ref int rowIndex, int indexElem)
         {
 
         }
@@ -167,6 +168,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
             _listVerticalStack.Clear();
 
+            var rowIndex = 0;
             for (var i = 0; i < _objectsList.Count; i++)
             {
                 var tapGesture = new TapGestureRecognizer();
@@ -191,7 +193,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 };
                 grid.GestureRecognizers.Add(tapGesture);
 
-                CreateListElemView(grid, i);
+
+                CreateListElemView(grid, ref rowIndex, i);
 
                 _listVerticalStack.Add(grid);
             }
@@ -247,12 +250,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     break;
                 case "Удалить":
                     Delete(id);
+                    await CreateListView();
                     break;
                 default:
                     return;
             }
 
-            await CreateListView();
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
 
@@ -352,7 +355,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
 
-            CreateObjectInfoView(grid, 0, edit);
+            var rowIndex = 0;
+            CreateObjectInfoView(grid, ref rowIndex, edit);
             verticalStack.Add(grid);
 
             if (_elemId == -1 || edit)
@@ -378,9 +382,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             return scrollView;
         }
 
-        protected AdminPageStatic.ComponentType _componentTypeEntity;
-        protected AdminPageStatic.ComponentType _componentTypePicker;
-        protected virtual void CreateObjectInfoView(Grid grid, int rowIndex = 0, bool edit = false)
+        protected bool _componentConst;
+        protected virtual void CreateObjectInfoView(Grid grid, ref int rowIndex, bool edit = false)
         {
             if (_elemId != -1)
             {
@@ -389,13 +392,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
             if (edit || _elemId == -1)
             {
-                _componentTypeEntity = AdminPageStatic.ComponentType.Entity;
-                _componentTypePicker = AdminPageStatic.ComponentType.Picker;
+                _componentConst = false;
             }
             else
             {
-                _componentTypeEntity = AdminPageStatic.ComponentType.Label;
-                _componentTypePicker = AdminPageStatic.ComponentType.Label;
+                _componentConst = true;
             }
         }
 

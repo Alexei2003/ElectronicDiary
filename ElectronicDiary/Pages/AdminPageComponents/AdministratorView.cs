@@ -3,7 +3,7 @@ using ElectronicDiary.Web.Api.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class AdministratorView 
+    public class AdministratorView
         : UserView<AdministratorController>
     {
         public AdministratorView(
