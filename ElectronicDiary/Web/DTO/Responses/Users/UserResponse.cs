@@ -1,8 +1,7 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses
+﻿namespace ElectronicDiary.Web.DTO.Responses.Users
 {
-    public record UserResponse
+    public record UserResponse : BaseResponse
     {
-        public long Id { get; init; }
         public string Login { get; init; } = "";
         public byte[] Hash { get; init; } = Array.Empty<byte>();
         public byte[] Salt { get; init; } = Array.Empty<byte>();

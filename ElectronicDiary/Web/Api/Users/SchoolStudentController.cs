@@ -31,13 +31,13 @@ namespace ElectronicDiary.Web.Api.Users
 
         // Не интерфейсные методы
 
-        public async Task<string?> GetSchoolBySchoolStudentId(long id)
+        public static async Task<string?> GetSchoolBySchoolStudentId(long id)
         {
             string url = $"/findSchoolBySchoolStudentId?id={id}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public async Task<string?> GetStudentsOfClass(long objectId)
+        public static async Task<string?> GetStudentsOfClass(long objectId)
         {
             string url = $"/getStudentsOfClass?ObjectId={objectId}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

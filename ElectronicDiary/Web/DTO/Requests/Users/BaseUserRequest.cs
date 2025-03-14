@@ -1,6 +1,6 @@
-﻿namespace ElectronicDiary.Web.DTO.Requests
+﻿namespace ElectronicDiary.Web.DTO.Requests.Users
 {
-    public class AdministratorRequest
+    public class BaseUserRequest
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;

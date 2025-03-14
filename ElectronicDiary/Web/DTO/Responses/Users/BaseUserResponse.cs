@@ -1,8 +1,9 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses
+﻿using ElectronicDiary.Web.DTO.Responses.Educations;
+
+namespace ElectronicDiary.Web.DTO.Responses.Users
 {
-    public record AdministratorResponse
+    public record BaseUserResponse : BaseResponse
     {
-        public long Id { get; init; }
         public UserResponse User { get; init; } = new();
         public EducationalInstitutionResponse EducationalInstitution { get; init; } = new();
         public string FirstName { get; init; } = "";

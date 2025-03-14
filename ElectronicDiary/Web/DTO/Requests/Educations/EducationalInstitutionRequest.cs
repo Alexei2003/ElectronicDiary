@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Web.DTO.Requests
+﻿namespace ElectronicDiary.Web.DTO.Requests.Educations
 {
     public class EducationalInstitutionRequest
     {

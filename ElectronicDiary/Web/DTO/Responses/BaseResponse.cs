@@ -1,8 +1,7 @@
 ﻿namespace ElectronicDiary.Web.DTO.Responses
 {
-    public record UserTypeResponse
+    public record BaseResponse
     {
         public long Id { get; init; }
-        public string Name { get; init; } = "";
     }
 }

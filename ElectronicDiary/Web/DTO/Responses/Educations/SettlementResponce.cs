@@ -1,8 +1,7 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses
+﻿namespace ElectronicDiary.Web.DTO.Responses.Educations
 {
-    public record SettlementResponse
+    public record SettlementResponse : BaseResponse
     {
-        public int Id { get; init; }
         public string Name { get; init; } = "";
         public RegionResponse Region { get; init; } = new();
     }

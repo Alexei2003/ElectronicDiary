@@ -31,7 +31,7 @@ namespace ElectronicDiary.Web.Api.Users
 
 
         // Не интерфейсные методы
-        public async Task<string?> GetSchoolByAdministratorId(long id)
+        public static async Task<string?> GetSchoolByAdministratorId(long id)
         {
             string url = $"/findSchoolByAdministratorId?id={id}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

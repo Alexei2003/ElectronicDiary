@@ -1,16 +1,19 @@
 ﻿using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
+using ElectronicDiary.Web.DTO.Responses;
 using System.Text.Json;
 
-namespace ElectronicDiary.Pages.AdminPageComponents
+namespace ElectronicDiary.Pages.AdminPageComponents.Base
 {
-    public interface IMainViewCreator
+    public interface IBaseView
     {
         ScrollView CreateMainView();
     }
 
-    public class BaseView<TResponse, TRequest, TController> : IMainViewCreator where TController : IController
+    public class BaseView<TResponse, TRequest, TController> : IBaseView
+        where TController : IController
+        where TResponse : BaseResponse
     {
         protected readonly HorizontalStackLayout _mainStack;
         protected readonly List<ScrollView> _viewList;
@@ -18,12 +21,22 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected TController _controller;
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
+        protected long _elemId;
 
         public BaseView(HorizontalStackLayout mainStack, List<ScrollView> viewList)
         {
             _mainStack = mainStack;
             _viewList = viewList;
             _educationalInstitutionId = -1;
+            _maxCountViews = 0;
+        }
+
+        private void DeleteView()
+        {
+            while (_viewList.Count >= _maxCountViews)
+            {
+                _viewList.RemoveAt(_viewList.Count - 1);
+            }
         }
 
         public ScrollView CreateMainView()
@@ -40,7 +53,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 Content = verticalStack
             };
 
-            var grid = new Grid
+            Grid grid = new Grid
             {
                 // Положение
                 ColumnDefinitions =
@@ -56,12 +69,30 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
 
-            CreateFilterView(verticalStack, grid);
+            CreateFilterView(grid);
+            verticalStack.Add(grid);
+
+            var getButton = new Button
+            {
+                // Положение
+                HorizontalOptions = LayoutOptions.Fill,
+
+                // Цвета
+                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
+                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                // Текст
+                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                Text = "Найти",
+            };
+            getButton.Clicked += GetButtonClicked;
+            verticalStack.Add(getButton);
+
 
             var addButton = new Button
             {
                 // Положение
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Fill,
 
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
@@ -85,24 +116,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             return scrollView;
         }
 
-        protected virtual void CreateFilterView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0)
+        // Пусто
+        protected virtual void CreateFilterView(Grid grid, int rowIndex = 0)
         {
-            var getButton = new Button
-            {
-                // Положение
-                HorizontalOptions = LayoutOptions.Center,
-
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Text = "Найти",
-            };
-            getButton.Clicked += GetButtonClicked;
-            grid.Add(getButton, 0, rowIndex);
-            verticalStack.Add(grid);
         }
 
         protected virtual async void GetButtonClicked(object? sender, EventArgs e)
@@ -112,12 +128,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
+            _elemId = -1;
             var scrollView = CreateObjectView();
-            while (_viewList.Count > _maxCountViews)
-            {
-                _viewList.RemoveAt(_viewList.Count - 1);
-            }
-
+            DeleteView();
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
@@ -125,15 +138,65 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
         // Получение списка объектов
-        protected List<TResponse> _objectsList = new();
-        protected virtual async Task CreateListView()
+        protected List<TResponse> _objectsList = [];
+        protected virtual async Task GetList()
         {
             var response = await _controller.GetAll(_educationalInstitutionId);
             if (response != null)
             {
                 _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? new List<TResponse>();
             }
+            FilterList();
         }
+
+        // Пусто
+        protected virtual void FilterList()
+        {
+
+        }
+
+        // Пусто
+        protected virtual void CreateListElemView(Grid grid, int indexElem, int rowIndex = 0)
+        {
+
+        }
+
+        protected virtual async Task CreateListView()
+        {
+            await GetList();
+
+            _listVerticalStack.Clear();
+
+            for (var i = 0; i < _objectsList.Count; i++)
+            {
+                var tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += GestureTapped;
+                var grid = new Grid
+                {
+                    // Положение
+                    ColumnDefinitions =
+                    {
+                        new ColumnDefinition { Width = GridLength.Auto },
+                        new ColumnDefinition { Width = GridLength.Star }
+                    },
+                    Padding = PageConstants.PADDING_ALL_PAGES,
+                    ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
+                    RowSpacing = PageConstants.SPACING_ALL_PAGES,
+
+                    // Цвета
+                    BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+
+                    // Доп инфа
+                    BindingContext = _objectsList[i].Id,
+                };
+                grid.GestureRecognizers.Add(tapGesture);
+
+                CreateListElemView(grid, i);
+
+                _listVerticalStack.Add(grid);
+            }
+        }
+
 
 
 
@@ -174,16 +237,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             switch (action)
             {
                 case "Описание":
-                    await ShowInfo(id);
+                    ShowInfo(id);
                     break;
                 case "Перейти":
                     await MoveTo(id);
                     break;
                 case "Редактировать":
-                    await Edit(id);
+                    Edit(id);
                     break;
                 case "Удалить":
-                    await Delete(id);
+                    Delete(id);
                     break;
                 default:
                     return;
@@ -193,13 +256,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
 
-        protected virtual async Task ShowInfo(long id)
+        protected virtual void ShowInfo(long id)
         {
-            var scrollView = CreateObjectView(id);
-            while (_viewList.Count >= _maxCountViews)
-            {
-                _viewList.RemoveAt(_viewList.Count - 1);
-            }
+            _elemId = id;
+            var scrollView = CreateObjectView();
+            DeleteView();
             _viewList.Add(scrollView);
         }
 
@@ -215,38 +276,36 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 "Ученики",
                 "Родители");
 
-            IMainViewCreator view;
+            IBaseView view;
             switch (action)
             {
                 case "Администраторы":
                     view = new AdministratorView(_mainStack, _viewList, id);
                     break;
                 case "Учителя":
-                    view = new AdministratorView(_mainStack, _viewList, id);
+                    view = new TeacherView(_mainStack, _viewList, id);
                     break;
                 case "Классы":
                     view = new AdministratorView(_mainStack, _viewList, id);
                     break;
                 case "Ученики":
-                    view = new AdministratorView(_mainStack, _viewList, id);
+                    view = new SchoolStudentView(_mainStack, _viewList, id);
                     break;
                 case "Родители":
-                    view = new AdministratorView(_mainStack, _viewList, id);
+                    view = new ParentView(_mainStack, _viewList, id);
                     break;
                 default:
                     return;
             }
-           
-            while (_viewList.Count >= _maxCountViews)
-            {
-                _viewList.RemoveAt(_viewList.Count - 1);
-            }
+
+            DeleteView();
             _viewList.Add(view.CreateMainView());
         }
 
-        protected virtual async Task Edit(long id)
+        protected virtual void Edit(long id)
         {
-            var scrollView = CreateObjectView(id, true);
+            _elemId = id;
+            var scrollView = CreateObjectView(true);
             while (_viewList.Count >= _maxCountViews)
             {
                 _viewList.RemoveAt(_viewList.Count - 1);
@@ -254,16 +313,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             _viewList.Add(scrollView);
         }
 
-        protected virtual async Task Delete(long id)
+        protected virtual void Delete(long id)
         {
-            await _controller.Delete(id);
+            _controller.Delete(id);
         }
 
 
 
         // Вид объекта
         protected TResponse? _response;
-        protected virtual ScrollView CreateObjectView(long id = -1, bool edit = false)
+        protected virtual ScrollView CreateObjectView(bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
             {
@@ -293,20 +352,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
 
-            CreateObjectInfoView(verticalStack, grid, 0, id, edit);
-
+            CreateObjectInfoView(grid, 0, edit);
             verticalStack.Add(grid);
-            return scrollView;
-        }
 
-        protected virtual void CreateObjectInfoView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0, long id = -1, bool edit = false)
-        {
-            if (id == -1 || edit)
+            if (_elemId == -1 || edit)
             {
                 var saveButton = new Button
                 {
                     // Положение
-                    HorizontalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Fill,
 
                     // Цвета
                     BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
@@ -318,18 +372,36 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 };
                 saveButton.Clicked += SaveButtonClicked;
 
-                grid.Add(saveButton, 0, rowIndex);
+                verticalStack.Add(saveButton);
+            }
+
+            return scrollView;
+        }
+
+        protected AdminPageStatic.ComponentType _componentTypeEntity;
+        protected AdminPageStatic.ComponentType _componentTypePicker;
+        protected virtual void CreateObjectInfoView(Grid grid, int rowIndex = 0, bool edit = false)
+        {
+            if (_elemId != -1)
+            {
+                _response = _objectsList.FirstOrDefault(x => x.Id == _elemId);
+            }
+
+            if (edit || _elemId == -1)
+            {
+                _componentTypeEntity = AdminPageStatic.ComponentType.Entity;
+                _componentTypePicker = AdminPageStatic.ComponentType.Picker;
+            }
+            else
+            {
+                _componentTypeEntity = AdminPageStatic.ComponentType.Label;
+                _componentTypePicker = AdminPageStatic.ComponentType.Label;
             }
         }
 
         protected TRequest? _request;
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
-            if (_request == null)
-            {
-                return;
-            }
-
             var json = JsonSerializer.Serialize(_request, PageConstants.JsonSerializerOptions);
 
             var response = await _controller.Add(json);

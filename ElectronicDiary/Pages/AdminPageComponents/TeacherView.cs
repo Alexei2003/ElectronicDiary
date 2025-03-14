@@ -3,10 +3,10 @@ using ElectronicDiary.Web.Api.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class AdministratorView 
-        : UserView<AdministratorController>
+    public class TeacherView 
+        : UserView<TeacherController>
     {
-        public AdministratorView(
+        public TeacherView(
             HorizontalStackLayout mainStack,
             List<ScrollView> viewList,
             long educationalInstitutionId

@@ -1,8 +1,7 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses
+﻿namespace ElectronicDiary.Web.DTO.Responses.Educations
 {
-    public record EducationalInstitutionResponse
+    public record EducationalInstitutionResponse : BaseResponse
     {
-        public long Id { get; init; }
         public string Name { get; init; } = "";
         public string Address { get; init; } = "";
         public string? PathImage { get; init; } = "";

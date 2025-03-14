@@ -1,22 +1,24 @@
-﻿using ElectronicDiary.Pages.Otherts;
+﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
+using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api.Educations;
-using ElectronicDiary.Web.DTO.Requests;
-using ElectronicDiary.Web.DTO.Responses;
+using ElectronicDiary.Web.DTO.Requests.Educations;
+using ElectronicDiary.Web.DTO.Responses.Educations;
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class EducationalInstitutionView : BaseView<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>
+    public class EducationalInstitutionView
+        : BaseView<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>
     {
         public EducationalInstitutionView(
             HorizontalStackLayout mainStack,
             List<ScrollView> viewList
         ) : base(mainStack, viewList)
         {
-            _controller = new();
-            _request = new();
             _response = new();
+            _request = new();
+            _controller = new();
             _maxCountViews = 2;
         }
 
@@ -26,7 +28,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         private string _settlementFilter = "";
         private string _nameFilter = "";
 
-        protected override void CreateFilterView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0)
+        protected override void CreateFilterView(Grid grid, int rowIndex = 0)
         {
             AdminPageStatic.AddLineElems(
                 componentType: AdminPageStatic.ComponentType.Entity,
@@ -61,103 +63,60 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 textChangedAction: newText => _nameFilter = newText
             );
 
-            base.CreateFilterView(verticalStack, grid, rowIndex);
+            base.CreateFilterView(grid, rowIndex);
         }
 
         // Получение списка объектов
-        protected override async Task CreateListView()
+        protected override void FilterList()
         {
-            await base.CreateListView();
-
             _objectsList = _objectsList
                 .Where(e =>
                     (_regionFilter?.Length == 0 || e.Settlement.Region.Name.Contains(_regionFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
                     (_settlementFilter?.Length == 0 || e.Settlement.Name.Contains(_settlementFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
                     (_nameFilter?.Length == 0 || e.Name.Contains(_nameFilter ?? "", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
+        }
 
-            _listVerticalStack.Clear();
+        protected override void CreateListElemView(Grid grid, int indexElem, int rowIndex = 0)
+        {
+            AdminPageStatic.AddLineElems(
+                componentType: AdminPageStatic.ComponentType.Label,
+                grid: grid,
+                startColumn: 0,
+                startRow: rowIndex++,
+                title: "Название",
 
-            for (var i = 0; i < _objectsList.Count; i++)
-            {
-                var tapGesture = new TapGestureRecognizer();
-                tapGesture.Tapped += GestureTapped;
-                var grid = new Grid
-                {
-                    // Положение
-                    ColumnDefinitions =
-                        {
-                            new ColumnDefinition { Width = GridLength.Auto },
-                            new ColumnDefinition { Width = GridLength.Star }
-                        },
-                    Padding = PageConstants.PADDING_ALL_PAGES,
-                    ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
-                    RowSpacing = PageConstants.SPACING_ALL_PAGES,
+                value: _objectsList[indexElem].Name
+            );
 
-                    // Цвета
-                    BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+            AdminPageStatic.AddLineElems(
+                componentType: AdminPageStatic.ComponentType.Label,
+                grid: grid,
+                startColumn: 0,
+                startRow: rowIndex++,
+                title: "Регион",
 
-                    // Доп инфа
-                    BindingContext = _objectsList[i].Id,
-                };
-                grid.GestureRecognizers.Add(tapGesture);
+                value: _objectsList[indexElem].Settlement.Region.Name
+            );
 
-                var rowIndex = 0;
+            AdminPageStatic.AddLineElems(
+                componentType: AdminPageStatic.ComponentType.Label,
+                grid: grid,
+                startColumn: 0,
+                startRow: rowIndex++,
+                title: "Город",
 
-                AdminPageStatic.AddLineElems(
-                    componentType: AdminPageStatic.ComponentType.Label,
-                    grid: grid,
-                    startColumn: 0,
-                    startRow: rowIndex++,
-                    title: "Название",
-
-                    value: _objectsList[i].Name
-                );
-
-                AdminPageStatic.AddLineElems(
-                    componentType: AdminPageStatic.ComponentType.Label,
-                    grid: grid,
-                    startColumn: 0,
-                    startRow: rowIndex++,
-                    title: "Регион",
-
-                    value: _objectsList[i].Settlement.Region.Name
-                );
-
-                AdminPageStatic.AddLineElems(
-                    componentType: AdminPageStatic.ComponentType.Label,
-                    grid: grid,
-                    startColumn: 0,
-                    startRow: rowIndex++,
-                    title: "Город",
-
-                    value: _objectsList[i].Settlement.Name
-                );
-
-                _listVerticalStack.Add(grid);
-            }
+                value: _objectsList[indexElem].Settlement.Name
+            );
         }
 
         // Действия с отдельными объектами
-        protected override void CreateObjectInfoView(VerticalStackLayout verticalStack, Grid grid, int rowIndex = 0, long id = -1, bool edit = false)
+        protected override void CreateObjectInfoView(Grid grid, int rowIndex = 0, bool edit = false)
         {
-            AdminPageStatic.ComponentType componentTypeEntity;
-            AdminPageStatic.ComponentType componentTypePicker;
-            if (id == -1)
-            {
-                _request = new();
-                componentTypeEntity = AdminPageStatic.ComponentType.Entity;
-                componentTypePicker = AdminPageStatic.ComponentType.Picker;
-            }
-            else
-            {
-                _response = _objectsList.FirstOrDefault(x => x.Id == id);
-                componentTypeEntity = AdminPageStatic.ComponentType.Label;
-                componentTypePicker = AdminPageStatic.ComponentType.Label;
-            }
+            base.CreateObjectInfoView(grid, edit: edit);
 
             AdminPageStatic.AddLineElems(
-                componentType: componentTypeEntity,
+                componentType: _componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -170,7 +129,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             );
 
             var objRegion = AdminPageStatic.AddLineElems(
-                componentType: componentTypePicker,
+                componentType: _componentTypePicker,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -180,9 +139,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
                 idChangedAction: selectedIndex => _request.RegionId = selectedIndex
             );
-            if (componentTypePicker == AdminPageStatic.ComponentType.Picker)
+            if (_componentTypePicker == AdminPageStatic.ComponentType.Picker)
             {
-                Task.Run(async () =>
+                Task.Run(async() =>
                 {
                     var regionList = await GetRegion();
                     MainThread.BeginInvokeOnMainThread(() =>
@@ -194,7 +153,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             }
 
             var objSettlement = AdminPageStatic.AddLineElems(
-                componentType: componentTypePicker,
+                componentType: _componentTypePicker,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -204,7 +163,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
                 idChangedAction: selectedwId => _request.SettlementId = selectedwId
             );
-            if (componentTypePicker == AdminPageStatic.ComponentType.Picker)
+            if (_componentTypePicker == AdminPageStatic.ComponentType.Picker)
             {
                 var pickerRegion = (Picker)objRegion;
                 pickerRegion.SelectedIndexChanged += async (sender, e) =>
@@ -223,7 +182,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             }
 
             AdminPageStatic.AddLineElems(
-                componentType: componentTypeEntity,
+                componentType: _componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -236,7 +195,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             );
 
             AdminPageStatic.AddLineElems(
-                componentType: componentTypeEntity,
+                componentType: _componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -249,7 +208,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             );
 
             AdminPageStatic.AddLineElems(
-                componentType: componentTypeEntity,
+                componentType: _componentTypeEntity,
                 grid: grid,
                 startColumn: 0,
                 startRow: rowIndex++,
@@ -261,10 +220,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 textChangedAction: newText => _request.PhoneNumber = newText
             );
 
-            base.CreateObjectInfoView(verticalStack, grid, rowIndex, id, edit);
+            base.CreateObjectInfoView(grid, rowIndex, edit);
         }
 
-        private async Task<List<AdminPageStatic.ItemPicker>> GetRegion()
+        private static async Task<List<AdminPageStatic.ItemPicker>> GetRegion()
         {
             List<AdminPageStatic.ItemPicker>? list = null;
             var response = await AddressСontroller.GetRegions();
