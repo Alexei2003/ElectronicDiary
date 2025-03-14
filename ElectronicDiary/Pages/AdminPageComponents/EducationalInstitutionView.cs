@@ -133,6 +133,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         {
             base.CreateObjectInfoView(grid, ref rowIndex, edit);
 
+            if (edit)
+            {
+                _request = new()
+                {
+                    Name = _response.Name,
+                    Address = _response.Address,
+                    Email = _response.Email,
+                    PhoneNumber = _response.PhoneNumber,
+                    RegionId = _response.Settlement.Region.Id,
+                    SettlementId = _response.Settlement.Id
+                };
+            }
+
             LineElemsAdder.AddLineElems(
                 grid: grid,
                 rowIndex: rowIndex++,
@@ -153,6 +166,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 ]
             );
 
+            object[]? settlementElems = null;
             var regionElems = LineElemsAdder.AddLineElems(
                 grid: grid,
                 rowIndex: rowIndex++,
@@ -165,14 +179,39 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                             Title = _response?.Settlement.Region.Name
                         }
                     :
-                        new LineElemsAdder.SearchBarData{
-                            BaseSelectedId =  _response?.Settlement.Region.Id,
-                            IdChangedAction = selectedIndex => _request.RegionId = selectedIndex
+                        new LineElemsAdder.SearchData{
+                            BaseText =  _response?.Settlement.Region.Name,
+
+                            IdChangedAction = selectedIndex => 
+                            {
+                                _request.RegionId = selectedIndex;
+
+                                if(settlementElems != null &&
+                                   settlementElems[^1] is TapGestureRecognizer searchSettlement &&
+                                   _request.RegionId >= 0)
+                                {
+                                    Task.Run(async () =>
+                                    {
+                                        var settlementList = await GetSettlements(_request.RegionId);
+
+                                        searchSettlement.BindingContext = settlementList;
+                                    });
+
+                                }
+                            }
                         }
                 ]
             );
+            if (regionElems[^1] is TapGestureRecognizer searchRegion)
+            {
+                Task.Run(async () =>
+                {
+                    var regionList = await GetRegion();
+                    searchRegion.BindingContext = regionList;
+                });
+            }
 
-            var settlementElems = LineElemsAdder.AddLineElems(
+            settlementElems = LineElemsAdder.AddLineElems(
                 grid: grid,
                 rowIndex: rowIndex++,
                 objectList: [
@@ -184,37 +223,21 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                             Title = _response?.Settlement.Name
                         }
                     :
-                        new LineElemsAdder.SearchBarData{
-                            BaseSelectedId = _response?.Settlement.Id,
+                        new LineElemsAdder.SearchData{
+                            BaseText =  _response?.Settlement.Name,
                             IdChangedAction = selectedIndex => _request.SettlementId = selectedIndex
                         }
                 ]
             );
 
-            if (regionElems[^1] is Picker pickerRegion)
+            if (settlementElems[^1] is TapGestureRecognizer searchSettlement)
             {
                 Task.Run(async () =>
                 {
-                    var regionList = await GetRegion();
-                    MainThread.BeginInvokeOnMainThread(() =>
-                    {
-                        pickerRegion.ItemsSource = regionList;
-                    });
+                    var settlementList = await GetSettlements(_response.Settlement.Region.Id);
+
+                    searchSettlement.BindingContext = settlementList;
                 });
-
-                pickerRegion.SelectedIndexChanged += async (sender, e) =>
-                {
-                    if (pickerRegion.SelectedItem is LineElemsAdder.ItemPicker selectedItem  &&
-                        settlementElems[^1] is Picker pickerSettlement)
-                    {
-                        var settlementList = await GetSettlements(selectedItem.Id);
-
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
-                            pickerSettlement.ItemsSource = settlementList;
-                        });
-                    }
-                };
             }
 
             LineElemsAdder.AddLineElems(
@@ -288,7 +311,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             }
             return list ?? [];
         }
-        private static async Task<List<LineElemsAdder.ItemPicker>> GetSettlements(int regionId)
+        private static async Task<List<LineElemsAdder.ItemPicker>> GetSettlements(long regionId)
         {
             List<LineElemsAdder.ItemPicker>? list = null;
             var response = await AddressСontroller.GetSettlements(regionId);

@@ -133,6 +133,22 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         {
             base.CreateObjectInfoView(grid, ref rowIndex, edit);
 
+            if (edit)
+            {
+                _request = new()
+                {
+                    FirstName = _response.FirstName,
+                    LastName = _response.LastName,
+                    Patronymic = _response.Patronymic,
+                    Email = _response.Email ?? string.Empty,
+                    PhoneNumber = _response.PhoneNumber ?? string.Empty,
+                    UniversityId = _response.EducationalInstitution.Id,
+
+                    Login = "",
+                    Password = ""
+                };
+
+            }
 
             LineElemsAdder.AddLineElems(
                 grid: grid,

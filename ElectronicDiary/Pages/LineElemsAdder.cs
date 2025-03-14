@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.SaveData;
+﻿using CommunityToolkit.Maui.Views;
+using ElectronicDiary.SaveData;
 
 namespace ElectronicDiary.Pages
 {
@@ -8,6 +9,23 @@ namespace ElectronicDiary.Pages
         {
             public int Id { get; set; } = -1;
             public string Name { get; set; } = "";
+        }
+        public class LabelData
+        {
+            public string? Title { get; set; } = null;
+        }
+
+        public class EntryData
+        {
+            public string? BaseText { get; set; } = null;
+            public string? Placeholder { get; set; } = null;
+            public Action<string>? TextChangedAction { get; set; } = null;
+        }
+
+        public class SearchData
+        {
+            public string? BaseText { get; set; } = null;
+            public Action<long>? IdChangedAction { get; set; } = null;
         }
 
         public static object[] AddLineElems(Grid grid, int rowIndex, object[] objectList)
@@ -46,7 +64,8 @@ namespace ElectronicDiary.Pages
                             // Текст
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                             Placeholder = entryData.Placeholder ?? "",
-                            Text = entryData.BaseText ?? ""
+                            Text = entryData.BaseText ?? "",
+                            
                         };
                         if (entryData.TextChangedAction != null)
                         {
@@ -57,62 +76,49 @@ namespace ElectronicDiary.Pages
                         resultList.Add(entry);
                         break;
 
-                    case SearchBarData searchBarData:
-                        var picker = new Picker
+                    case SearchData searchData:
+                        var searchLabel = new Label
                         {
                             // Цвета
                             TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
 
                             // Текст
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-
-                            ItemsSource = searchBarData.Items ?? [],
-                            ItemDisplayBinding = new Binding("Name"),
+                            Text = searchData.BaseText ?? "Найти",
                         };
-                        if (searchBarData.Items != null && searchBarData.BaseSelectedId != null)
-                        {
-                            var selectedIndex = searchBarData.Items.FindIndex(item => item.Id == searchBarData.BaseSelectedId);
-                            picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
-                        }
 
-
-                        if (searchBarData.IdChangedAction != null)
+                        long id = -1;
+                        Action<long> idChangedActionLocal = newText => id = newText;
+                        
+                        var tapGesture = new TapGestureRecognizer();
+                        tapGesture.Tapped += (sender, e) =>
                         {
-                            picker.SelectedIndexChanged += (sender, e) =>
+                            if (searchData.IdChangedAction == null)
                             {
-                                if (picker.SelectedItem is ItemPicker selectedItem)
-                                {
-                                    searchBarData.IdChangedAction(selectedItem.Id);
-                                }
-                            };
-                        }
+                                return;
+                            }
 
-                        grid.Add(picker, indexColumn++, rowIndex);
-                        resultList.Add(picker);
+                            var popup = new SearchPopup(tapGesture.BindingContext as List<ItemPicker>, idChangedActionLocal);
+                            popup.Closed += (sender, e) =>
+                            {
+                                if (popup.AllItems.Count > 0 && id >= 0)
+                                {
+                                    searchData.IdChangedAction(id);
+                                    searchLabel.Text = popup.AllItems.FirstOrDefault(item => item.Id == id).Name ?? "Найти";
+                                }
+                                searchLabel.Focus();
+                            };
+                            Application.Current.Windows[0].Page.ShowPopup(popup);
+                        };
+                        searchLabel.GestureRecognizers.Add(tapGesture);
+
+                        grid.Add(searchLabel, indexColumn++, rowIndex);
+                        resultList.Add(tapGesture);
                         break;
                 }
             }
 
             return resultList.ToArray();
-        }
-
-        public class LabelData
-        {
-            public string? Title { get; set; } = null;
-        }
-
-        public class EntryData
-        {
-            public string? BaseText { get; set; } = null;
-            public string? Placeholder { get; set; } = null;
-            public Action<string>? TextChangedAction { get; set; } = null;
-        }
-
-        public class SearchBarData
-        {
-            public long? BaseSelectedId { get; set; } = null;
-            public List<ItemPicker>? Items { get; set; } = null;
-            public Action<int>? IdChangedAction { get; set; } = null;
         }
     }
 }
