@@ -4,9 +4,9 @@ namespace ElectronicDiary.Web.Api.Users
 {
     public class ParentController : IController
     {
-        public async Task<string?> GetAll(long schoolStudentId)
+        public async Task<string?> GetAll(long schoolId)
         {
-            string url = $"/getParents?schoolId={schoolStudentId}";
+            string url = $"/getParentsByEducationId?id={schoolId}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
@@ -30,13 +30,14 @@ namespace ElectronicDiary.Web.Api.Users
         }
 
         // Не интерфейсные методы
-
+        // Получить родителей исключив родителей по id ребёнка
         public async Task<string?> GetNewParents(long schoolStudentId)
         {
             string url = $"/getNewParents?id={schoolStudentId}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
+        // Добавить уже существующего родителя ребёнку
         public static async Task<string?> AddParent(string json)
         {
             const string url = "/addParent";
@@ -44,15 +45,24 @@ namespace ElectronicDiary.Web.Api.Users
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 
+        // Удалить связь StudentParent
         public static async Task<string?> DeleteStudentParent(long id)
         {
             string url = $"/deleteStudentParent?id={id}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
 
-        public async Task<string?> GetParentType()
+        // Получить тип родителя
+        public static async Task<string?> GetParentType()
         {
             const string url = "/getParentType";
+            return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
+
+        // Получить учеников по id родителя
+        public async Task<string?> GetStudentsOfParent(long parentId)
+        {
+            string url = $"/getStudentsOfParent?ObjectId={parentId}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
     }

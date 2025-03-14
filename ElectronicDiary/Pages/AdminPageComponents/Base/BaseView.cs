@@ -168,7 +168,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
             _listVerticalStack.Clear();
 
-            var rowIndex = 0;
             for (var i = 0; i < _objectsList.Count; i++)
             {
                 var tapGesture = new TapGestureRecognizer();
@@ -193,7 +192,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 };
                 grid.GestureRecognizers.Add(tapGesture);
 
-
+                var rowIndex = 0;
                 CreateListElemView(grid, ref rowIndex, i);
 
                 _listVerticalStack.Add(grid);

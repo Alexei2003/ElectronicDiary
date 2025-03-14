@@ -30,13 +30,14 @@ namespace ElectronicDiary.Web.Api.Users
         }
 
         // Не интерфейсные методы
-
+        //Получить школу по id ученика
         public static async Task<string?> GetSchoolBySchoolStudentId(long id)
         {
             string url = $"/findSchoolBySchoolStudentId?id={id}";
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
+        //Получить учеников по id класса
         public static async Task<string?> GetStudentsOfClass(long objectId)
         {
             string url = $"/getStudentsOfClass?ObjectId={objectId}";

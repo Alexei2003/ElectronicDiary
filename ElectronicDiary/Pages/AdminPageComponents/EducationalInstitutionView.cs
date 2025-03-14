@@ -165,7 +165,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                             Title = _response?.Settlement.Region.Name
                         }
                     :
-                        new LineElemsAdder.PickerData{
+                        new LineElemsAdder.SearchBarData{
                             BaseSelectedId =  _response?.Settlement.Region.Id,
                             IdChangedAction = selectedIndex => _request.RegionId = selectedIndex
                         }
@@ -184,7 +184,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                             Title = _response?.Settlement.Name
                         }
                     :
-                        new LineElemsAdder.PickerData{
+                        new LineElemsAdder.SearchBarData{
                             BaseSelectedId = _response?.Settlement.Id,
                             IdChangedAction = selectedIndex => _request.SettlementId = selectedIndex
                         }

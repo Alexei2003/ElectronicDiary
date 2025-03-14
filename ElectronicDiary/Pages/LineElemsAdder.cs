@@ -57,7 +57,7 @@ namespace ElectronicDiary.Pages
                         resultList.Add(entry);
                         break;
 
-                    case PickerData pickerData:
+                    case SearchBarData searchBarData:
                         var picker = new Picker
                         {
                             // Цвета
@@ -66,23 +66,23 @@ namespace ElectronicDiary.Pages
                             // Текст
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
 
-                            ItemsSource = pickerData.Items ?? [],
+                            ItemsSource = searchBarData.Items ?? [],
                             ItemDisplayBinding = new Binding("Name"),
                         };
-                        if (pickerData.Items != null && pickerData.BaseSelectedId != null)
+                        if (searchBarData.Items != null && searchBarData.BaseSelectedId != null)
                         {
-                            var selectedIndex = pickerData.Items.FindIndex(item => item.Id == pickerData.BaseSelectedId);
+                            var selectedIndex = searchBarData.Items.FindIndex(item => item.Id == searchBarData.BaseSelectedId);
                             picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
                         }
 
 
-                        if (pickerData.IdChangedAction != null)
+                        if (searchBarData.IdChangedAction != null)
                         {
                             picker.SelectedIndexChanged += (sender, e) =>
                             {
                                 if (picker.SelectedItem is ItemPicker selectedItem)
                                 {
-                                    pickerData.IdChangedAction(selectedItem.Id);
+                                    searchBarData.IdChangedAction(selectedItem.Id);
                                 }
                             };
                         }
@@ -108,7 +108,7 @@ namespace ElectronicDiary.Pages
             public Action<string>? TextChangedAction { get; set; } = null;
         }
 
-        public class PickerData
+        public class SearchBarData
         {
             public long? BaseSelectedId { get; set; } = null;
             public List<ItemPicker>? Items { get; set; } = null;

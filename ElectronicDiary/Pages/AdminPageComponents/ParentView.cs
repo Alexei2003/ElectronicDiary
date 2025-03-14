@@ -1,5 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
+using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.Web.Api.Users;
+using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
@@ -19,14 +21,39 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         {
             base.CreateObjectInfoView(grid, ref rowIndex, edit);
 
+            LineElemsAdder.AddLineElems(
+                grid: grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsAdder.LabelData{
+                        Title = "Дети:"
+                    }
+                ]
+            );
+
 
         }
+        private static async Task<List<LineElemsAdder.ItemPicker>> GetParantTypes()
+        {
+            List<LineElemsAdder.ItemPicker>? list = null;
+            var response = await ParentController.GetParentType();
+            if (response != null)
+            {
+                list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
+            }
+            return list ?? [];
+        }
 
-        protected void AddScoolStudent()
+        private async Task GetSchoolStudents()
         {
 
         }
-        protected void RemoveScoolStudent()
+
+        protected async void AddScoolStudent(object? sender, EventArgs e)
+        {
+
+        }
+        protected async void RemoveScoolStudent(object? sender, EventArgs e)
         {
 
         }
