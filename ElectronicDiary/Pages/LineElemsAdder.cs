@@ -24,8 +24,15 @@ namespace ElectronicDiary.Pages
 
         public class SearchData
         {
-            public string? BaseText { get; set; } = null;
+            public ItemPicker? BaseItem { get; set; } = null;
             public Action<long>? IdChangedAction { get; set; } = null;
+        }
+
+        public class PickerData
+        {
+            public long? BaseSelectedId { get; set; } = null;
+            public List<ItemPicker>? Items { get; set; } = null;
+            public Action<int>? IdChangedAction { get; set; } = null;
         }
 
         public static object[] AddLineElems(Grid grid, int rowIndex, object[] objectList)
@@ -65,7 +72,7 @@ namespace ElectronicDiary.Pages
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
                             Placeholder = entryData.Placeholder ?? "",
                             Text = entryData.BaseText ?? "",
-                            
+
                         };
                         if (entryData.TextChangedAction != null)
                         {
@@ -84,16 +91,20 @@ namespace ElectronicDiary.Pages
 
                             // Текст
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                            Text = searchData.BaseText ?? "Найти",
+                            Text = searchData?.BaseItem?.Name ?? "Найти",
                         };
 
-                        long id = -1;
+                        long id = searchData?.BaseItem?.Id ?? 0;
+                        if (searchData?.IdChangedAction != null)
+                        {
+                            searchData.IdChangedAction(id);
+                        }
                         Action<long> idChangedActionLocal = newText => id = newText;
-                        
+
                         var tapGesture = new TapGestureRecognizer();
                         tapGesture.Tapped += (sender, e) =>
                         {
-                            if (searchData.IdChangedAction == null)
+                            if (searchData?.IdChangedAction == null)
                             {
                                 return;
                             }
@@ -104,7 +115,7 @@ namespace ElectronicDiary.Pages
                                 if (popup.AllItems.Count > 0 && id >= 0)
                                 {
                                     searchData.IdChangedAction(id);
-                                    searchLabel.Text = popup.AllItems.FirstOrDefault(item => item.Id == id).Name ?? "Найти";
+                                    searchLabel.Text = popup?.AllItems?.FirstOrDefault(item => item.Id == id)?.Name ?? "Найти";
                                 }
                                 searchLabel.Focus();
                             };
@@ -114,6 +125,40 @@ namespace ElectronicDiary.Pages
 
                         grid.Add(searchLabel, indexColumn++, rowIndex);
                         resultList.Add(tapGesture);
+                        break;
+
+                    case PickerData pickerData:
+                        var picker = new Picker
+                        {
+                            // Цвета
+                            TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                            // Текст
+                            FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+
+                            ItemsSource = pickerData.Items ?? [],
+                            ItemDisplayBinding = new Binding("Name"),
+                        };
+                        if (pickerData.Items != null && pickerData.BaseSelectedId != null)
+                        {
+                            var selectedIndex = pickerData.Items.FindIndex(item => item.Id == pickerData.BaseSelectedId);
+                            picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+                        }
+
+
+                        if (pickerData.IdChangedAction != null)
+                        {
+                            picker.SelectedIndexChanged += (sender, e) =>
+                            {
+                                if (picker.SelectedItem is ItemPicker selectedItem)
+                                {
+                                    pickerData.IdChangedAction(selectedItem.Id);
+                                }
+                            };
+                        }
+
+                        grid.Add(picker, indexColumn++, rowIndex);
+                        resultList.Add(picker);
                         break;
                 }
             }

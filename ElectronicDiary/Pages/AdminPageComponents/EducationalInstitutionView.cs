@@ -180,7 +180,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         }
                     :
                         new LineElemsAdder.SearchData{
-                            BaseText =  _response?.Settlement.Region.Name,
+                            BaseItem =  _response?.Settlement.Region.Name,
 
                             IdChangedAction = selectedIndex => 
                             {
@@ -224,7 +224,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         }
                     :
                         new LineElemsAdder.SearchData{
-                            BaseText =  _response?.Settlement.Name,
+                            BaseItem =  _response?.Settlement.Name,
                             IdChangedAction = selectedIndex => _request.SettlementId = selectedIndex
                         }
                 ]
