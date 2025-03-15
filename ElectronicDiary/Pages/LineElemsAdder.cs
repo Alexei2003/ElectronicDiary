@@ -1,15 +1,11 @@
 ﻿using CommunityToolkit.Maui.Views;
 using ElectronicDiary.SaveData;
+using ElectronicDiary.Web.DTO.Responses;
 
 namespace ElectronicDiary.Pages
 {
     public static class LineElemsAdder
     {
-        public sealed class ItemData
-        {
-            public long? Id { get; set; }
-            public string? Name { get; set; }
-        }
         public class LabelData
         {
             public string? Title { get; set; } = null;
@@ -22,9 +18,17 @@ namespace ElectronicDiary.Pages
             public Action<string>? TextChangedAction { get; set; } = null;
         }
 
+
         public class SearchData
         {
-            public ItemData? BaseItem { get; set; } = null;
+            public TypeResponse? BaseItem { get; set; } = null;
+            public Action<long>? IdChangedAction { get; set; } = null;
+        }
+
+        public class PickerData
+        {
+            public long? BaseSelectedId { get; set; } = null;
+            public List<TypeResponse>? Items { get; set; } = null;
             public Action<long>? IdChangedAction { get; set; } = null;
         }
 
@@ -90,7 +94,7 @@ namespace ElectronicDiary.Pages
                         var tapGesture = new TapGestureRecognizer();
                         tapGesture.Tapped += (sender, e) =>
                         {
-                            var popup = new SearchPopup(tapGesture.BindingContext as List<ItemData>, idChangedActionLocal);
+                            var popup = new SearchPopup(tapGesture.BindingContext as List<TypeResponse>, idChangedActionLocal);
                             popup.Closed += (sender, e) =>
                             {
                                 if (popup.AllItems.Count > 0 && id >= 0)
@@ -107,6 +111,40 @@ namespace ElectronicDiary.Pages
 
                         grid.Add(searchLabel, indexColumn++, rowIndex);
                         resultList.Add(tapGesture);
+                        break;
+
+                    case PickerData pickerData:
+                        var picker = new Picker
+                        {
+                            // Цвета
+                            TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                            // Текст
+                            FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+
+                            ItemsSource = pickerData.Items ?? [],
+                            ItemDisplayBinding = new Binding("Name"),
+                        };
+                        if (pickerData.Items != null && pickerData.BaseSelectedId != null)
+                        {
+                            var selectedIndex = pickerData.Items.FindIndex(item => item.Id == pickerData.BaseSelectedId);
+                            picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+                        }
+
+
+                        if (pickerData.IdChangedAction != null)
+                        {
+                            picker.SelectedIndexChanged += (sender, e) =>
+                            {
+                                if (picker.SelectedItem is TypeResponse selectedItem)
+                                {
+                                    pickerData.IdChangedAction(selectedItem.Id);
+                                }
+                            };
+                        }
+
+                        grid.Add(picker, indexColumn++, rowIndex);
+                        resultList.Add(picker);
                         break;
                 }
             }

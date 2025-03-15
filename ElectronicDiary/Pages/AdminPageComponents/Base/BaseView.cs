@@ -113,7 +113,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             };
             verticalStack.Add(_listVerticalStack);
 
-            var a = CreateListView();
+            var _ = CreateListView();
 
             return scrollView;
         }
@@ -328,7 +328,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
 
         // Вид объекта
-        protected TResponse? _response;
+        protected TResponse? _baseResponse;
+        protected Grid _objectGrid;
         protected virtual ScrollView CreateObjectView(bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
@@ -343,7 +344,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 Content = verticalStack
             };
 
-            var grid = new Grid
+            _objectGrid = new Grid
             {
                 // Положение
                 ColumnDefinitions =
@@ -358,10 +359,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
-
             var rowIndex = 0;
-            CreateObjectInfoView(grid, ref rowIndex, edit);
-            verticalStack.Add(grid);
+            CreateObjectInfoView(ref rowIndex, edit);
+            verticalStack.Add(_objectGrid);
 
             if (_elemId == -1 || edit)
             {
@@ -387,11 +387,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         }
 
         protected bool _componentConst;
-        protected virtual void CreateObjectInfoView(Grid grid, ref int rowIndex, bool edit = false)
+        protected virtual void CreateObjectInfoView(ref int rowIndex, bool edit = false)
         {
             if (_elemId != -1)
             {
-                _response = _objectsList.FirstOrDefault(x => x.Id == _elemId);
+                _baseResponse = _objectsList.FirstOrDefault(x => x.Id == _elemId);
             }
 
             if (edit || _elemId == -1)
@@ -404,12 +404,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             }
         }
 
-        protected TRequest? _request;
+        protected TRequest? _baseRequest;
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
             if (_controller != null)
             {
-                var json = JsonSerializer.Serialize(_request, PageConstants.JsonSerializerOptions);
+                var json = JsonSerializer.Serialize(_baseRequest, PageConstants.JsonSerializerOptions);
                 var response = await _controller.Add(json);
                 if (response != null)
                 {

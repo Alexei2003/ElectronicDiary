@@ -14,8 +14,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             long educationalInstitutionId
         ) : base(mainStack, viewList)
         {
-            _response = new();
-            _request = new();
+            _baseResponse = new();
+            _baseRequest = new();
             _maxCountViews = 3;
             _educationalInstitutionId = educationalInstitutionId;
         }
@@ -129,20 +129,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         }
 
         // Действия с отдельными объектами
-        protected override void CreateObjectInfoView(Grid grid, ref int rowIndex, bool edit = false)
+        protected override void CreateObjectInfoView(ref int rowIndex, bool edit = false)
         {
-            base.CreateObjectInfoView(grid, ref rowIndex, edit);
+            base.CreateObjectInfoView(ref rowIndex, edit);
 
             if (edit)
             {
-                _request = new()
+                _baseRequest = new()
                 {
-                    FirstName = _response?.FirstName ?? "",
-                    LastName = _response?.LastName ?? "",
-                    Patronymic = _response?.Patronymic,
-                    Email = _response?.Email ?? "",
-                    PhoneNumber = _response?.PhoneNumber ?? "",
-                    UniversityId = _response?.EducationalInstitution.Id ?? 0,
+                    FirstName = _baseResponse?.FirstName ?? "",
+                    LastName = _baseResponse?.LastName ?? "",
+                    Patronymic = _baseResponse?.Patronymic,
+                    Email = _baseResponse?.Email ?? "",
+                    PhoneNumber = _baseResponse?.PhoneNumber ?? "",
+                    UniversityId = _baseResponse?.EducationalInstitution.Id ?? 0,
 
                     Login = "",
                     Password = ""
@@ -151,7 +151,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             }
 
             LineElemsAdder.AddLineElems(
-                grid: grid,
+                grid: _objectGrid,
                 rowIndex: rowIndex++,
                 objectList: [
                     new LineElemsAdder.LabelData{
@@ -159,19 +159,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentConst ?
                         new LineElemsAdder.LabelData{
-                            Title = _response?.FirstName
+                            Title = _baseResponse?.FirstName
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _response?.FirstName,
+                            BaseText = _baseResponse?.FirstName,
                             Placeholder = "Дубовский",
-                            TextChangedAction = newText => {if (_request != null)_request.FirstName = newText; }
+                            TextChangedAction = newText => {if (_baseRequest != null)_baseRequest.FirstName = newText; }
                         }
                 ]
             );
 
             LineElemsAdder.AddLineElems(
-                grid: grid,
+                grid: _objectGrid,
                 rowIndex: rowIndex++,
                 objectList: [
                     new LineElemsAdder.LabelData{
@@ -179,19 +179,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentConst ?
                         new LineElemsAdder.LabelData{
-                            Title = _response?.LastName
+                            Title = _baseResponse?.LastName
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _response?.LastName,
+                            BaseText = _baseResponse?.LastName,
                             Placeholder = "Алексей",
-                            TextChangedAction = newText => {if(_request!=null) _request.LastName = newText; }
+                            TextChangedAction = newText => {if(_baseRequest!=null) _baseRequest.LastName = newText; }
                         }
                 ]
             );
 
             LineElemsAdder.AddLineElems(
-                grid: grid,
+                grid: _objectGrid,
                 rowIndex: rowIndex++,
                 objectList: [
                     new LineElemsAdder.LabelData{
@@ -199,19 +199,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentConst ?
                         new LineElemsAdder.LabelData{
-                            Title = _response?.Patronymic
+                            Title = _baseResponse?.Patronymic
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _response?.Patronymic,
+                            BaseText = _baseResponse?.Patronymic,
                             Placeholder = "Владимирович",
-                            TextChangedAction = newText => { if(_request != null) _request.Patronymic = newText; }
+                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Patronymic = newText; }
                         }
                 ]
             );
 
             LineElemsAdder.AddLineElems(
-                grid: grid,
+                grid: _objectGrid,
                 rowIndex: rowIndex++,
                 objectList: [
                     new LineElemsAdder.LabelData{
@@ -219,19 +219,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentConst ?
                         new LineElemsAdder.LabelData{
-                            Title = _response?.Email
+                            Title = _baseResponse?.Email
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _response?.Email,
+                            BaseText = _baseResponse?.Email,
                             Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => { if(_request != null) _request.Email = newText; }
+                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Email = newText; }
                         }
                 ]
             );
 
             LineElemsAdder.AddLineElems(
-                grid: grid,
+                grid: _objectGrid,
                 rowIndex: rowIndex++,
                 objectList: [
                     new LineElemsAdder.LabelData{
@@ -239,20 +239,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentConst ?
                         new LineElemsAdder.LabelData{
-                            Title = _response?.PhoneNumber
+                            Title = _baseResponse?.PhoneNumber
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _response?.PhoneNumber,
+                            BaseText = _baseResponse?.PhoneNumber,
                             Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => { if(_request != null) _request.PhoneNumber = newText; }
+                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.PhoneNumber = newText; }
                         }
                 ]
             );
             if (_elemId == -1 || edit)
             {
                 LineElemsAdder.AddLineElems(
-                    grid: grid,
+                    grid: _objectGrid,
                     rowIndex: rowIndex++,
                     objectList:
                     _componentConst ?
@@ -268,12 +268,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                             },
                             new LineElemsAdder.EntryData{
                                 Placeholder = "admin",
-                                TextChangedAction = newText => { if(_request != null) _request.Login = newText; }
+                                TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Login = newText; }
                             }
                         ]
                 );
                 LineElemsAdder.AddLineElems(
-                    grid: grid,
+                    grid: _objectGrid,
                     rowIndex: rowIndex++,
                     objectList:
                     _componentConst ?
@@ -289,13 +289,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                             },
                             new LineElemsAdder.EntryData {
                                 Placeholder = "4Af7@adf",
-                                TextChangedAction = newText => {if(_request != null)_request.Password = newText; }
+                                TextChangedAction = newText => {if(_baseRequest != null)_baseRequest.Password = newText; }
                             }
                         ]
                 );
 
 
-                if (_request != null) _request.UniversityId = _educationalInstitutionId;
+                if (_baseRequest != null) _baseRequest.UniversityId = _educationalInstitutionId;
             }
         }
     }
