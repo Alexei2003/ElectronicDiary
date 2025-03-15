@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ElectronicDiary.Web.Api.Education
+namespace ElectronicDiary.Web.Api.Educations
 {
     public class ClassController : IController
     {

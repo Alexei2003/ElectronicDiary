@@ -7,10 +7,10 @@ namespace ElectronicDiary
 {
     public class SearchPopup : Popup
     {
-        public List<LineElemsAdder.ItemPicker> AllItems { get; set; }
+        public List<LineElemsAdder.ItemData> AllItems { get; set; }
         private ListView _listView;
 
-        public SearchPopup(List<LineElemsAdder.ItemPicker>? items, Action<long> IdChangedAction)
+        public SearchPopup(List<LineElemsAdder.ItemData>? items, Action<long> IdChangedAction)
         {
             AllItems = items ?? [];
 
@@ -49,7 +49,7 @@ namespace ElectronicDiary
 
             _listView.ItemTapped += (sender, e) =>
             {
-                if (e.Item is LineElemsAdder.ItemPicker selectedItem)
+                if (e.Item is LineElemsAdder.ItemData selectedItem)
                 {
                     HandleItemTapped(selectedItem, IdChangedAction);
                 }
@@ -58,7 +58,7 @@ namespace ElectronicDiary
             var stackLayout = new StackLayout
             {
                 // Положение
-                WidthRequest = Application.Current.Windows[0].Width / 1 * 0.90,
+                WidthRequest = (Application.Current?.Windows[0].Width ?? 0) / 1 * 0.90,
 #if WINDOWS
                 HeightRequest = 100,
 #endif
@@ -86,13 +86,13 @@ namespace ElectronicDiary
             }
             else
             {
-                _listView.ItemsSource = AllItems.Where(item => item.Name.ToLower().Contains(searchText.ToLower())).ToList();
+                _listView.ItemsSource = AllItems.Where(item => (item.Name ?? "").Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
             }
         }
 
-        private void HandleItemTapped(LineElemsAdder.ItemPicker selectedItem, Action<long> IdChangedAction)
+        private void HandleItemTapped(LineElemsAdder.ItemData selectedItem, Action<long> IdChangedAction)
         {
-            IdChangedAction(selectedItem.Id);
+            IdChangedAction(selectedItem.Id ?? 0);
             Close();
         }
     }

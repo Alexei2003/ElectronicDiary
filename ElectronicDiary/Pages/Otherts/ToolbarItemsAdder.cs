@@ -28,7 +28,8 @@ namespace ElectronicDiary.Pages.Otherts
         }
         private static void SettingsClicked(object? sender, EventArgs e)
         {
-            Application.Current.Windows[0].Page.Navigation.PushAsync(new SettignsPage());
+            var page = Application.Current?.Windows[0].Page;
+            if (page != null) page.Navigation.PushAsync(new SettignsPage());
         }
 
 
@@ -39,13 +40,13 @@ namespace ElectronicDiary.Pages.Otherts
         }
         private async static void LogOutClicked(object? sender, EventArgs e)
         {
-            var response = await AuthorizationСontroller.logOut();
+            var response = await AuthorizationСontroller.LogOut();
             if (response != null)
             {
                 UserData.UserInfo = new UserInfo();
                 UserData.SaveUserInfo();
 
-                Application.Current.Windows[0].Page = new ThemedNavigationPage(new LogPage());
+                if (Application.Current?.Windows.Count > 0) Application.Current.Windows[0].Page = new ThemedNavigationPage(new LogPage());
             }
         }
     }

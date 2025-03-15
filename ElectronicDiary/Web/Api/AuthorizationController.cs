@@ -11,7 +11,7 @@ namespace ElectronicDiary.Web.Api
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url);
         }
 
-        public static Task<string?> logOut()
+        public static Task<string?> LogOut()
         {
             const string url = $"/logout";
 

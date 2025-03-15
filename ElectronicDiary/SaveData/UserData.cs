@@ -33,10 +33,7 @@ namespace ElectronicDiary.SaveData
             {
                 var json = File.ReadAllText(USER_INFO_PATH);
                 var obj = JsonSerializer.Deserialize<UserInfo>(json);
-                if (obj != null)
-                {
-                    UserInfo = obj;
-                }
+                if (obj != null) UserInfo = obj;
             }
         }
 
@@ -57,10 +54,7 @@ namespace ElectronicDiary.SaveData
             {
                 var json = File.ReadAllText(USER_SETTINGS_PATH);
                 var obj = JsonSerializer.Deserialize<UserSettings>(json);
-                if (obj != null)
-                {
-                    UserSettings = obj;
-                }
+                if (obj != null) UserSettings = obj;
             }
         }
     }

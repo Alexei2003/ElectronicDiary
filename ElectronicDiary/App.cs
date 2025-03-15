@@ -5,7 +5,7 @@ using ElectronicDiary.Web.Api;
 
 namespace ElectronicDiary
 {
-    public class App : Application
+    public partial class App : Application
     {
         protected override Window CreateWindow(IActivationState? activationState)
         {
@@ -23,7 +23,11 @@ namespace ElectronicDiary
                     {
                         Dispatcher.Dispatch(() =>
                         {
-                            Application.Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
+                            if (Current?.Windows.Count > 0)
+                            {
+                                Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
+                            }
+;
                         });
                     }
                 }

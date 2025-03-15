@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace ElectronicDiary;
+namespace ElectronicDiary.Platforms.iOS;
 
 public class Program
 {

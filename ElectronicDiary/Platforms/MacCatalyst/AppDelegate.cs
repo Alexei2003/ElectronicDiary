@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace ElectronicDiary;
+namespace ElectronicDiary.Platforms.MacCatalyst;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate

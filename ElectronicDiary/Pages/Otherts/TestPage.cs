@@ -2,7 +2,7 @@
 
 namespace ElectronicDiary.Pages.Otherts
 {
-    public class TestPage : ContentPage
+    public partial class TestPage : ContentPage
     {
         public TestPage()
         {

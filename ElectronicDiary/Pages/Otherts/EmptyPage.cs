@@ -2,7 +2,7 @@
 
 namespace ElectronicDiary.Pages
 {
-    public class EmptyPage : ContentPage
+    public partial class EmptyPage : ContentPage
     {
         public EmptyPage()
         {

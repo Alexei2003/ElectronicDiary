@@ -9,16 +9,12 @@
 
             double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
 
-            double widthLocal = 0;
-            if (Application.Current.Windows.Count > 0)
-            {
-                widthLocal = Application.Current.Windows[0].Width;
-            }
+            var widthLocal = Application.Current?.Windows[0].Width ?? 0;
 
 #if WINDOWS
-            double coeff = 1;
+            const double coeff = 1;
 #else
-            double coeff = 2;
+            const double coeff = 2;
 #endif
             var countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
 

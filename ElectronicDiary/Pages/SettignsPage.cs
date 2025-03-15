@@ -3,7 +3,7 @@ using ElectronicDiary.SaveData;
 
 namespace ElectronicDiary.Pages
 {
-    public class SettignsPage : ContentPage
+    public partial class SettignsPage : ContentPage
     {
         public SettignsPage()
         {

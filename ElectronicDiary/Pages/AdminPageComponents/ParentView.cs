@@ -33,14 +33,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
         }
-        private static async Task<List<LineElemsAdder.ItemPicker>> GetParantTypes()
+        private static async Task<List<LineElemsAdder.ItemData>> GetParantTypes()
         {
-            List<LineElemsAdder.ItemPicker>? list = null;
+            List<LineElemsAdder.ItemData>? list = null;
             var response = await ParentController.GetParentType();
-            if (response != null)
-            {
-                list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
-            }
+            if (response != null) list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemData>>(response, PageConstants.JsonSerializerOptions);
             return list ?? [];
         }
 
@@ -56,11 +53,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         protected async void RemoveScoolStudent(object? sender, EventArgs e)
         {
 
-        }
-
-        protected override async void SaveButtonClicked(object? sender, EventArgs e)
-        {
-            base.SaveButtonClicked(sender, e);
         }
     }
 }

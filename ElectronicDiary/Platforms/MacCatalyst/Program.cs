@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace ElectronicDiary;
+namespace ElectronicDiary.Platforms.MacCatalyst;
 
 public class Program
 {

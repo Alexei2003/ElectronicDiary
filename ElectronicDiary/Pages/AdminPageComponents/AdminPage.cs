@@ -4,7 +4,7 @@ using ElectronicDiary.SaveData;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
-    public class AdminPage : ContentPage
+    public partial class AdminPage : ContentPage
     {
         private readonly HorizontalStackLayout _mainStack = new()
         {

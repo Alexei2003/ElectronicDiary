@@ -89,7 +89,7 @@ namespace ElectronicDiary.Pages
                     Password = _password
                 };
                 UserData.SaveUserInfo();
-                Application.Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
+                if (Application.Current?.Windows.Count > 0) Application.Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
             }
         }
     }

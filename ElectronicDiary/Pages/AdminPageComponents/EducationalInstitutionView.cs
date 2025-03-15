@@ -137,12 +137,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             {
                 _request = new()
                 {
-                    Name = _response.Name,
-                    Address = _response.Address,
-                    Email = _response.Email,
-                    PhoneNumber = _response.PhoneNumber,
-                    RegionId = _response.Settlement.Region.Id,
-                    SettlementId = _response.Settlement.Id
+                    Name = _response?.Name ?? "",
+                    Address = _response?.Address ?? "",
+                    Email = _response?.Email,
+                    PhoneNumber = _response?.PhoneNumber,
+                    RegionId = _response?.Settlement?.Region?.Id ?? 0,
+                    SettlementId = _response?.Settlement?.Id ?? 0
                 };
             }
 
@@ -161,7 +161,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.Name,
                             Placeholder = "ГУО ...",
-                            TextChangedAction = newText => _request.Name = newText
+                            TextChangedAction = newText => { if (_request != null) _request.Name = newText; }
                         }
                 ]
             );
@@ -180,15 +180,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         }
                     :
                         new LineElemsAdder.SearchData{
-                            BaseItem =  _response?.Settlement.Region.Name,
-
-                            IdChangedAction = selectedIndex => 
+                            BaseItem =  new LineElemsAdder.ItemData(){
+                                Id = _response?.Settlement?.Region?.Id,
+                                Name = _response?.Settlement?.Region?.Name
+                            },
+                            IdChangedAction = selectedIndex =>
                             {
-                                _request.RegionId = selectedIndex;
-
+                                if (_request != null) _request.RegionId = selectedIndex;
                                 if(settlementElems != null &&
                                    settlementElems[^1] is TapGestureRecognizer searchSettlement &&
-                                   _request.RegionId >= 0)
+                                   _request?.RegionId >= 0)
                                 {
                                     Task.Run(async () =>
                                     {
@@ -224,8 +225,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         }
                     :
                         new LineElemsAdder.SearchData{
-                            BaseItem =  _response?.Settlement.Name,
-                            IdChangedAction = selectedIndex => _request.SettlementId = selectedIndex
+                            BaseItem =  new LineElemsAdder.ItemData(){
+                                Id = _response?.Settlement?.Id,
+                                Name = _response?.Settlement?.Name
+                            },
+                            IdChangedAction = selectedIndex => {if (_request != null)  _request.SettlementId = selectedIndex;}
                         }
                 ]
             );
@@ -234,7 +238,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             {
                 Task.Run(async () =>
                 {
-                    var settlementList = await GetSettlements(_response.Settlement.Region.Id);
+                    var settlementList = await GetSettlements(_response?.Settlement?.Region?.Id ?? 0);
 
                     searchSettlement.BindingContext = settlementList;
                 });
@@ -255,7 +259,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.Address,
                             Placeholder = "ул. Ленина, 12",
-                            TextChangedAction = newText => _request.Address = newText
+                            TextChangedAction = newText => { if(_request != null) _request.Address = newText; }
                         }
                 ]
             );
@@ -275,7 +279,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.Email,
                             Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => _request.Email = newText
+                            TextChangedAction = newText => { if(_request != null) _request.Email = newText; }
                         }
                 ]
             );
@@ -295,30 +299,25 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.PhoneNumber,
                             Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => _request.PhoneNumber = newText
+                            TextChangedAction = newText => { if(_request != null) _request.PhoneNumber = newText; }
                         }
                 ]
             );
         }
 
-        private static async Task<List<LineElemsAdder.ItemPicker>> GetRegion()
+        private static async Task<List<LineElemsAdder.ItemData>> GetRegion()
         {
-            List<LineElemsAdder.ItemPicker>? list = null;
+            List<LineElemsAdder.ItemData>? list = null;
             var response = await AddressСontroller.GetRegions();
-            if (response != null)
-            {
-                list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
-            }
+            if (response != null) list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemData>>(response, PageConstants.JsonSerializerOptions);
             return list ?? [];
         }
-        private static async Task<List<LineElemsAdder.ItemPicker>> GetSettlements(long regionId)
+        private static async Task<List<LineElemsAdder.ItemData>> GetSettlements(long regionId)
         {
-            List<LineElemsAdder.ItemPicker>? list = null;
+            List<LineElemsAdder.ItemData>? list = null;
             var response = await AddressСontroller.GetSettlements(regionId);
-            if (response != null)
-            {
-                list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemPicker>>(response, PageConstants.JsonSerializerOptions);
-            }
+            if (response != null) list = JsonSerializer.Deserialize<List<LineElemsAdder.ItemData>>(response, PageConstants.JsonSerializerOptions);
+
             return list ?? [];
         }
     }

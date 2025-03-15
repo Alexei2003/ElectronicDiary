@@ -49,11 +49,8 @@ namespace ElectronicDiary.Web
                     {
                         MainThread.BeginInvokeOnMainThread(() =>
                         {
-                            var window = Application.Current?.Windows.FirstOrDefault();
-                            if (window != null)
-                            {
-                                window.Page = new ThemedNavigationPage(new LogPage());
-                            }
+                            var window = Application.Current?.Windows[0];
+                            if (window != null) window.Page = new ThemedNavigationPage(new LogPage());
                         });
                     }
 
@@ -69,7 +66,8 @@ namespace ElectronicDiary.Web
                     };
                 }
 
-                await Application.Current.Windows[0].Page.DisplayAlert("Ошибка", message, "OK");
+                var page = Application.Current?.Windows[0].Page;
+                if (page != null) await page.DisplayAlert("Ошибка", message, "OK");
 
                 return null;
             }

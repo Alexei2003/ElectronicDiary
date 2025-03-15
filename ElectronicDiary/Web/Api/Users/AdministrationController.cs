@@ -10,6 +10,7 @@ namespace ElectronicDiary.Web.Api.Users
             return await HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
+
         public async Task<string?> GetById(long id)
         {
             string url = $"/findAdministratorById?id={id}";

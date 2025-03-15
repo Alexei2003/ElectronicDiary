@@ -2,7 +2,7 @@
 
 namespace ElectronicDiary.Pages.Otherts
 {
-    public class ThemedNavigationPage : NavigationPage
+    public partial class ThemedNavigationPage : NavigationPage
     {
         public ThemedNavigationPage(Page root) : base(root)
         {

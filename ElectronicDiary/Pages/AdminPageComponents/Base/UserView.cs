@@ -78,9 +78,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         {
             _objectsList = _objectsList
                 .Where(e =>
-                    (_lastNameFilter?.Length == 0 || e.LastName.Contains(_lastNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_firstNameFilter?.Length == 0 || e.FirstName.Contains(_firstNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_patronymicFilter?.Length == 0 || e.Patronymic.Contains(_patronymicFilter ?? "", StringComparison.OrdinalIgnoreCase)))
+                    (_lastNameFilter?.Length == 0 || (e.LastName ?? "").Contains(_lastNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
+                    (_firstNameFilter?.Length == 0 || (e.FirstName ?? "").Contains(_firstNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
+                    (_patronymicFilter?.Length == 0 || (e.Patronymic ?? "").Contains(_patronymicFilter ?? "", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
         }
 
@@ -137,12 +137,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             {
                 _request = new()
                 {
-                    FirstName = _response.FirstName,
-                    LastName = _response.LastName,
-                    Patronymic = _response.Patronymic,
-                    Email = _response.Email ?? string.Empty,
-                    PhoneNumber = _response.PhoneNumber ?? string.Empty,
-                    UniversityId = _response.EducationalInstitution.Id,
+                    FirstName = _response?.FirstName ?? "",
+                    LastName = _response?.LastName ?? "",
+                    Patronymic = _response?.Patronymic,
+                    Email = _response?.Email ?? "",
+                    PhoneNumber = _response?.PhoneNumber ?? "",
+                    UniversityId = _response?.EducationalInstitution.Id ?? 0,
 
                     Login = "",
                     Password = ""
@@ -165,7 +165,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.FirstName,
                             Placeholder = "Дубовский",
-                            TextChangedAction = newText => _request.FirstName = newText
+                            TextChangedAction = newText => {if (_request != null)_request.FirstName = newText; }
                         }
                 ]
             );
@@ -185,7 +185,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.LastName,
                             Placeholder = "Алексей",
-                            TextChangedAction = newText => _request.LastName = newText
+                            TextChangedAction = newText => {if(_request!=null) _request.LastName = newText; }
                         }
                 ]
             );
@@ -205,7 +205,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.Patronymic,
                             Placeholder = "Владимирович",
-                            TextChangedAction = newText => _request.Patronymic = newText
+                            TextChangedAction = newText => { if(_request != null) _request.Patronymic = newText; }
                         }
                 ]
             );
@@ -225,7 +225,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.Email,
                             Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => _request.Email = newText
+                            TextChangedAction = newText => { if(_request != null) _request.Email = newText; }
                         }
                 ]
             );
@@ -245,7 +245,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         new LineElemsAdder.EntryData{
                             BaseText = _response?.PhoneNumber,
                             Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => _request.PhoneNumber = newText
+                            TextChangedAction = newText => { if(_request != null) _request.PhoneNumber = newText; }
                         }
                 ]
             );
@@ -268,7 +268,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                             },
                             new LineElemsAdder.EntryData{
                                 Placeholder = "admin",
-                                TextChangedAction = newText => _request.Login = newText
+                                TextChangedAction = newText => { if(_request != null) _request.Login = newText; }
                             }
                         ]
                 );
@@ -289,13 +289,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                             },
                             new LineElemsAdder.EntryData {
                                 Placeholder = "4Af7@adf",
-                                TextChangedAction = newText => _request.Password = newText
+                                TextChangedAction = newText => {if(_request != null)_request.Password = newText; }
                             }
                         ]
                 );
 
 
-                _request.UniversityId = _educationalInstitutionId;
+                if (_request != null) _request.UniversityId = _educationalInstitutionId;
             }
         }
     }

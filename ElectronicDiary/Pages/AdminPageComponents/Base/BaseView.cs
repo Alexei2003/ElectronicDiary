@@ -18,7 +18,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         protected readonly HorizontalStackLayout _mainStack;
         protected readonly List<ScrollView> _viewList;
         protected VerticalStackLayout _listVerticalStack;
-        protected TController _controller;
+        protected TController? _controller;
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
         protected long _elemId;
@@ -29,6 +29,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             _viewList = viewList;
             _educationalInstitutionId = -1;
             _maxCountViews = 0;
+            _listVerticalStack = [];
         }
 
         private void DeleteView()
@@ -53,7 +54,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 Content = verticalStack
             };
 
-            Grid grid = new Grid
+            var grid = new Grid
             {
                 // Положение
                 ColumnDefinitions =
@@ -112,7 +113,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             };
             verticalStack.Add(_listVerticalStack);
 
-            CreateListView();
+            var a = CreateListView();
 
             return scrollView;
         }
@@ -142,12 +143,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         protected List<TResponse> _objectsList = [];
         protected virtual async Task GetList()
         {
-            var response = await _controller.GetAll(_educationalInstitutionId);
-            if (response != null)
+            if (_controller != null)
             {
-                _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? new List<TResponse>();
+                var response = await _controller.GetAll(_educationalInstitutionId);
+                if (response != null) _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
+                FilterList();
             }
-            FilterList();
         }
 
         // Пусто
@@ -205,11 +206,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         // Действия с отдельными объектами
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
-            string action;
+            string action = "";
 
+            var page = Application.Current?.Windows[0].Page;
             if (_maxCountViews == 2)
             {
-                action = await Application.Current.Windows[0].Page.DisplayActionSheet(
+                if (page != null) action = await page.DisplayActionSheet(
                     "Выберите действие",    // Заголовок
                     "Отмена",               // Кнопка отмены
                     null,                   // Кнопка деструктивного действия (например, удаление)
@@ -217,10 +219,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     "Перейти",
                     "Редактировать",
                     "Удалить");
+
             }
             else
             {
-                action = await Application.Current.Windows[0].Page.DisplayActionSheet(
+                if (page != null) action = await page.DisplayActionSheet(
                     "Выберите действие",    // Заголовок
                     "Отмена",               // Кнопка отмены
                     null,                   // Кнопка деструктивного действия (например, удаление)
@@ -235,7 +238,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             }
             var id = (long)grid.BindingContext;
 
-            ScrollView scrollView;
             switch (action)
             {
                 case "Описание":
@@ -268,7 +270,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
         protected virtual async Task MoveTo(long id)
         {
-            var action = await Application.Current.Windows[0].Page.DisplayActionSheet(
+            string action = "";
+            var page = Application.Current?.Windows[0].Page;
+            if (page != null) action = await page.DisplayActionSheet(
                 "Выберите список",      // Заголовок
                 "Отмена",               // Кнопка отмены
                 null,                   // Кнопка деструктивного действия (например, удаление)
@@ -317,7 +321,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
         protected virtual void Delete(long id)
         {
-            _controller.Delete(id);
+
+            _controller?.Delete(id);
         }
 
 
@@ -402,14 +407,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         protected TRequest? _request;
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
-            var json = JsonSerializer.Serialize(_request, PageConstants.JsonSerializerOptions);
-
-            var response = await _controller.Add(json);
-            if (response != null)
+            if (_controller != null)
             {
-                await Application.Current.Windows[0].Page.DisplayAlert("Успех", "Объект сохранён", "OK");
-                await CreateListView();
-                AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);
+                var json = JsonSerializer.Serialize(_request, PageConstants.JsonSerializerOptions);
+                var response = await _controller.Add(json);
+                if (response != null)
+                {
+                    var page = Application.Current?.Windows[0].Page;
+
+                    if (page != null) await page.DisplayAlert("Успех", "Объект сохранён", "OK");
+
+                    await CreateListView();
+                    AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);
+                }
+
             }
         }
     }
