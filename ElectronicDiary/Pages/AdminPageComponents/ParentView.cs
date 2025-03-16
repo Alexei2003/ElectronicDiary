@@ -20,9 +20,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         }
 
         protected int _gridSchoolStudentRowIndex;
-        protected override void CreateObjectInfoView(ref int rowIndex, bool edit = false)
+        protected override void CreateObjectInfoView(ref int rowIndex)
         {
-            base.CreateObjectInfoView(ref rowIndex, edit);
+            base.CreateObjectInfoView(ref rowIndex);
 
             LineElemsAdder.AddLineElems(
                 grid: _objectGrid,
@@ -48,26 +48,26 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             );
 
             _gridSchoolStudentRowIndex = rowIndex;
-            GetParentExtraInfo();
+            GetSchoolStudentInfo();
 
 
         }
 
         protected List<TypeResponse> _parentTypeList = [];
         protected List<StudentParentResponse> _studentParentList = [];
-        protected async void GetParentExtraInfo()
+        protected async void GetSchoolStudentInfo()
         {
             List<TypeResponse>? typeList = null;
             var response = await ParentController.GetParentType();
-            if (response != null) typeList = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions);
+            if (!string.IsNullOrEmpty(response) ) typeList = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
             _parentTypeList = typeList ?? [];
 
 
             if (_baseResponse != null)
             {
                 List<StudentParentResponse>? list = null;
-                response = await ParentController.GetStudentsOfParent(_baseResponse.Id);
-                if (response != null) list = JsonSerializer.Deserialize<List<StudentParentResponse>>(response, PageConstants.JsonSerializerOptions);
+                response = await ParentController.GetParentStudents(_baseResponse.Id);
+                if (!string.IsNullOrEmpty(response)) list = JsonSerializer.Deserialize<List<StudentParentResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
                 _studentParentList = list ?? [];
             }
 
@@ -85,7 +85,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     rowIndex: _gridSchoolStudentRowIndex + i,
                     objectList: [
                         new LineElemsAdder.LabelData{
-                            Title = studentParent.Type.Name,
+                            Title = studentParent.ParentType.Name,
                     },
                         new LineElemsAdder.LabelData{
                             Title = studentParent.SchoolStudent.LastName +

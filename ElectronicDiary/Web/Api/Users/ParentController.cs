@@ -59,10 +59,17 @@ namespace ElectronicDiary.Web.Api.Users
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        // Получить учеников по id родителя
-        public static Task<string?> GetStudentsOfParent(long parentId)
+        // Получить StudentParent по id ученика
+        public static Task<string?> GetStudentParents(long schoolStudentId)
         {
-            string url = $"/getStudentsOfParent?ObjectId={parentId}";
+            string url = $"/getStudentParents?id={schoolStudentId}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
+
+        // Получить учеников по id родителя
+        public static Task<string?> GetParentStudents(long parentId)
+        {
+            string url = $"/getStudentParentsByParentTd?id={parentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
     }

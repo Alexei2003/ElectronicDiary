@@ -149,7 +149,48 @@ namespace ElectronicDiary.Pages
                 }
             }
 
-            return resultList.ToArray();
+            return [.. resultList];
         }
+
+        public static void ClearGridRows(Grid grid, int index)
+        {
+            var elementsToRemove = grid.Children
+                .Where(e => index == grid.GetRow(e))
+                .ToArray();
+
+            foreach (var element in elementsToRemove)
+            {
+                grid.Children.Remove(element);
+            }
+        }
+
+        public static void ClearGridRows(Grid grid, int[] indexes)
+        {
+            var elementsToRemove = grid.Children
+                .Where(e => indexes.Contains(grid.GetRow(e)))
+                .ToArray();
+
+            foreach (var element in elementsToRemove)
+            {
+                grid.Children.Remove(element);
+            }
+        }
+
+        public static void ClearGridRows(Grid grid, int firstIndex, int lastIndex)
+        {
+            var elementsToRemove = grid.Children
+                .Where(e =>
+                {
+                    int row = grid.GetRow(e);
+                    return row >= firstIndex && row <= lastIndex;
+                })
+                .ToArray();
+
+            foreach (var element in elementsToRemove)
+            {
+                grid.Children.Remove(element);
+            }
+        }
+
     }
 }

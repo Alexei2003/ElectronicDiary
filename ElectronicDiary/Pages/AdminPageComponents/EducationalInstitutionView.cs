@@ -130,11 +130,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         }
 
         // Действия с отдельными объектами
-        protected override void CreateObjectInfoView(ref int rowIndex, bool edit = false)
+        protected override void CreateObjectInfoView(ref int rowIndex)
         {
-            base.CreateObjectInfoView(ref rowIndex, edit);
+            base.CreateObjectInfoView(ref rowIndex);
 
-            if (edit)
+            if (_componentState == ComponentState.Edit)
             {
                 _baseRequest = new()
                 {
@@ -154,7 +154,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     new LineElemsAdder.LabelData{
                         Title = "Название"
                     },
-                    _componentConst ?
+                    _componentState == ComponentState.Read ?
                         new LineElemsAdder.LabelData{
                             Title = _baseResponse?.Name
                         }
@@ -175,7 +175,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     new LineElemsAdder.LabelData{
                         Title = "Регион"
                     },
-                    _componentConst ?
+                    _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
                             Title = _baseResponse?.Settlement.Region.Name
                         }
@@ -183,7 +183,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         new LineElemsAdder.SearchData{
                             BaseItem =  new TypeResponse(){
                                 Id = _baseResponse?.Settlement?.Region?.Id ?? 0,
-                                Name = _baseResponse?.Settlement?.Region?.Name ?? ""
+                                Name = _baseResponse?.Settlement?.Region?.Name ?? "Найти"
                             },
                             IdChangedAction = selectedIndex =>
                             {
@@ -220,7 +220,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     new LineElemsAdder.LabelData{
                         Title = "Населённый пункт"
                     },
-                    _componentConst ?
+                    _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
                             Title = _baseResponse?.Settlement.Name
                         }
@@ -228,7 +228,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         new LineElemsAdder.SearchData{
                             BaseItem =  new TypeResponse(){
                                 Id = _baseResponse?.Settlement?.Id ?? 0,
-                                Name = _baseResponse?.Settlement?.Name ?? ""
+                                Name = _baseResponse?.Settlement?.Name ?? "Найти"
                             },
                             IdChangedAction = selectedIndex => {if (_baseRequest != null)  _baseRequest.SettlementId = selectedIndex;}
                         }
@@ -252,7 +252,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     new LineElemsAdder.LabelData{
                         Title = "Адресс"
                     },
-                    _componentConst ?
+                    _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
                             Title = _baseResponse?.Address
                         }
@@ -272,7 +272,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     new LineElemsAdder.LabelData{
                         Title = "Email"
                     },
-                    _componentConst ?
+                    _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
                             Title = _baseResponse?.Email
                         }
@@ -292,7 +292,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     new LineElemsAdder.LabelData{
                         Title = "Телефон"
                     },
-                    _componentConst ?
+                    _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
                             Title = _baseResponse?.PhoneNumber
                         }
@@ -310,14 +310,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         {
             List<TypeResponse>? list = null;
             var response = await AddressСontroller.GetRegions();
-            if (response != null) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions);
+            if (!string.IsNullOrEmpty(response)) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
             return list ?? [];
         }
         protected static async Task<List<TypeResponse>> GetSettlements(long regionId)
         {
             List<TypeResponse>? list = null;
             var response = await AddressСontroller.GetSettlements(regionId);
-            if (response != null) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions);
+            if (!string.IsNullOrEmpty(response)) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
 
             return list ?? [];
         }

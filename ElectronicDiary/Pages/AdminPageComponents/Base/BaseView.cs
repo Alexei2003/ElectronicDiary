@@ -17,7 +17,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
     {
         protected readonly HorizontalStackLayout _mainStack;
         protected readonly List<ScrollView> _viewList;
-        protected VerticalStackLayout _listVerticalStack;
+        protected VerticalStackLayout _listVerticalStack = new()
+        {
+            Spacing = PageConstants.SPACING_ALL_PAGES
+        };
         protected TController? _controller;
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
@@ -29,14 +32,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             _viewList = viewList;
             _educationalInstitutionId = -1;
             _maxCountViews = 0;
-            _listVerticalStack = [];
         }
 
-        private void DeleteView()
+        protected virtual void DeleteView(int indexDel = 1)
         {
             while (_viewList.Count >= _maxCountViews)
             {
-                _viewList.RemoveAt(_viewList.Count - 1);
+                _viewList.RemoveAt(_viewList.Count - indexDel);
             }
         }
 
@@ -59,7 +61,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 // Положение
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition { Width = GridLength.Auto },
+                    new ColumnDefinition { Width = GridLength.Star },
                     new ColumnDefinition { Width = GridLength.Star }
                 },
                 Padding = PageConstants.PADDING_ALL_PAGES,
@@ -90,7 +92,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             getButton.Clicked += GetButtonClicked;
             verticalStack.Add(getButton);
 
-
             var addButton = new Button
             {
                 // Положение
@@ -107,10 +108,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             addButton.Clicked += AddButtonClicked;
             verticalStack.Add(addButton);
 
-            _listVerticalStack = new()
-            {
-                Spacing = PageConstants.SPACING_ALL_PAGES
-            };
             verticalStack.Add(_listVerticalStack);
 
             var _ = CreateListView();
@@ -146,7 +143,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             if (_controller != null)
             {
                 var response = await _controller.GetAll(_educationalInstitutionId);
-                if (response != null) _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
+                if(!string.IsNullOrEmpty(response)) _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
                 FilterList();
             }
         }
@@ -178,7 +175,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     // Положение
                     ColumnDefinitions =
                     {
-                        new ColumnDefinition { Width = GridLength.Auto },
+                        new ColumnDefinition { Width = GridLength.Star },
                         new ColumnDefinition { Width = GridLength.Star }
                     },
                     Padding = PageConstants.PADDING_ALL_PAGES,
@@ -207,7 +204,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
             string action = "";
-
             var page = Application.Current?.Windows[0].Page;
             if (_maxCountViews == 2)
             {
@@ -329,7 +325,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
         // Вид объекта
         protected TResponse? _baseResponse;
-        protected Grid _objectGrid;
+        protected Grid _objectGrid = new();
         protected virtual ScrollView CreateObjectView(bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
@@ -344,12 +340,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 Content = verticalStack
             };
 
+            var rowIndex = 0;
             _objectGrid = new Grid
             {
                 // Положение
                 ColumnDefinitions =
                 {
-                    new ColumnDefinition { Width = GridLength.Auto },
+                    new ColumnDefinition { Width = GridLength.Star },
                     new ColumnDefinition { Width = GridLength.Star }
                 },
                 Padding = PageConstants.PADDING_ALL_PAGES,
@@ -359,8 +356,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
-            var rowIndex = 0;
-            CreateObjectInfoView(ref rowIndex, edit);
+            InitializeObjectInfo();
+            CreateObjectInfoView(ref rowIndex);
             verticalStack.Add(_objectGrid);
 
             if (_elemId == -1 || edit)
@@ -386,21 +383,36 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             return scrollView;
         }
 
-        protected bool _componentConst;
-        protected virtual void CreateObjectInfoView(ref int rowIndex, bool edit = false)
-        {
-            if (_elemId != -1)
-            {
-                _baseResponse = _objectsList.FirstOrDefault(x => x.Id == _elemId);
-            }
+        protected enum ComponentState 
+        { 
+            Read, New, Edit
+        }
+        protected ComponentState _componentState;
 
-            if (edit || _elemId == -1)
+        protected virtual void InitializeObjectInfo(bool edit = false)
+        {
+            if (edit)
             {
-                _componentConst = false;
+                _componentState = ComponentState.Edit;
             }
             else
             {
-                _componentConst = true;
+                if (_elemId > 0)
+                {
+                    _componentState = ComponentState.Read;
+                }
+                else
+                {
+                    _componentState = ComponentState.Edit;
+                }
+
+            }
+        }
+        protected virtual void CreateObjectInfoView(ref int rowIndex)
+        {
+            if (_componentState == ComponentState.Read || _componentState == ComponentState.Edit)
+            {
+                _baseResponse = _objectsList.FirstOrDefault(x => x.Id == _elemId);
             }
         }
 
@@ -413,14 +425,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 var response = await _controller.Add(json);
                 if (response != null)
                 {
-                    var page = Application.Current?.Windows[0].Page;
-
-                    if (page != null) await page.DisplayAlert("Успех", "Объект сохранён", "OK");
-
                     await CreateListView();
                     AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);
                 }
-
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace ElectronicDiary.Pages.Otherts
 {
@@ -14,5 +15,7 @@ namespace ElectronicDiary.Pages.Otherts
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
+
+
     }
 }
