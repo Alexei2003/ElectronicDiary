@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.Maui.Views;
-using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.DTO.Responses;
@@ -87,13 +86,13 @@ namespace ElectronicDiary
             }
             else
             {
-                _listView.ItemsSource = AllItems.Where(item => (item.Name ?? "").Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
+                _listView.ItemsSource = AllItems.Where(item => (item.Name ?? string.Empty).Contains(searchText, StringComparison.OrdinalIgnoreCase)).ToList();
             }
         }
 
         private void HandleItemTapped(TypeResponse selectedItem, Action<long> IdChangedAction)
         {
-            IdChangedAction(selectedItem.Id);
+            if (selectedItem.Id != null) IdChangedAction(selectedItem.Id.Value);
             Close();
         }
     }

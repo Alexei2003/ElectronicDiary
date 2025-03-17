@@ -4,9 +4,9 @@ namespace ElectronicDiary.Web.DTO.Responses.Users
 {
     public record BaseUserResponse : BaseResponse
     {
-        public EducationalInstitutionResponse EducationalInstitution { get; init; } = new();
-        public string FirstName { get; init; } = "";
-        public string LastName { get; init; } = "";
+        public EducationalInstitutionResponse? EducationalInstitution { get; init; } = null;
+        public string? FirstName { get; init; } = null;
+        public string? LastName { get; init; } = null;
         public string? Patronymic { get; init; }
         public string? PathImage { get; init; }
         public string? Email { get; init; }

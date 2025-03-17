@@ -50,7 +50,7 @@ namespace ElectronicDiary.Pages
 
                             // Текст
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                            Text = labelData.Title ?? "",
+                            Text = labelData.Title ?? string.Empty,
                         };
 
                         grid.Add(label, indexColumn++, rowIndex);
@@ -67,8 +67,8 @@ namespace ElectronicDiary.Pages
 
                             // Текст
                             FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                            Placeholder = entryData.Placeholder ?? "",
-                            Text = entryData.BaseText ?? "",
+                            Placeholder = entryData.Placeholder ?? string.Empty,
+                            Text = entryData.BaseText ?? string.Empty,
 
                         };
                         if (entryData.TextChangedAction != null) entry.TextChanged += (sender, e) => entryData.TextChangedAction(e.NewTextValue);
@@ -136,9 +136,9 @@ namespace ElectronicDiary.Pages
                         {
                             picker.SelectedIndexChanged += (sender, e) =>
                             {
-                                if (picker.SelectedItem is TypeResponse selectedItem)
+                                if (picker.SelectedItem is TypeResponse selectedItem && selectedItem.Id != null)
                                 {
-                                    pickerData.IdChangedAction(selectedItem.Id);
+                                    pickerData.IdChangedAction(selectedItem.Id.Value);
                                 }
                             };
                         }

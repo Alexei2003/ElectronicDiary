@@ -31,7 +31,7 @@ namespace ElectronicDiary.Web.Api.Users
 
         // Не интерфейсные методы
         // Получить родителей исключив родителей по id ребёнка
-        public static Task<string?> GetNewParents(long schoolStudentId)
+        public static Task<string?> GetParentsWithoutSchoolStudent(long schoolStudentId)
         {
             string url = $"/getNewParents?id={schoolStudentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
@@ -60,17 +60,17 @@ namespace ElectronicDiary.Web.Api.Users
         }
 
         // Получить StudentParent по id ученика
-        public static Task<string?> GetStudentParents(long schoolStudentId)
+        public static Task<string?> GetParentStudents(long schoolStudentId)
         {
             string url = $"/getStudentParents?id={schoolStudentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        // Получить учеников по id родителя
-        public static Task<string?> GetParentStudents(long parentId)
+        public static Task<string?> GetStudentParents(long parentId)
         {
             string url = $"/getStudentParentsByParentTd?id={parentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
+
     }
 }

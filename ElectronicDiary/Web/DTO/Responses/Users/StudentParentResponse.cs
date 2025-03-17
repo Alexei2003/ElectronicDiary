@@ -2,8 +2,8 @@
 {
     public record StudentParentResponse : BaseResponse
     {
-        public BaseUserResponse SchoolStudent { get; init; } = new();
-        public BaseUserResponse Parent { get; init; } = new();
-        public TypeResponse ParentType { get; init; } = new();
+        public BaseUserResponse? SchoolStudent { get; init; } = null;
+        public BaseUserResponse? Parent { get; init; } = null;
+        public TypeResponse? ParentType { get; init; } = null;
     }
 }

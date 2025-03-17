@@ -1,10 +1,12 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
 using ElectronicDiary.Web.Api.Users;
+using ElectronicDiary.Web.DTO.Requests.Users;
+using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
     public class AdministratorView
-        : UserView<AdministratorController>
+        : UserView<BaseUserResponse, BaseUserRequest, AdministratorController>
     {
         public AdministratorView(
             HorizontalStackLayout mainStack,
@@ -12,7 +14,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             long educationalInstitutionId
         ) : base(mainStack, viewList, educationalInstitutionId)
         {
-            _controller = new();
         }
     }
 }

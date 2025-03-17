@@ -1,19 +1,16 @@
-﻿using CommunityToolkit.Maui.Views;
-using ElectronicDiary.Pages.AdminPageComponents.Base;
+﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
 using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses;
 using ElectronicDiary.Web.DTO.Responses.Users;
-using System;
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
     public class SchoolStudentView
-        : UserView<SchoolStudentController>
+        : UserView<BaseUserResponse, BaseUserRequest, SchoolStudentController>
     {
         public SchoolStudentView(
             HorizontalStackLayout mainStack,
@@ -21,10 +18,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             long educationalInstitutionId
         ) : base(mainStack, viewList, educationalInstitutionId)
         {
-            _controller = new();
         }
 
-        private int _gridSchoolStudentRowOffset;
+        private int _gridParentRowOffset;
         protected override void CreateObjectInfoView(ref int rowIndex)
         {
             base.CreateObjectInfoView(ref rowIndex);
@@ -52,7 +48,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 ]
             );
 
-            _gridSchoolStudentRowOffset = rowIndex;
+            _gridParentRowOffset = rowIndex;
             RepaintParentsInfo();
         }
 
@@ -60,15 +56,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         private List<StudentParentResponse> _parentList = [];
         private async void RepaintParentsInfo()
         {
-            List<TypeResponse>? list = null;
-            var response = await ParentController.GetParentType();
-            if (!string.IsNullOrEmpty(response)) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
-            _parentTypeList = list ?? [];
-
-
-            if (_baseResponse != null)
+            if (_baseResponse.Id != null)
             {
-                response = await ParentController.GetStudentParents(_baseResponse.Id);
+                var response = await ParentController.GetStudentParents(_baseResponse.Id.Value);
                 _parentList = [];
                 if (!string.IsNullOrEmpty(response)) _parentList = JsonSerializer.Deserialize<List<StudentParentResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
             }
@@ -78,13 +68,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 var studentParent = _parentList[i];
                 var parentElems = LineElemsAdder.AddLineElems(
                     grid: _objectGrid,
-                    rowIndex: _gridSchoolStudentRowOffset + i,
+                    rowIndex: _gridParentRowOffset + i,
                     objectList: [
                         new LineElemsAdder.LabelData{
-                            Title = studentParent.ParentType.Name,
+                            Title = studentParent.ParentType?.Name,
                     },
                         new LineElemsAdder.LabelData{
-                            Title =  $"{studentParent.Parent.LastName} {studentParent.Parent.FirstName} {studentParent.Parent.Patronymic}"
+                            Title =  $"{studentParent.Parent?.LastName} {studentParent.Parent?.FirstName} {studentParent.Parent?.Patronymic}"
                         }
                     ]
                 );
@@ -98,21 +88,28 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 }
             }
 
-            var addParentButton = new Button
+            if (_componentState == ComponentState.Edit)
             {
-                // Положение
-                HorizontalOptions = LayoutOptions.Fill,
+                var response = await ParentController.GetParentType();
+                _parentTypeList = [];
+                if (!string.IsNullOrEmpty(response)) _parentTypeList = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
 
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                var addParentButton = new Button
+                {
+                    // Положение
+                    HorizontalOptions = LayoutOptions.Fill,
 
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Text = "Добавить",
-            };
-            addParentButton.Clicked += AddParentClicked;
-            _objectGrid.Add(addParentButton, 0, _gridSchoolStudentRowOffset + _parentList.Count);
+                    // Цвета
+                    BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
+                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+
+                    // Текст
+                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                    Text = "Добавить",
+                };
+                addParentButton.Clicked += AddParentClicked;
+                _objectGrid.Add(addParentButton, 0, _gridParentRowOffset + _parentList.Count);
+            }
         }
 
 
@@ -121,13 +118,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         private async void AddParentClicked(object? sender, EventArgs e)
         {
             AddParent = true;
-            var changeRowIndex = _gridSchoolStudentRowOffset + _parentList.Count;
+            var changeRowIndex = _gridParentRowOffset + _parentList.Count;
             LineElemsAdder.ClearGridRows(_objectGrid, changeRowIndex);
 
             var editElems = LineElemsAdder.AddLineElems(
                 grid: _objectGrid,
                 rowIndex: changeRowIndex++,
-                objectList: [
+                objectList:
+                [
                     new LineElemsAdder.PickerData{
                         Items = _parentTypeList,
                         IdChangedAction = selectedIndex => _parentRequest.ParentTypeId = selectedIndex,
@@ -140,9 +138,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
             if (editElems[^1] is TapGestureRecognizer searchParent)
             {
-                if (_baseResponse != null)
+                if (_baseResponse.Id != null)
                 {
-                    var response = await ParentController.GetNewParents(_baseResponse.Id);
+                    var response = await ParentController.GetParentsWithoutSchoolStudent(_baseResponse.Id.Value);
                     if (!string.IsNullOrEmpty(response))
                     {
                         var list = JsonSerializer.Deserialize<List<BaseUserResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
@@ -189,7 +187,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             };
             cancelButton.Clicked += (sender, e) =>
             {
-                var changeRowIndex = _gridSchoolStudentRowOffset + _parentList.Count;
+                var changeRowIndex = _gridParentRowOffset + _parentList.Count;
                 LineElemsAdder.ClearGridRows(_objectGrid, changeRowIndex, changeRowIndex + 1);
 
                 _parentRequest = new();
@@ -209,10 +207,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     Text = "Добавить",
                 };
                 addParentButton.Clicked += AddParentClicked;
-                _objectGrid.Add(addParentButton, 0, _gridSchoolStudentRowOffset + _parentList.Count);
+                _objectGrid.Add(addParentButton, 0, _gridParentRowOffset + _parentList.Count);
 
             };
-            _objectGrid.Add(cancelButton, 1, changeRowIndex-1);
+            _objectGrid.Add(cancelButton, 1, changeRowIndex - 1);
         }
 
         private async void SaveParentClicked(object? sender, EventArgs e)
@@ -220,10 +218,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             _parentRequest.SchoolStudentId = _elemId;
             var json = JsonSerializer.Serialize(_parentRequest, PageConstants.JsonSerializerOptions);
             var response = await ParentController.AddParent(json);
-            if (response != null)
+            if (!string.IsNullOrEmpty(response))
             {
-                var changeRowIndex = _gridSchoolStudentRowOffset + _parentList.Count;
-                LineElemsAdder.ClearGridRows(_objectGrid, _gridSchoolStudentRowOffset, changeRowIndex + 1);
+                var changeRowIndex = _gridParentRowOffset + _parentList.Count;
+                LineElemsAdder.ClearGridRows(_objectGrid, _gridParentRowOffset, changeRowIndex + 1);
 
                 _parentRequest = new();
                 RepaintParentsInfo();
@@ -235,7 +233,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         {
             if (!AddParent)
             {
-                string action = "";
+                string action = string.Empty;
                 var page = Application.Current?.Windows[0].Page;
                 if (page != null) action = await page.DisplayActionSheet(
                     "Выберите действие",    // Заголовок
@@ -245,11 +243,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
                 if (action == "Удалить")
                 {
-                    var response = await ParentController.DeleteStudentParent((long)((Label)sender).BindingContext);
-                    if (response != null)
+                    if (sender is Label label)
                     {
-                        LineElemsAdder.ClearGridRows(_objectGrid, _gridSchoolStudentRowOffset, _gridSchoolStudentRowOffset + _parentList.Count);
-                        RepaintParentsInfo();
+                        var response = await ParentController.DeleteStudentParent((long)label.BindingContext);
+                        if (!string.IsNullOrEmpty(response))
+                        {
+                            LineElemsAdder.ClearGridRows(_objectGrid, _gridParentRowOffset, _gridParentRowOffset + _parentList.Count);
+                            RepaintParentsInfo();
+                        }
                     }
                 }
             }

@@ -12,8 +12,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
     }
 
     public class BaseView<TResponse, TRequest, TController> : IBaseView
-        where TController : IController
-        where TResponse : BaseResponse
+        where TResponse : BaseResponse, new()
+        where TRequest : new()
+        where TController : IController, new()
     {
         protected readonly HorizontalStackLayout _mainStack;
         protected readonly List<ScrollView> _viewList;
@@ -21,7 +22,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         {
             Spacing = PageConstants.SPACING_ALL_PAGES
         };
-        protected TController? _controller;
+        protected TController _controller = new();
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
         protected long _elemId;
@@ -143,7 +144,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             if (_controller != null)
             {
                 var response = await _controller.GetAll(_educationalInstitutionId);
-                if(!string.IsNullOrEmpty(response)) _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
+                if (!string.IsNullOrEmpty(response)) _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
                 FilterList();
             }
         }
@@ -203,7 +204,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         // Действия с отдельными объектами
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
-            string action = "";
+            string action = string.Empty;
             var page = Application.Current?.Windows[0].Page;
             if (_maxCountViews == 2)
             {
@@ -266,7 +267,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
         protected virtual async Task MoveTo(long id)
         {
-            string action = "";
+            string action = string.Empty;
             var page = Application.Current?.Windows[0].Page;
             if (page != null) action = await page.DisplayActionSheet(
                 "Выберите список",      // Заголовок
@@ -324,8 +325,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
 
 
         // Вид объекта
-        protected TResponse? _baseResponse;
-        protected Grid _objectGrid = new();
+        protected TResponse _baseResponse = new();
+        protected Grid _objectGrid = [];
         protected virtual ScrollView CreateObjectView(bool edit = false)
         {
             var verticalStack = new VerticalStackLayout
@@ -356,11 +357,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
-            InitializeObjectInfo();
+            InitializeObjectInfo(edit);
             CreateObjectInfoView(ref rowIndex);
             verticalStack.Add(_objectGrid);
 
-            if (_elemId == -1 || edit)
+            if (_componentState != ComponentState.Read)
             {
                 var saveButton = new Button
                 {
@@ -383,8 +384,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             return scrollView;
         }
 
-        protected enum ComponentState 
-        { 
+        protected enum ComponentState
+        {
             Read, New, Edit
         }
         protected ComponentState _componentState;
@@ -403,27 +404,24 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                 }
                 else
                 {
-                    _componentState = ComponentState.Edit;
+                    _componentState = ComponentState.New;
                 }
 
             }
         }
         protected virtual void CreateObjectInfoView(ref int rowIndex)
         {
-            if (_componentState == ComponentState.Read || _componentState == ComponentState.Edit)
-            {
-                _baseResponse = _objectsList.FirstOrDefault(x => x.Id == _elemId);
-            }
+            _baseResponse = _objectsList.FirstOrDefault(x => x.Id == _elemId) ?? new();
         }
 
-        protected TRequest? _baseRequest;
+        protected TRequest _baseRequest = new();
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
             if (_controller != null)
             {
                 var json = JsonSerializer.Serialize(_baseRequest, PageConstants.JsonSerializerOptions);
                 var response = await _controller.Add(json);
-                if (response != null)
+                if (!string.IsNullOrEmpty(response))
                 {
                     await CreateListView();
                     AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);

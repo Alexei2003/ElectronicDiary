@@ -2,12 +2,12 @@
 {
     public record EducationalInstitutionResponse : BaseResponse
     {
-        public string Name { get; init; } = "";
-        public string Address { get; init; } = "";
-        public string? PathImage { get; init; } = "";
-        public string? Email { get; init; } = "";
-        public string? PhoneNumber { get; init; } = "";
-        public TypeResponse EducationalInstitutionType { get; init; } = new();
-        public SettlementResponse Settlement { get; init; } = new();
+        public string? Name { get; init; } = null;
+        public string? Address { get; init; } = null;
+        public string? PathImage { get; init; } = null;
+        public string? Email { get; init; } = null;
+        public string? PhoneNumber { get; init; } = null;
+        public TypeResponse? EducationalInstitutionType { get; init; } = null;
+        public SettlementResponse? Settlement { get; init; } = null;
     }
 }

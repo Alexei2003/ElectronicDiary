@@ -9,7 +9,6 @@ namespace ElectronicDiary.Pages.Otherts
         private static void AddElem(IList<ToolbarItem> toolbarItems, string title, string imagePath, EventHandler eventHandler)
         {
             var item = new ToolbarItem();
-
 #if WINDOWS
             item.Text = title;
 #else
@@ -29,7 +28,7 @@ namespace ElectronicDiary.Pages.Otherts
         private static void SettingsClicked(object? sender, EventArgs e)
         {
             var page = Application.Current?.Windows[0].Page;
-            if (page != null) page.Navigation.PushAsync(new SettignsPage());
+            page?.Navigation.PushAsync(new SettignsPage());
         }
 
 
@@ -41,7 +40,7 @@ namespace ElectronicDiary.Pages.Otherts
         private async static void LogOutClicked(object? sender, EventArgs e)
         {
             var response = await AuthorizationСontroller.LogOut();
-            if (response != null)
+            if (!string.IsNullOrEmpty(response))
             {
                 UserData.UserInfo = new UserInfo();
                 UserData.SaveUserInfo();

@@ -16,9 +16,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             List<ScrollView> viewList
         ) : base(mainStack, viewList)
         {
-            _baseResponse = new();
-            _baseRequest = new();
-            _controller = new();
             _maxCountViews = 2;
         }
 
@@ -78,13 +75,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents
         // Получение списка объектов
         protected override void FilterList()
         {
-            _objectsList = _objectsList
+            bool isRegionFilterEmpty = string.IsNullOrEmpty(_regionFilter);
+            bool isSettlementFilterEmpty = string.IsNullOrEmpty(_settlementFilter);
+            bool isNameFilterEmpty = string.IsNullOrEmpty(_nameFilter);
+
+            _objectsList = [.. _objectsList
                 .Where(e =>
-                    (_regionFilter?.Length == 0 || e.Settlement.Region.Name.Contains(_regionFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_settlementFilter?.Length == 0 || e.Settlement.Name.Contains(_settlementFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_nameFilter?.Length == 0 || e.Name.Contains(_nameFilter ?? "", StringComparison.OrdinalIgnoreCase)))
-                .ToList();
+                    (isRegionFilterEmpty || (e.Settlement?.Region?.Name ?? "").Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (isSettlementFilterEmpty || (e.Settlement?.Name ?? "").Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (isNameFilterEmpty || (e.Name ?? "").Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
         }
+
+
+
         protected override void CreateListElemView(Grid grid, ref int rowIndex, int indexElem)
         {
             base.CreateListElemView(grid, ref rowIndex, indexElem);
@@ -110,7 +113,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         Title = "Регион",
                     },
                     new LineElemsAdder.LabelData{
-                        Title = _objectsList[indexElem].Settlement.Region.Name
+                        Title = _objectsList[indexElem].Settlement?.Region?.Name
                     },
                 ]
             );
@@ -123,7 +126,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                         Title = "Населённый пункт",
                     },
                     new LineElemsAdder.LabelData{
-                        Title = _objectsList[indexElem].Settlement.Name
+                        Title = _objectsList[indexElem].Settlement?.Name
                     },
                 ]
             );
@@ -138,12 +141,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             {
                 _baseRequest = new()
                 {
-                    Name = _baseResponse?.Name ?? "",
-                    Address = _baseResponse?.Address ?? "",
-                    Email = _baseResponse?.Email,
-                    PhoneNumber = _baseResponse?.PhoneNumber,
-                    RegionId = _baseResponse?.Settlement?.Region?.Id ?? 0,
-                    SettlementId = _baseResponse?.Settlement?.Id ?? 0
+                    Name = _baseResponse.Name ?? string.Empty,
+                    Address = _baseResponse.Address ?? string.Empty,
+                    Email = _baseResponse.Email,
+                    PhoneNumber = _baseResponse.PhoneNumber,
+                    RegionId = _baseResponse.Settlement?.Region?.Id ?? 0,
+                    SettlementId = _baseResponse.Settlement?.Id ?? 0
                 };
             }
 
@@ -156,13 +159,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     },
                     _componentState == ComponentState.Read ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Name
+                            Title = _baseResponse.Name
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.Name,
+                            BaseText = _baseResponse.Name,
                             Placeholder = "ГУО ...",
-                            TextChangedAction = newText => { if (_baseRequest != null) _baseRequest.Name = newText; }
+                            TextChangedAction = newText => { _baseRequest.Name = newText; }
                         }
                 ]
             );
@@ -177,24 +180,24 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Settlement.Region.Name
+                            Title = _baseResponse.Settlement?.Region?.Name
                         }
                     :
                         new LineElemsAdder.SearchData{
                             BaseItem =  new TypeResponse(){
-                                Id = _baseResponse?.Settlement?.Region?.Id ?? 0,
-                                Name = _baseResponse?.Settlement?.Region?.Name ?? "Найти"
+                                Id = _baseResponse.Settlement?.Region?.Id ?? 0,
+                                Name = _baseResponse.Settlement?.Region?.Name ?? "Найти"
                             },
                             IdChangedAction = selectedIndex =>
                             {
-                                if (_baseRequest != null) _baseRequest.RegionId = selectedIndex;
+                                _baseRequest.RegionId = selectedIndex;
                                 if(settlementElems != null &&
                                    settlementElems[^1] is TapGestureRecognizer searchSettlement &&
-                                   _baseRequest?.RegionId >= 0)
+                                   _baseRequest.RegionId != null)
                                 {
                                     Task.Run(async () =>
                                     {
-                                        var settlementList = await GetSettlements(_baseRequest.RegionId);
+                                        var settlementList = await GetSettlements(_baseRequest.RegionId.Value);
 
                                         searchSettlement.BindingContext = settlementList;
                                     });
@@ -222,15 +225,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Settlement.Name
+                            Title = _baseResponse.Settlement?.Name
                         }
                     :
                         new LineElemsAdder.SearchData{
                             BaseItem =  new TypeResponse(){
-                                Id = _baseResponse?.Settlement?.Id ?? 0,
-                                Name = _baseResponse?.Settlement?.Name ?? "Найти"
+                                Id = _baseResponse.Settlement?.Id ?? 0,
+                                Name = _baseResponse.Settlement?.Name ?? "Найти"
                             },
-                            IdChangedAction = selectedIndex => {if (_baseRequest != null)  _baseRequest.SettlementId = selectedIndex;}
+                            IdChangedAction = selectedIndex => { _baseRequest.SettlementId = selectedIndex;}
                         }
                 ]
             );
@@ -239,7 +242,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             {
                 Task.Run(async () =>
                 {
-                    var settlementList = await GetSettlements(_baseResponse?.Settlement?.Region?.Id ?? 0);
+                    var settlementList = await GetSettlements(_baseResponse.Settlement?.Region?.Id ?? 0);
 
                     searchSettlement.BindingContext = settlementList;
                 });
@@ -254,13 +257,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Address
+                            Title = _baseResponse.Address
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.Address,
+                            BaseText = _baseResponse.Address,
                             Placeholder = "ул. Ленина, 12",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Address = newText; }
+                            TextChangedAction = newText => _baseRequest.Address = newText
                         }
                 ]
             );
@@ -274,13 +277,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Email
+                            Title = _baseResponse.Email
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.Email,
+                            BaseText = _baseResponse.Email,
                             Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Email = newText; }
+                            TextChangedAction = newText => _baseRequest.Email = newText
                         }
                 ]
             );
@@ -294,13 +297,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.PhoneNumber
+                            Title = _baseResponse.PhoneNumber
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.PhoneNumber,
+                            BaseText = _baseResponse.PhoneNumber,
                             Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.PhoneNumber = newText; }
+                            TextChangedAction = newText => _baseRequest.PhoneNumber = newText
                         }
                 ]
             );

@@ -4,9 +4,12 @@ using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.Base
 {
-    public class UserView<TController>
-        : BaseView<BaseUserResponse, BaseUserRequest, TController>,
-        IBaseView where TController : IController
+    public class UserView<TResponse, TRequest, TController>
+        : BaseView<TResponse, TRequest, TController>, IBaseView
+        where TResponse : BaseUserResponse, new()
+        where TRequest : BaseUserRequest, new()
+        where TController : IController, new()
+
     {
         public UserView(
             HorizontalStackLayout mainStack,
@@ -14,16 +17,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             long educationalInstitutionId
         ) : base(mainStack, viewList)
         {
-            _baseResponse = new();
-            _baseRequest = new();
             _maxCountViews = 3;
             _educationalInstitutionId = educationalInstitutionId;
         }
 
         // Фильтр объектов
-        private string _lastNameFilter = "";
-        private string _firstNameFilter = "";
-        private string _patronymicFilter = "";
+        private string _lastNameFilter = string.Empty;
+        private string _firstNameFilter = string.Empty;
+        private string _patronymicFilter = string.Empty;
 
         protected override void CreateFilterView(Grid grid, ref int rowIndex)
         {
@@ -78,9 +79,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
         {
             _objectsList = _objectsList
                 .Where(e =>
-                    (_lastNameFilter?.Length == 0 || (e.LastName ?? "").Contains(_lastNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_firstNameFilter?.Length == 0 || (e.FirstName ?? "").Contains(_firstNameFilter ?? "", StringComparison.OrdinalIgnoreCase)) &&
-                    (_patronymicFilter?.Length == 0 || (e.Patronymic ?? "").Contains(_patronymicFilter ?? "", StringComparison.OrdinalIgnoreCase)))
+                    (_lastNameFilter?.Length == 0 || (e.LastName ?? string.Empty).Contains(_lastNameFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase)) &&
+                    (_firstNameFilter?.Length == 0 || (e.FirstName ?? string.Empty).Contains(_firstNameFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase)) &&
+                    (_patronymicFilter?.Length == 0 || (e.Patronymic ?? string.Empty).Contains(_patronymicFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
         }
 
@@ -137,15 +138,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
             {
                 _baseRequest = new()
                 {
-                    FirstName = _baseResponse?.FirstName ?? "",
-                    LastName = _baseResponse?.LastName ?? "",
-                    Patronymic = _baseResponse?.Patronymic,
-                    Email = _baseResponse?.Email ?? "",
-                    PhoneNumber = _baseResponse?.PhoneNumber ?? "",
-                    UniversityId = _baseResponse?.EducationalInstitution.Id ?? 0,
+                    FirstName = _baseResponse.FirstName ?? string.Empty,
+                    LastName = _baseResponse.LastName ?? string.Empty,
+                    Patronymic = _baseResponse.Patronymic,
+                    Email = _baseResponse.Email ?? string.Empty,
+                    PhoneNumber = _baseResponse.PhoneNumber ?? string.Empty,
+                    UniversityId = _baseResponse.EducationalInstitution.Id ?? 0,
 
-                    Login = "",
-                    Password = ""
+                    Login = string.Empty,
+                    Password = string.Empty
                 };
 
             }
@@ -159,11 +160,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.LastName
+                            Title = _baseResponse.LastName
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.LastName,
+                            BaseText = _baseResponse.LastName,
                             Placeholder = "Дубовский",
                             TextChangedAction = newText => {if (_baseRequest != null)_baseRequest.LastName = newText; }
                         }
@@ -179,11 +180,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.FirstName
+                            Title = _baseResponse.FirstName
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.FirstName,
+                            BaseText = _baseResponse.FirstName,
                             Placeholder = "Алексей",
                             TextChangedAction = newText => {if(_baseRequest!=null) _baseRequest.FirstName = newText; }
                         }
@@ -199,13 +200,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Patronymic
+                            Title = _baseResponse.Patronymic
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.Patronymic,
+                            BaseText = _baseResponse.Patronymic,
                             Placeholder = "Владимирович",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Patronymic = newText; }
+                            TextChangedAction = newText => _baseRequest.Patronymic = newText
                         }
                 ]
             );
@@ -219,13 +220,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.Email
+                            Title = _baseResponse.Email
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.Email,
+                            BaseText = _baseResponse.Email,
                             Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Email = newText; }
+                            TextChangedAction = newText => _baseRequest.Email = newText
                         }
                 ]
             );
@@ -239,17 +240,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                     },
                     _componentState == ComponentState.Read  ?
                         new LineElemsAdder.LabelData{
-                            Title = _baseResponse?.PhoneNumber
+                            Title = _baseResponse.PhoneNumber
                         }
                     :
                         new LineElemsAdder.EntryData{
-                            BaseText = _baseResponse?.PhoneNumber,
+                            BaseText = _baseResponse.PhoneNumber,
                             Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.PhoneNumber = newText; }
+                            TextChangedAction = newText => _baseRequest.PhoneNumber = newText
                         }
                 ]
             );
-            if (_componentState == ComponentState.New || _componentState == ComponentState.Edit)
+            if (_componentState != ComponentState.Read)
             {
                 LineElemsAdder.AddLineElems(
                     grid: _objectGrid,
@@ -261,7 +262,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         },
                         new LineElemsAdder.EntryData{
                             Placeholder = "admin",
-                            TextChangedAction = newText => { if(_baseRequest != null) _baseRequest.Login = newText; }
+                            TextChangedAction = newText => _baseRequest.Login = newText
                         }
                     ]
                 );
@@ -275,13 +276,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.Base
                         },
                         new LineElemsAdder.EntryData {
                             Placeholder = "4Af7@adf",
-                            TextChangedAction = newText => {if(_baseRequest != null)_baseRequest.Password = newText; }
+                            TextChangedAction = newText => _baseRequest.Password = newText
                         }
                     ]
                 );
 
 
-                if (_baseRequest != null) _baseRequest.UniversityId = _educationalInstitutionId;
+                _baseRequest.UniversityId = _educationalInstitutionId;
             }
         }
     }

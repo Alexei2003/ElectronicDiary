@@ -15,11 +15,11 @@ namespace ElectronicDiary
 
             Task.Run(async () =>
             {
-                if (UserData.UserInfo.Role != null)
+                if (!string.IsNullOrEmpty(UserData.UserInfo.Role))
                 {
-                    var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? "", UserData.UserInfo.Password ?? "");
+                    var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
 
-                    if (response != null)
+                    if (!string.IsNullOrEmpty(response))
                     {
                         Dispatcher.Dispatch(() =>
                         {

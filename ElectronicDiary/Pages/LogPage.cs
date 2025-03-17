@@ -7,8 +7,8 @@ namespace ElectronicDiary.Pages
 {
     public class LogPage : ContentPage
     {
-        private string _login = "";
-        private string _password = "";
+        private string _login = string.Empty;
+        private string _password = string.Empty;
 
         public LogPage()
         {
@@ -80,7 +80,7 @@ namespace ElectronicDiary.Pages
         private async void ToProfilePageButtonClicked(object? sender, EventArgs e)
         {
             var response = await AuthorizationСontroller.LogIn(_login, _password);
-            if (response != null)
+            if (!string.IsNullOrEmpty(response))
             {
                 UserData.UserInfo = new UserInfo()
                 {

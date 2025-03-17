@@ -10,7 +10,7 @@
             double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
 
             var widthLocal = 0d;
-            if (Application.Current?.Windows.Count > 0 )
+            if (Application.Current?.Windows.Count > 0)
             {
                 widthLocal = Application.Current?.Windows[0].Width ?? 0;
             }
