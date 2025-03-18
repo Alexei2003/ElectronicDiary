@@ -46,8 +46,6 @@
             {
                 viewList.RemoveAt(viewList.Count - indexDel);
             }
-
-            RepaintPage(mainStack, viewList);
         }
     }
 }

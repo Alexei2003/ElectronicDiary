@@ -1,6 +1,5 @@
 ﻿using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Others;
-using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 

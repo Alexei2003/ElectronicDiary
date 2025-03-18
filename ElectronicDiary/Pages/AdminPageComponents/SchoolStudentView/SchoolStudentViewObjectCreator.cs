@@ -11,19 +11,40 @@ using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
 {
-    class SchoolStudentViewObjectCreator<TResponse, TRequest, TController> : UserViewObjectCreator<TResponse, TRequest, TController>
+    public class SchoolStudentViewObjectCreator<TResponse, TRequest, TController> : UserViewObjectCreator<TResponse, TRequest, TController>
         where TResponse : UserResponse, new()
         where TRequest : UserRequest, new()
         where TController : IController, new()
     {
-        private int _gridParentRowOffset;
-        protected override void CreateUI(ref int rowIndex)
+        protected Grid _parentInfoGrid = [];
+        protected int _parentInfoGridRowIndex = 0;
+        private int _gridParentInfoRowOffset;
+        protected override void CreateUI()
         {
-            base.CreateUI(ref rowIndex);
+            base.CreateUI();
 
+            _parentInfoGrid = new Grid
+            {
+                // Положение
+                ColumnDefinitions =
+            {
+                new ColumnDefinition { Width = GridLength.Star },
+                new ColumnDefinition { Width = GridLength.Star }
+            },
+                // Положение
+                Padding = PageConstants.PADDING_ALL_PAGES,
+                ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
+                RowSpacing = PageConstants.SPACING_ALL_PAGES,
+
+                // Цвета
+                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+            };
+            _infoStack.Add(_parentInfoGrid);
+
+            _parentInfoGridRowIndex = 0;
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _parentInfoGrid,
+                rowIndex: _parentInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Родители:"
@@ -32,8 +53,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _parentInfoGrid,
+                rowIndex: _parentInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Тип"
@@ -44,7 +65,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                 ]
             );
 
-            _gridParentRowOffset = rowIndex;
+            _gridParentInfoRowOffset = _parentInfoGridRowIndex;
             RepaintParentsInfo();
         }
 
@@ -63,8 +84,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             {
                 var studentParent = _parentList[i];
                 var parentElems = LineElemsCreator.AddLineElems(
-                    grid: _grid,
-                    rowIndex: _gridParentRowOffset + i,
+                    grid: _parentInfoGrid,
+                    rowIndex: _gridParentInfoRowOffset + i,
                     objectList: [
                         new LineElemsCreator.LabelData{
                             Title = studentParent.ParentType?.Name,
@@ -104,7 +125,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                     Text = "Добавить",
                 };
                 addParentButton.Clicked += AddParentClicked;
-                _grid.Add(addParentButton, 0, _gridParentRowOffset + _parentList.Count);
+                _parentInfoGrid.Add(addParentButton, 0, _gridParentInfoRowOffset + _parentList.Count);
             }
         }
 
@@ -114,11 +135,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
         private async void AddParentClicked(object? sender, EventArgs e)
         {
             AddParent = true;
-            var changeRowIndex = _gridParentRowOffset + _parentList.Count;
-            LineElemsCreator.ClearGridRows(_grid, changeRowIndex);
+            var changeRowIndex = _gridParentInfoRowOffset + _parentList.Count;
+            LineElemsCreator.ClearGridRows(_parentInfoGrid, changeRowIndex);
 
-            var editElems = LineElemsCreator.AddLineElems(
-                grid: _grid,
+            var searchElems = LineElemsCreator.AddLineElems(
+                grid: _parentInfoGrid,
                 rowIndex: changeRowIndex++,
                 objectList:
                 [
@@ -132,7 +153,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                 ]
             );
 
-            if (editElems[^1] is TapGestureRecognizer searchParent)
+            if (searchElems[^1] is TapGestureRecognizer searchParent)
             {
                 if (_baseResponse.Id != null)
                 {
@@ -167,7 +188,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                 Text = "Сохранить",
             };
             saveButton.Clicked += SaveParentClicked;
-            _grid.Add(saveButton, 0, changeRowIndex++);
+            _parentInfoGrid.Add(saveButton, 0, changeRowIndex++);
             var cancelButton = new Button
             {
                 // Положение
@@ -183,8 +204,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             };
             cancelButton.Clicked += (sender, e) =>
             {
-                var changeRowIndex = _gridParentRowOffset + _parentList.Count;
-                LineElemsCreator.ClearGridRows(_grid, changeRowIndex, changeRowIndex + 1);
+                var changeRowIndex = _gridParentInfoRowOffset + _parentList.Count;
+                LineElemsCreator.ClearGridRows(_parentInfoGrid, changeRowIndex, changeRowIndex + 1);
 
                 _parentRequest = new();
                 AddParent = false;
@@ -203,10 +224,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                     Text = "Добавить",
                 };
                 addParentButton.Clicked += AddParentClicked;
-                _grid.Add(addParentButton, 0, _gridParentRowOffset + _parentList.Count);
+                _parentInfoGrid.Add(addParentButton, 0, _gridParentInfoRowOffset + _parentList.Count);
 
             };
-            _grid.Add(cancelButton, 1, changeRowIndex - 1);
+            _parentInfoGrid.Add(cancelButton, 1, changeRowIndex - 1);
         }
 
         private async void SaveParentClicked(object? sender, EventArgs e)
@@ -216,8 +237,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             var response = await ParentController.AddParent(json);
             if (!string.IsNullOrEmpty(response))
             {
-                var changeRowIndex = _gridParentRowOffset + _parentList.Count;
-                LineElemsCreator.ClearGridRows(_grid, _gridParentRowOffset, changeRowIndex + 1);
+                var changeRowIndex = _gridParentInfoRowOffset + _parentList.Count;
+                LineElemsCreator.ClearGridRows(_parentInfoGrid, _gridParentInfoRowOffset, changeRowIndex + 1);
 
                 _parentRequest = new();
                 RepaintParentsInfo();
@@ -244,7 +265,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                         var response = await ParentController.DeleteStudentParent((long)label.BindingContext);
                         if (!string.IsNullOrEmpty(response))
                         {
-                            LineElemsCreator.ClearGridRows(_grid, _gridParentRowOffset, _gridParentRowOffset + _parentList.Count);
+                            LineElemsCreator.ClearGridRows(_parentInfoGrid, _gridParentInfoRowOffset, _gridParentInfoRowOffset + _parentList.Count);
                             RepaintParentsInfo();
                         }
                     }

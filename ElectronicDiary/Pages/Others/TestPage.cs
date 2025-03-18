@@ -1,7 +1,7 @@
 ﻿using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData;
 
-namespace ElectronicDiary.Pages.Otherts
+namespace ElectronicDiary.Pages.Others
 {
     public partial class TestPage : ContentPage
     {

@@ -60,13 +60,14 @@ namespace ElectronicDiary.Web.Api.Users
         }
 
         // Получить StudentParent по id ученика
-        public static Task<string?> GetParentStudents(long schoolStudentId)
+        public static Task<string?> GetStudentParents(long schoolStudentId)
         {
             string url = $"/getStudentParents?id={schoolStudentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public static Task<string?> GetStudentParents(long parentId)
+        // Получить StudentParent по id родителя
+        public static Task<string?> GetParentStudents(long parentId)
         {
             string url = $"/getStudentParentsByParentTd?id={parentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

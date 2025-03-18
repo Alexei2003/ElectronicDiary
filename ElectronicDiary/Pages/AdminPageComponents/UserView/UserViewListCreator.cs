@@ -73,12 +73,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         // Получение списка объектов
         protected override void FilterList()
         {
-            _objectsList = _objectsList
+            bool filterByLastName = string.IsNullOrEmpty(_lastNameFilter);
+            bool filterByFirstName = string.IsNullOrEmpty(_firstNameFilter);
+            bool filterByPatronymic = string.IsNullOrEmpty(_patronymicFilter);
+
+            _objectsList = [.. _objectsList
                 .Where(e =>
-                    (_lastNameFilter?.Length == 0 || (e.LastName ?? string.Empty).Contains(_lastNameFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase)) &&
-                    (_firstNameFilter?.Length == 0 || (e.FirstName ?? string.Empty).Contains(_firstNameFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase)) &&
-                    (_patronymicFilter?.Length == 0 || (e.Patronymic ?? string.Empty).Contains(_patronymicFilter ?? string.Empty, StringComparison.OrdinalIgnoreCase)))
-                .ToList();
+                    (!filterByLastName || (e.LastName ?? string.Empty).Contains(_lastNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (!filterByFirstName || (e.FirstName ?? string.Empty).Contains(_firstNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (!filterByPatronymic || (e.Patronymic ?? string.Empty).Contains(_patronymicFilter!, StringComparison.OrdinalIgnoreCase)))];
         }
     }
 }

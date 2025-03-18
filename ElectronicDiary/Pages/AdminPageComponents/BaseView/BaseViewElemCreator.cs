@@ -135,6 +135,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
+            AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
 
         protected virtual async Task MoveTo(long id)
@@ -186,6 +187,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             {
                 AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
                 _viewList.Add(view.Create(_mainStack, _viewList, _baseResponse.Id ?? -1));
+                AdminPageStatic.RepaintPage(_mainStack, _viewList);
             }
         }
 
@@ -195,6 +197,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
+            AdminPageStatic.RepaintPage(_mainStack, _viewList);
 
             ChageListAction.Invoke();
         }

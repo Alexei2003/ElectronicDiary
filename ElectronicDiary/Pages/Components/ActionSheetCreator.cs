@@ -5,7 +5,7 @@
         public static async Task<string> Create(string[] actionList)
         {
             var page = Application.Current?.Windows[0].Page;
-            var action = "";
+            var action = string.Empty;
             if (page != null) action = await page.DisplayActionSheet(
                 "Выберите действие",    // Заголовок
                 "Отмена",               // Кнопка отмены

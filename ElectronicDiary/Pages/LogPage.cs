@@ -1,12 +1,11 @@
 ﻿using ElectronicDiary.Pages.Others;
-using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.SaveData.SerializeClasses;
 using ElectronicDiary.Web.Api;
 
 namespace ElectronicDiary.Pages
 {
-    public class LogPage : ContentPage
+    public partial class LogPage : ContentPage
     {
         private string _login = string.Empty;
         private string _password = string.Empty;

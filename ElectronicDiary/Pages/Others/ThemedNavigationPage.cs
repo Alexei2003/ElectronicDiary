@@ -1,6 +1,6 @@
 ﻿using ElectronicDiary.SaveData;
 
-namespace ElectronicDiary.Pages.Otherts
+namespace ElectronicDiary.Pages.Others
 {
     public partial class ThemedNavigationPage : NavigationPage
     {

@@ -11,9 +11,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         where TRequest : UserRequest, new()
         where TController : IController, new()
     {
-        protected override void CreateUI(ref int rowIndex)
+        protected override void CreateUI()
         {
-            base.CreateUI(ref rowIndex);
+            base.CreateUI();
 
             if (_componentState == ComponentState.Edit)
             {
@@ -33,8 +33,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             }
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Фамилия"
@@ -53,8 +53,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Имя",
@@ -73,8 +73,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Отчество"
@@ -93,8 +93,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Email"
@@ -113,8 +113,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Телефон"
@@ -134,8 +134,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             if (_componentState != ComponentState.Read)
             {
                 LineElemsCreator.AddLineElems(
-                    grid: _grid,
-                    rowIndex: rowIndex++,
+                    grid: _baseInfoGrid,
+                    rowIndex: _baseInfoGridRowIndex++,
                     objectList:
                     [
                         new LineElemsCreator.LabelData{
@@ -148,8 +148,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     ]
                 );
                 LineElemsCreator.AddLineElems(
-                    grid: _grid,
-                    rowIndex: rowIndex++,
+                    grid: _baseInfoGrid,
+                    rowIndex: _baseInfoGridRowIndex++,
                     objectList:
                     [
                         new LineElemsCreator.LabelData {

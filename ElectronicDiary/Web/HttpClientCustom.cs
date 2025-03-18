@@ -1,5 +1,5 @@
 ﻿using ElectronicDiary.Pages;
-using ElectronicDiary.Pages.Otherts;
+using ElectronicDiary.Pages.Others;
 using System.Net;
 
 namespace ElectronicDiary.Web

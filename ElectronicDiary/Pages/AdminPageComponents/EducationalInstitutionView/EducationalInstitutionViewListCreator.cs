@@ -6,7 +6,7 @@ using ElectronicDiary.Web.DTO.Responses.Educations;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
-    class EducationalInstitutionViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator>
+    public sealed class EducationalInstitutionViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator>
         where TResponse : EducationalInstitutionResponse, new()
         where TRequest : EducationalInstitutionRequest, new()
         where TController : IController, new()
@@ -18,9 +18,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             _maxCountViews = 2;
         }
 
-        protected string _regionFilter = "";
-        protected string _settlementFilter = "";
-        protected string _nameFilter = "";
+        protected string _regionFilter = string.Empty;
+        protected string _settlementFilter = string.Empty;
+        protected string _nameFilter = string.Empty;
 
         protected override void CreateFilterUI(ref int rowIndex)
         {
@@ -69,6 +69,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             );
         }
 
+        // Получение списка объектов
         protected override void FilterList()
         {
             bool isRegionFilterEmpty = string.IsNullOrEmpty(_regionFilter);
@@ -77,9 +78,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 
             _objectsList = [.. _objectsList
                 .Where(e =>
-                    (isRegionFilterEmpty || (e.Settlement?.Region?.Name ?? "").Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
-                    (isSettlementFilterEmpty || (e.Settlement?.Name ?? "").Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&
-                    (isNameFilterEmpty || (e.Name ?? "").Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
+                    (isRegionFilterEmpty || (e.Settlement?.Region?.Name ?? string.Empty).Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (isSettlementFilterEmpty || (e.Settlement?.Name ?? string.Empty).Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (isNameFilterEmpty || (e.Name ?? string.Empty).Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
         }
     }
 }

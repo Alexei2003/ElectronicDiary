@@ -16,9 +16,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
         where TController : IController, new()
     {
 
-        protected override void CreateUI(ref int rowIndex)
+        protected override void CreateUI()
         {
-            base.CreateUI(ref rowIndex);
+            base.CreateUI();
 
             if (_componentState == ComponentState.Edit)
             {
@@ -34,8 +34,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             }
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Название"
@@ -55,8 +55,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 
             object[]? settlementElems = null;
             var regionElems = LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Регион"
@@ -100,8 +100,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             }
 
             settlementElems = LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Населённый пункт"
@@ -132,8 +132,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             }
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Адресс"
@@ -152,8 +152,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Email"
@@ -172,8 +172,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Телефон"

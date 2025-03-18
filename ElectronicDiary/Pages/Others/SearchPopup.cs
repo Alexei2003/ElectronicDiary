@@ -4,10 +4,10 @@ using ElectronicDiary.Web.DTO.Responses;
 
 namespace ElectronicDiary.Pages.Others
 {
-    public class SearchPopup : Popup
+    public partial class SearchPopup : Popup
     {
         public List<TypeResponse> AllItems { get; set; }
-        private ListView _listView;
+        private readonly ListView _listView;
 
         public SearchPopup(List<TypeResponse>? items, Action<long> IdChangedAction)
         {

@@ -1,6 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Others;
+using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
@@ -15,14 +16,34 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
         where TRequest : ParentRequest, new()
         where TController : IController, new()
     {
-        protected int _gridParentRowOffset;
-        protected override void CreateUI(ref int rowIndex)
+        protected Grid _parentInfoGrid = [];
+        protected int _parentInfoGridRowIndex = 0;
+        protected int _gridParentInfoRowOffset;
+        protected override void CreateUI()
         {
-            base.CreateUI(ref rowIndex);
+            base.CreateUI();
+            _parentInfoGrid = new Grid
+            {
+                // Положение
+                ColumnDefinitions =
+            {
+                new ColumnDefinition { Width = GridLength.Star },
+                new ColumnDefinition { Width = GridLength.Star }
+            },
+                // Положение
+                Padding = PageConstants.PADDING_ALL_PAGES,
+                ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
+                RowSpacing = PageConstants.SPACING_ALL_PAGES,
 
+                // Цвета
+                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+            };
+            _infoStack.Add(_parentInfoGrid);
+
+            _parentInfoGridRowIndex = 0;
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _parentInfoGrid,
+                rowIndex: _parentInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Дети:"
@@ -31,8 +52,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
             );
 
             LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
+                grid: _parentInfoGrid,
+                rowIndex: _parentInfoGridRowIndex++,
                 objectList: [
                     new LineElemsCreator.LabelData{
                         Title = "Тип"
@@ -43,7 +64,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
                 ]
             );
 
-            _gridParentRowOffset = rowIndex;
+            _gridParentInfoRowOffset = _parentInfoGridRowIndex;
             RepaintParentsInfo();
         }
 
@@ -56,7 +77,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
             {
                 if (_baseResponse.Id != null)
                 {
-                    var response = await ParentController.GetStudentParents(_baseResponse.Id.Value);
+                    var response = await ParentController.GetParentStudents(_baseResponse.Id.Value);
                     _parentList = [];
                     if (!string.IsNullOrEmpty(response)) _parentList = JsonSerializer.Deserialize<List<StudentParentResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
                 }
@@ -65,14 +86,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
                 {
                     var studentParent = _parentList[i];
                     LineElemsCreator.AddLineElems(
-                        grid: _grid,
-                        rowIndex: _gridParentRowOffset + i,
+                        grid: _parentInfoGrid,
+                        rowIndex: _gridParentInfoRowOffset + i,
                         objectList: [
                             new LineElemsCreator.LabelData{
                             Title = studentParent.ParentType?.Name,
                     },
                         new LineElemsCreator.LabelData{
-                            Title =  $"{studentParent.Parent?.LastName} {studentParent.Parent?.FirstName} {studentParent.Parent?.Patronymic}"
+                            Title =  $"{studentParent.SchoolStudent?.LastName} {studentParent.SchoolStudent?.FirstName} {studentParent.SchoolStudent?.Patronymic}"
                         }
                         ]
                     );
@@ -86,11 +107,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
                 if (!string.IsNullOrEmpty(response)) _parentTypeList = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
 
 
-                var changeRowIndex = _gridParentRowOffset + _parentList.Count;
-                LineElemsCreator.ClearGridRows(_grid, changeRowIndex);
+                var changeRowIndex = _gridParentInfoRowOffset + _parentList.Count;
+                LineElemsCreator.ClearGridRows(_parentInfoGrid, changeRowIndex);
 
-                var editElems = LineElemsCreator.AddLineElems(
-                    grid: _grid,
+                var searchElems = LineElemsCreator.AddLineElems(
+                    grid: _parentInfoGrid,
                     rowIndex: changeRowIndex++,
                     objectList:
                     [
@@ -104,7 +125,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
                     ]
                 );
 
-                if (editElems[^1] is TapGestureRecognizer searchParent)
+                if (searchElems[^1] is TapGestureRecognizer searchParent)
                 {
 
                     var schoolStudentController = new SchoolStudentController();

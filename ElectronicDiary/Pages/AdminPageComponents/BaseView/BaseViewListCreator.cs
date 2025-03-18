@@ -132,6 +132,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _educationalInstitutionId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
+            AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
 
         // Получение списка объектов

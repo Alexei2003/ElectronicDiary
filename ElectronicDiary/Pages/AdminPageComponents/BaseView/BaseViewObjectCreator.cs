@@ -28,7 +28,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected ComponentState _componentState;
 
         // Вид объекта
-        protected Grid _grid = [];
+        protected VerticalStackLayout _infoStack = [];
+        protected Grid _baseInfoGrid = [];
+        protected int _baseInfoGridRowIndex = 0;
+
         public ScrollView Create(HorizontalStackLayout mainStack,
                                     List<ScrollView> viewList,
                                     Action chageListAction,
@@ -59,8 +62,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 }
             }
 
-
-
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
@@ -73,7 +74,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 Content = verticalStack
             };
 
-            _grid = new Grid
+            _infoStack = new VerticalStackLayout
+            {
+                // Положение
+                Spacing = PageConstants.SPACING_ALL_PAGES,
+            };
+            verticalStack.Add(_infoStack);
+
+            _baseInfoGrid = new Grid
             {
                 // Положение
                 ColumnDefinitions =
@@ -81,6 +89,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 new ColumnDefinition { Width = GridLength.Star },
                 new ColumnDefinition { Width = GridLength.Star }
             },
+                // Положение
                 Padding = PageConstants.PADDING_ALL_PAGES,
                 ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
                 RowSpacing = PageConstants.SPACING_ALL_PAGES,
@@ -88,11 +97,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
             };
+            _infoStack.Add(_baseInfoGrid);
 
-            var rowIndex = 0;
-            CreateUI(ref rowIndex);
-
-            verticalStack.Add(_grid);
+            CreateUI();
 
             if (_componentState != ComponentState.Read)
             {
@@ -118,9 +125,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         }
 
         // Пусто
-        protected virtual void CreateUI(ref int rowIndex)
+        protected virtual void CreateUI()
         {
-
+            _baseInfoGridRowIndex = 0;
         }
 
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
