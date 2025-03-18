@@ -1,48 +1,43 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
-using ElectronicDiary.Pages.Otherts;
+﻿using ElectronicDiary.Pages.AdminPageComponents.UserView;
+using ElectronicDiary.Pages.Components;
+using ElectronicDiary.Pages.Others;
+using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses;
 using ElectronicDiary.Web.DTO.Responses.Users;
 using System.Text.Json;
 
-namespace ElectronicDiary.Pages.AdminPageComponents
+namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
 {
-    public class ParentView
-        : UserView<BaseUserResponse, ParentRequest, ParentController>
+    public class ParentViewObjectCreator<TResponse, TRequest, TController> : UserViewObjectCreator<TResponse, TRequest, TController>
+        where TResponse : UserResponse, new()
+        where TRequest : ParentRequest, new()
+        where TController : IController, new()
     {
-        public ParentView(
-            HorizontalStackLayout mainStack,
-            List<ScrollView> viewList,
-            long educationalInstitutionId
-        ) : base(mainStack, viewList, educationalInstitutionId)
-        {
-            _baseRequest = new ParentRequest();
-        }
-
         protected int _gridParentRowOffset;
-        protected override void CreateObjectInfoView(ref int rowIndex)
+        protected override void CreateUI(ref int rowIndex)
         {
-            base.CreateObjectInfoView(ref rowIndex);
+            base.CreateUI(ref rowIndex);
 
-            LineElemsAdder.AddLineElems(
-                grid: _objectGrid,
+            LineElemsCreator.AddLineElems(
+                grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsAdder.LabelData{
+                    new LineElemsCreator.LabelData{
                         Title = "Дети:"
                     }
                 ]
             );
 
-            LineElemsAdder.AddLineElems(
-                grid: _objectGrid,
+            LineElemsCreator.AddLineElems(
+                grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsAdder.LabelData{
+                    new LineElemsCreator.LabelData{
                         Title = "Тип"
                     },
-                    new LineElemsAdder.LabelData{
+                    new LineElemsCreator.LabelData{
                         Title = "ФИО"
                     }
                 ]
@@ -69,14 +64,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                 for (var i = 0; i < _parentList.Count; i++)
                 {
                     var studentParent = _parentList[i];
-                    LineElemsAdder.AddLineElems(
-                        grid: _objectGrid,
+                    LineElemsCreator.AddLineElems(
+                        grid: _grid,
                         rowIndex: _gridParentRowOffset + i,
                         objectList: [
-                            new LineElemsAdder.LabelData{
+                            new LineElemsCreator.LabelData{
                             Title = studentParent.ParentType?.Name,
                     },
-                        new LineElemsAdder.LabelData{
+                        new LineElemsCreator.LabelData{
                             Title =  $"{studentParent.Parent?.LastName} {studentParent.Parent?.FirstName} {studentParent.Parent?.Patronymic}"
                         }
                         ]
@@ -92,18 +87,18 @@ namespace ElectronicDiary.Pages.AdminPageComponents
 
 
                 var changeRowIndex = _gridParentRowOffset + _parentList.Count;
-                LineElemsAdder.ClearGridRows(_objectGrid, changeRowIndex);
+                LineElemsCreator.ClearGridRows(_grid, changeRowIndex);
 
-                var editElems = LineElemsAdder.AddLineElems(
-                    grid: _objectGrid,
+                var editElems = LineElemsCreator.AddLineElems(
+                    grid: _grid,
                     rowIndex: changeRowIndex++,
                     objectList:
                     [
-                        new LineElemsAdder.PickerData{
+                        new LineElemsCreator.PickerData{
                             Items = _parentTypeList,
                             IdChangedAction = selectedIndex => _baseRequest.ParentType = selectedIndex
                         },
-                        new LineElemsAdder.SearchData{
+                        new LineElemsCreator.SearchData{
                             IdChangedAction = selectedIndex => _baseRequest.SchoolStudentId = selectedIndex
                         }
                     ]
@@ -116,7 +111,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents
                     response = await schoolStudentController.GetAll(_educationalInstitutionId);
                     if (!string.IsNullOrEmpty(response))
                     {
-                        var list = JsonSerializer.Deserialize<List<BaseUserResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
+                        var list = JsonSerializer.Deserialize<List<UserResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
                         var idAndFullNameList = list
                             .Select(item => new TypeResponse()
                             {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace ElectronicDiary.Pages.Otherts
+namespace ElectronicDiary.Pages.Others
 {
     public static class PageConstants
     {

@@ -1,6 +1,6 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents;
 
-namespace ElectronicDiary.Pages
+namespace ElectronicDiary.Pages.Others
 {
     public partial class EmptyPage : ContentPage
     {

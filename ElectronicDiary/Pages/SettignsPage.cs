@@ -1,4 +1,4 @@
-﻿using ElectronicDiary.Pages.Otherts;
+﻿using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData;
 
 namespace ElectronicDiary.Pages

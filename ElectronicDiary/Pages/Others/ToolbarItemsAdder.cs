@@ -1,8 +1,9 @@
-﻿using ElectronicDiary.SaveData;
+﻿using ElectronicDiary.Pages.Otherts;
+using ElectronicDiary.SaveData;
 using ElectronicDiary.SaveData.SerializeClasses;
 using ElectronicDiary.Web.Api;
 
-namespace ElectronicDiary.Pages.Otherts
+namespace ElectronicDiary.Pages.Others
 {
     public static class ToolbarItemsAdder
     {

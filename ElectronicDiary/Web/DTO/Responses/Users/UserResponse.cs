@@ -1,10 +1,15 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses.Users
+﻿using ElectronicDiary.Web.DTO.Responses.Educations;
+
+namespace ElectronicDiary.Web.DTO.Responses.Users
 {
     public record UserResponse : BaseResponse
     {
-        public string? Login { get; init; } = null;
-        public byte[]? Hash { get; init; } = null;
-        public byte[]? Salt { get; init; } = null;
-        public TypeResponse? UserType { get; init; } = null;
+        public EducationalInstitutionResponse? EducationalInstitution { get; init; } = null;
+        public string? FirstName { get; init; } = null;
+        public string? LastName { get; init; } = null;
+        public string? Patronymic { get; init; }
+        public string? PathImage { get; init; }
+        public string? Email { get; init; }
+        public string? PhoneNumber { get; init; }
     }
 }

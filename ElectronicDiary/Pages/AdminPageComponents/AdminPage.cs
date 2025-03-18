@@ -1,6 +1,9 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.Base;
-using ElectronicDiary.Pages.Otherts;
+﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
+using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData;
+using ElectronicDiary.Web.Api.Educations;
+using ElectronicDiary.Web.DTO.Requests.Educations;
+using ElectronicDiary.Web.DTO.Responses.Educations;
 
 namespace ElectronicDiary.Pages.AdminPageComponents
 {
@@ -23,8 +26,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents
             // Цвета
             BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
-            var educationalInstitutionView = new EducationalInstitutionView(_mainStack, _viewList);
-            _viewList.Add(educationalInstitutionView.CreateMainView());
+            var view = new EducationalInstitutionViewListCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller,
+                        EducationalInstitutionViewElemCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller,
+                        EducationalInstitutionViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>>,
+                        EducationalInstitutionViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>>();
+            _viewList.Add(view.Create(_mainStack, _viewList));
 
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
 

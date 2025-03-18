@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Maui.Views;
-using ElectronicDiary.Pages.Otherts;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.DTO.Responses;
 
-namespace ElectronicDiary
+namespace ElectronicDiary.Pages.Others
 {
     public class SearchPopup : Popup
     {

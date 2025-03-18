@@ -85,4 +85,9 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Pages\AdminPageComponents\AdministratorView\" />
+	  <Folder Include="Pages\AdminPageComponents\TeacherView\" />
+	</ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Pages.AdminPageComponents.Base
+﻿namespace ElectronicDiary.Pages.AdminPageComponents
 {
     public static class AdminPageStatic
     {
@@ -38,6 +38,16 @@
             }
 
             return true;
+        }
+
+        public static void DeleteLastView(HorizontalStackLayout mainStack, List<ScrollView> viewList, int maxCountViews, int indexDel = 1)
+        {
+            while (viewList.Count >= maxCountViews)
+            {
+                viewList.RemoveAt(viewList.Count - indexDel);
+            }
+
+            RepaintPage(mainStack, viewList);
         }
     }
 }

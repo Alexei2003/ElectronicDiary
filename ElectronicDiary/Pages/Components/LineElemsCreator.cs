@@ -1,10 +1,11 @@
 ﻿using CommunityToolkit.Maui.Views;
+using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.DTO.Responses;
 
-namespace ElectronicDiary.Pages
+namespace ElectronicDiary.Pages.Components
 {
-    public static class LineElemsAdder
+    public static class LineElemsCreator
     {
         public class LabelData
         {
