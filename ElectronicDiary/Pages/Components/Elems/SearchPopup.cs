@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
+
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.DTO.Responses;
 
@@ -6,10 +8,10 @@ namespace ElectronicDiary.Pages.Others
 {
     public partial class SearchPopup : Popup
     {
-        public List<TypeResponse> AllItems { get; set; }
+        public List<Item> AllItems { get; set; }
         private readonly ListView _listView;
 
-        public SearchPopup(List<TypeResponse>? items, Action<long> IdChangedAction)
+        public SearchPopup(List<Item>? items, Action<long> IdChangedAction)
         {
             AllItems = items ?? [];
 
@@ -61,8 +63,8 @@ namespace ElectronicDiary.Pages.Others
 #if WINDOWS
                 HeightRequest = 100,
 #endif
-                Padding = PageConstants.PADDING_ALL_PAGES,
-                Spacing = PageConstants.SPACING_ALL_PAGES,
+                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
 
                 // Цвета
                 BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,

@@ -47,5 +47,9 @@
                 viewList.RemoveAt(viewList.Count - indexDel);
             }
         }
+        public enum ComponentState
+        {
+            Read, New, Edit
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
-using ElectronicDiary.Pages.Others;
+using ElectronicDiary.Pages.Components.NavigationPage;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;

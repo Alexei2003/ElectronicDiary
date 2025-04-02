@@ -2,8 +2,19 @@
 {
     public class UserSettings
     {
+        public SizesClass Sizes { get; set; } = new();
+
         public FontsClass Fonts { get; set; } = new();
         public ColorsClass Colors { get; set; } = new();
+
+
+        public class SizesClass 
+        {
+            // Размеры
+            public Thickness PADDING_ALL_PAGES { get; set; } = new Thickness(10);
+            public int SPACING_ALL_PAGES = 10;
+            public int IMAGE_SIZE = 100;
+        }
 
         public class FontsClass
         {

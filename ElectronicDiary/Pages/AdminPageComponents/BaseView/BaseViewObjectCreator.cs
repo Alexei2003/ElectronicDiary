@@ -1,8 +1,12 @@
-﻿using ElectronicDiary.Pages.Others;
+﻿using ElectronicDiary.Pages.Components;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Responses;
+
 using System.Text.Json;
+
+using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
@@ -21,10 +25,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected long _educationalInstitutionId;
 
-        protected enum ComponentState
-        {
-            Read, New, Edit
-        }
+
         protected ComponentState _componentState;
 
         // Вид объекта
@@ -65,8 +66,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
-                Padding = PageConstants.PADDING_ALL_PAGES,
-                Spacing = PageConstants.SPACING_ALL_PAGES,
+                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
             };
 
             var scrollView = new ScrollView()
@@ -77,47 +78,18 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _infoStack = new VerticalStackLayout
             {
                 // Положение
-                Spacing = PageConstants.SPACING_ALL_PAGES,
+                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
             };
             verticalStack.Add(_infoStack);
 
-            _baseInfoGrid = new Grid
-            {
-                // Положение
-                ColumnDefinitions =
-            {
-                new ColumnDefinition { Width = GridLength.Star },
-                new ColumnDefinition { Width = GridLength.Star }
-            },
-                // Положение
-                Padding = PageConstants.PADDING_ALL_PAGES,
-                ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
-                RowSpacing = PageConstants.SPACING_ALL_PAGES,
-
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-            };
+            _baseInfoGrid = BaseElemCreator.CreateGrid();
             _infoStack.Add(_baseInfoGrid);
 
             CreateUI();
 
             if (_componentState != ComponentState.Read)
             {
-                var saveButton = new Button
-                {
-                    // Положение
-                    HorizontalOptions = LayoutOptions.Fill,
-
-                    // Цвета
-                    BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
-                    TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-
-                    // Текст
-                    FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                    Text = "Сохранить",
-                };
-                saveButton.Clicked += SaveButtonClicked;
-
+                var saveButton = BaseElemCreator.CreateButton("Сохранить", SaveButtonClicked); 
                 verticalStack.Add(saveButton);
             }
 

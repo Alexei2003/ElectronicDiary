@@ -1,20 +1,16 @@
 ﻿using System.Text.Json;
 
-namespace ElectronicDiary.Pages.Others
+namespace ElectronicDiary.Pages.Components
 {
     public static class PageConstants
     {
-        // Размеры
-        public static Thickness PADDING_ALL_PAGES { get; set; } = new Thickness(10);
-        public const int SPACING_ALL_PAGES = 10;
-        public const int IMAGE_SIZE = 50;
-
         // Json
         public static JsonSerializerOptions JsonSerializerOptions { get; set; } = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-
+        // URL
+        public const string NO_IMAGE_URL = "http://77.222.37.9/files/base/no_image.jpg";
     }
 }

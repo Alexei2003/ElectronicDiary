@@ -1,8 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
-using ElectronicDiary.Pages.Others;
-using ElectronicDiary.SaveData;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
@@ -49,21 +48,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += GestureTapped;
-            _grid = new Grid
-            {
-                // Положение
-                ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = GridLength.Star },
-                    new ColumnDefinition { Width = GridLength.Star }
-                },
-                Padding = PageConstants.PADDING_ALL_PAGES,
-                ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
-                RowSpacing = PageConstants.SPACING_ALL_PAGES,
-
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-            };
+            _grid = BaseElemCreator.CreateGrid();
             _grid.GestureRecognizers.Add(tapGesture);
 
             var rowIndex = 0;
@@ -84,28 +69,23 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             if (_baseResponse.Id != null)
             {
                 var action = string.Empty;
-                var page = Application.Current?.Windows[0].Page;
                 if (_maxCountViews == 2)
                 {
-                    if (page != null) action = await page.DisplayActionSheet(
-                        "Выберите действие",    // Заголовок
-                        "Отмена",               // Кнопка отмены
-                        null,                   // Кнопка деструктивного действия (например, удаление)
-                        "Описание",             // Остальные кнопки
+                    action = await BaseElemCreator.CreateActionSheetCreator(
+                       [
+                        "Описание",
                         "Перейти",
                         "Редактировать",
-                        "Удалить");
+                        "Удалить"]);
 
                 }
                 else
                 {
-                    if (page != null) action = await page.DisplayActionSheet(
-                        "Выберите действие",    // Заголовок
-                        "Отмена",               // Кнопка отмены
-                        null,                   // Кнопка деструктивного действия (например, удаление)
-                        "Описание",             // Остальные кнопки
+                    action = await BaseElemCreator.CreateActionSheetCreator(
+                       [
+                        "Описание",
                         "Редактировать",
-                        "Удалить");
+                        "Удалить"]);
                 }
 
                 switch (action)
@@ -141,16 +121,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual async Task MoveTo(long id)
         {
             string action = string.Empty;
-            var page = Application.Current?.Windows[0].Page;
-            if (page != null) action = await page.DisplayActionSheet(
-                "Выберите список",      // Заголовок
-                "Отмена",               // Кнопка отмены
-                null,                   // Кнопка деструктивного действия (например, удаление)
-                "Администраторы",       // Остальные кнопки
+            action = await BaseElemCreator.CreateActionSheetCreator(
+               [                
+                "Администраторы",       
                 "Учителя",
                 "Классы",
                 "Ученики",
-                "Родители");
+                "Родители"]);
 
             IBaseViewListCreator? view = null;
             switch (action)
@@ -191,7 +168,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             }
         }
 
-        protected virtual void Edit(long id)
+        protected virtual async Task Edit(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
             var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
@@ -202,9 +179,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             ChageListAction.Invoke();
         }
 
-        protected virtual void Delete(long id)
+        protected virtual async Task Delete(long id)
         {
-            _controller?.Delete(id);
+            await _controller?.Delete(id);
             ChageListAction.Invoke();
         }
     }

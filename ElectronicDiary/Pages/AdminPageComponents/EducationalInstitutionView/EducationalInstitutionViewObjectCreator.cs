@@ -1,12 +1,15 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.Components;
-using ElectronicDiary.Pages.Others;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses;
 using ElectronicDiary.Web.DTO.Responses.Educations;
+
 using System.Text.Json;
+
+using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
@@ -32,6 +35,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     SettlementId = _baseResponse.Settlement?.Id ?? 0
                 };
             }
+
+            LineElemsCreator.AddLineElems(
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
+                objectList: [
+                     new LineElemsCreator.ImageData{
+                         PathImage = _baseResponse.PathImage,
+                     }
+                ]);
 
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,

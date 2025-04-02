@@ -1,8 +1,10 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
-using ElectronicDiary.Pages.Components;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Users;
+
+using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.UserView
 {
@@ -31,6 +33,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 };
 
             }
+
+            LineElemsCreator.AddLineElems(
+                   grid: _baseInfoGrid,
+                   rowIndex: _baseInfoGridRowIndex++,
+                   objectList: [
+                        new LineElemsCreator.ImageData{
+                            PathImage = _baseResponse.PathImage,
+                        }
+                   ]);
 
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
@@ -165,7 +176,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
 
                 _baseRequest.UniversityId = _educationalInstitutionId;
             }
-
         }
     }
 }

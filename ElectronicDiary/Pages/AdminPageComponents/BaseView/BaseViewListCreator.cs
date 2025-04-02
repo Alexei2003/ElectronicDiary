@@ -1,7 +1,9 @@
-﻿using ElectronicDiary.Pages.Others;
+﻿using ElectronicDiary.Pages.Components;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Responses;
+
 using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
@@ -27,7 +29,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected int _maxCountViews;
         protected VerticalStackLayout _listVerticalStack = new()
         {
-            Spacing = PageConstants.SPACING_ALL_PAGES
+            Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES
         };
         protected long _educationalInstitutionId;
 
@@ -48,8 +50,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
-                Padding = PageConstants.PADDING_ALL_PAGES,
-                Spacing = PageConstants.SPACING_ALL_PAGES,
+                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
             };
 
             var scrollView = new ScrollView()
@@ -57,56 +59,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 Content = verticalStack
             };
 
-            _grid = new Grid
-            {
-                // Положение
-                ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = GridLength.Star },
-                    new ColumnDefinition { Width = GridLength.Star }
-                },
-                Padding = PageConstants.PADDING_ALL_PAGES,
-                ColumnSpacing = PageConstants.SPACING_ALL_PAGES,
-                RowSpacing = PageConstants.SPACING_ALL_PAGES,
-
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-            };
+            _grid = BaseElemCreator.CreateGrid();
 
             var rowIndex = 0;
             CreateFilterUI(ref rowIndex);
             verticalStack.Add(_grid);
 
-            var getButton = new Button
-            {
-                // Положение
-                HorizontalOptions = LayoutOptions.Fill,
-
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Text = "Найти",
-            };
-            getButton.Clicked += GetButtonClicked;
+            var getButton = BaseElemCreator.CreateButton("Найти", GetButtonClicked); 
             verticalStack.Add(getButton);
 
-            var addButton = new Button
-            {
-                // Положение
-                HorizontalOptions = LayoutOptions.Fill,
-
-                // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
-                Text = "Добавить",
-            };
-            addButton.Clicked += AddButtonClicked;
+            var addButton = BaseElemCreator.CreateButton("Добавить", AddButtonClicked); 
             verticalStack.Add(addButton);
 
             verticalStack.Add(_listVerticalStack);
