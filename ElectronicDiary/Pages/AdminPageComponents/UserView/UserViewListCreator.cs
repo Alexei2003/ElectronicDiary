@@ -30,12 +30,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Фамилия",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Фамилия"),
                     },
-                    new LineElemsCreator.EntryData{
-                        Placeholder = "Дубовский",
-                        TextChangedAction = newText => _lastNameFilter = newText
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateEntry(newText => _lastNameFilter = newText, "Дубовский")
                     },
                 ]
             );
@@ -44,12 +45,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Имя",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Имя"),
                     },
-                    new LineElemsCreator.EntryData{
-                        Placeholder = "Алексей",
-                        TextChangedAction = newText => _firstNameFilter = newText
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateEntry(newText => _firstNameFilter = newText, "Алексей")
                     },
                 ]
             );
@@ -59,12 +61,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Отчество",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Отчество"),
                     },
-                    new LineElemsCreator.EntryData{
-                        Placeholder = "Владимирович",
-                        TextChangedAction = newText => _patronymicFilter = newText
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateEntry(newText => _patronymicFilter = newText,  "Владимирович")
                     },
                 ]
             );
@@ -77,7 +80,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             bool filterByFirstName = string.IsNullOrEmpty(_firstNameFilter);
             bool filterByPatronymic = string.IsNullOrEmpty(_patronymicFilter);
 
-            _objectsList = [.. _objectsList
+            _objectsArr = [.. _objectsArr
                 .Where(e =>
                     (!filterByLastName || (e.LastName ?? string.Empty).Contains(_lastNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
                     (!filterByFirstName || (e.FirstName ?? string.Empty).Contains(_firstNameFilter!, StringComparison.OrdinalIgnoreCase)) &&

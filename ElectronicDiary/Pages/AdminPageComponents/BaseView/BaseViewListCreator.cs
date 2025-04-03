@@ -1,10 +1,10 @@
-﻿using ElectronicDiary.Pages.Components;
+﻿using System.Text.Json;
+
+using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Responses;
-
-using System.Text.Json;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
@@ -59,16 +59,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 Content = verticalStack
             };
 
-            _grid = BaseElemCreator.CreateGrid();
+            _grid = BaseElemsCreator.CreateGrid();
 
             var rowIndex = 0;
             CreateFilterUI(ref rowIndex);
             verticalStack.Add(_grid);
 
-            var getButton = BaseElemCreator.CreateButton("Найти", GetButtonClicked); 
+            var getButton = BaseElemsCreator.CreateButton("Найти", GetButtonClicked);
             verticalStack.Add(getButton);
 
-            var addButton = BaseElemCreator.CreateButton("Добавить", AddButtonClicked); 
+            var addButton = BaseElemsCreator.CreateButton("Добавить", AddButtonClicked);
             verticalStack.Add(addButton);
 
             verticalStack.Add(_listVerticalStack);
@@ -98,18 +98,18 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         }
 
         // Получение списка объектов
-        protected List<TResponse> _objectsList = [];
+        protected TResponse[] _objectsArr = [];
         protected virtual async Task CreateListUI()
         {
             await GetList();
 
             _listVerticalStack.Clear();
 
-            for (var i = 0; i < _objectsList.Count; i++)
+            for (var i = 0; i < _objectsArr.Length; i++)
             {
 
                 var baseViewElemCreator = new TViewElemCreator();
-                var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsList[i], _maxCountViews, _educationalInstitutionId);
+                var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _educationalInstitutionId);
                 _listVerticalStack.Add(grid);
             }
         }
@@ -122,7 +122,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual async Task GetList()
         {
             var response = await _controller.GetAll(_educationalInstitutionId);
-            if (!string.IsNullOrEmpty(response)) _objectsList = JsonSerializer.Deserialize<List<TResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
+            if (!string.IsNullOrEmpty(response)) _objectsArr = JsonSerializer.Deserialize<TResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
             FilterList();
         }
 

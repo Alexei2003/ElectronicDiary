@@ -1,10 +1,10 @@
-﻿using ElectronicDiary.Pages.Components;
+﻿using System.Text.Json;
+
+using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Responses;
-
-using System.Text.Json;
 
 using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
@@ -21,7 +21,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected HorizontalStackLayout _mainStack = [];
         protected List<ScrollView> _viewList = [];
-        protected event Action ChageListAction;
+        protected event Action ChageListAction = delegate { };
 
         protected long _educationalInstitutionId;
 
@@ -53,7 +53,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             }
             else
             {
-                if (_baseResponse.Id != null)
+                if (_baseResponse.Id > -1)
                 {
                     _componentState = ComponentState.Read;
                 }
@@ -82,14 +82,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             };
             verticalStack.Add(_infoStack);
 
-            _baseInfoGrid = BaseElemCreator.CreateGrid();
+            _baseInfoGrid = BaseElemsCreator.CreateGrid();
             _infoStack.Add(_baseInfoGrid);
 
             CreateUI();
 
             if (_componentState != ComponentState.Read)
             {
-                var saveButton = BaseElemCreator.CreateButton("Сохранить", SaveButtonClicked); 
+                var saveButton = BaseElemsCreator.CreateButton("Сохранить", SaveButtonClicked);
                 verticalStack.Add(saveButton);
             }
 

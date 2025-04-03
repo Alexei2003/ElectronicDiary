@@ -18,9 +18,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             _maxCountViews = 2;
         }
 
-        protected string _regionFilter = string.Empty;
-        protected string _settlementFilter = string.Empty;
-        protected string _nameFilter = string.Empty;
+        private string _regionFilter = string.Empty;
+        private string _settlementFilter = string.Empty;
+        private string _nameFilter = string.Empty;
 
         protected override void CreateFilterUI(ref int rowIndex)
         {
@@ -30,26 +30,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Область",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Область")
                     },
-                    new LineElemsCreator.EntryData{
-                        Placeholder = "Минская область",
-                        TextChangedAction = newText => _regionFilter = newText
-                    },
-                ]
-            );
-
-            LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
-                objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Населённый пункт",
-                    },
-                    new LineElemsCreator.EntryData{
-                        Placeholder = "г.Солигорск",
-                        TextChangedAction = newText => _settlementFilter = newText
+                    new LineElemsCreator.Data
+                    {
+                        Elem  = BaseElemsCreator.CreateEntry(newText => _regionFilter = newText, "Минская область")
                     },
                 ]
             );
@@ -58,12 +45,28 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Название",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Населённый пункт")
                     },
-                    new LineElemsCreator.EntryData{
-                        Placeholder = "ГУО ...",
-                        TextChangedAction = newText => _nameFilter = newText
+                    new LineElemsCreator.Data
+                    {
+                        Elem  = BaseElemsCreator.CreateEntry(newText => _settlementFilter = newText, "г.Солигорск")
+                    },
+                ]
+            );
+
+            LineElemsCreator.AddLineElems(
+                grid: _grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Название"),
+                    },
+                    new LineElemsCreator.Data
+                    {
+                        Elem  = BaseElemsCreator.CreateEntry(newText => _nameFilter = newText, "ГУО ...")
                     },
                 ]
             );
@@ -76,7 +79,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             bool isSettlementFilterEmpty = string.IsNullOrEmpty(_settlementFilter);
             bool isNameFilterEmpty = string.IsNullOrEmpty(_nameFilter);
 
-            _objectsList = [.. _objectsList
+            _objectsArr = [.. _objectsArr
                 .Where(e =>
                     (isRegionFilterEmpty || (e.Settlement?.Region?.Name ?? string.Empty).Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
                     (isSettlementFilterEmpty || (e.Settlement?.Name ?? string.Empty).Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&

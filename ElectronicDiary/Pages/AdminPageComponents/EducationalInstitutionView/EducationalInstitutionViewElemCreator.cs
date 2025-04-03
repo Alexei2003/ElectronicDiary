@@ -21,24 +21,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Название",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Название")
                     },
-                    new LineElemsCreator.LabelData{
-                        Title = _baseResponse.Name
-                    },
-                ]
-            );
-
-            LineElemsCreator.AddLineElems(
-                grid: _grid,
-                rowIndex: rowIndex++,
-                objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Регион",
-                    },
-                    new LineElemsCreator.LabelData{
-                        Title = _baseResponse.Settlement?.Region?.Name
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_baseResponse.Name)
                     },
                 ]
             );
@@ -47,11 +36,28 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Населённый пункт",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Регион")
                     },
-                    new LineElemsCreator.LabelData{
-                        Title = _baseResponse.Settlement?.Name
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement?.Region?.Name)
+                    },
+                ]
+            );
+
+            LineElemsCreator.AddLineElems(
+                grid: _grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Населённый пункт")
+                    },
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement?.Name)
                     },
                 ]
             );

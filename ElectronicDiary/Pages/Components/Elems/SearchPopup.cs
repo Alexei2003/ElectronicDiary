@@ -11,9 +11,9 @@ namespace ElectronicDiary.Pages.Others
         public List<Item> AllItems { get; set; }
         private readonly ListView _listView;
 
-        public SearchPopup(List<Item>? items, Action<long> IdChangedAction)
+        public SearchPopup(List<Item> items, Action<long> IdChangedAction)
         {
-            AllItems = items ?? [];
+            AllItems = items;
 
             Color = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR;
 
@@ -93,7 +93,7 @@ namespace ElectronicDiary.Pages.Others
 
         private void HandleItemTapped(TypeResponse selectedItem, Action<long> IdChangedAction)
         {
-            if (selectedItem.Id != null) IdChangedAction(selectedItem.Id.Value);
+            IdChangedAction(selectedItem.Id);
             Close();
         }
     }

@@ -1,4 +1,6 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
+﻿using System.Text.Json;
+
+using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api;
@@ -6,8 +8,6 @@ using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses;
 using ElectronicDiary.Web.DTO.Responses.Educations;
-
-using System.Text.Json;
 
 using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
@@ -40,8 +40,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                     new LineElemsCreator.ImageData{
-                         PathImage = _baseResponse.PathImage,
+                     new LineElemsCreator.Data
+                     {
+                         CountJoinColumns = 2,
+                         Elem = BaseElemsCreator.CreateImage(_baseResponse.PathImage)
                      }
                 ]);
 
@@ -49,116 +51,50 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Название"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel( "Название")
                     },
                     _componentState == ComponentState.Read ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Name
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel( _baseResponse.Name)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.Name,
-                            Placeholder = "ГУО ...",
-                            TextChangedAction = newText => { _baseRequest.Name = newText; }
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry( newText =>  _baseRequest.Name = newText, "ГУО ...",_baseResponse.Name )
                         }
                 ]
             );
 
-            object[]? settlementElems = null;
-            var regionElems = LineElemsCreator.AddLineElems(
+            List<Item> settlementList = [];
+            LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Регион"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Регион")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Settlement?.Region?.Name
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement ?.Region ?.Name)
                         }
                     :
-                        new LineElemsCreator.SearchData{
-                            BaseItem =  new TypeResponse(){
-                                Id = _baseResponse.Settlement?.Region?.Id ?? 0,
-                                Name = _baseResponse.Settlement?.Region?.Name ?? "Найти"
-                            },
-                            IdChangedAction = selectedIndex =>
-                            {
-                                _baseRequest.RegionId = selectedIndex;
-                                if(settlementElems != null &&
-                                   settlementElems[^1] is TapGestureRecognizer searchSettlement &&
-                                   _baseRequest.RegionId != null)
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetRegion(),
+                                selectedIndex =>
                                 {
-                                    Task.Run(async () =>
+                                    _baseRequest.RegionId = selectedIndex;
+                                    if(_baseRequest.RegionId > -1)
                                     {
-                                        var settlementList = await GetSettlements(_baseRequest.RegionId.Value);
-
-                                        searchSettlement.BindingContext = settlementList;
-                                    });
-
+                                        GetSettlements(settlementList, _baseRequest.RegionId);
+                                    }
                                 }
-                            }
-                        }
-                ]
-            );
-            if (regionElems[^1] is TapGestureRecognizer searchRegion)
-            {
-                Task.Run(async () =>
-                {
-                    var regionList = await GetRegion();
-                    searchRegion.BindingContext = regionList;
-                });
-            }
-
-            settlementElems = LineElemsCreator.AddLineElems(
-                grid: _baseInfoGrid,
-                rowIndex: _baseInfoGridRowIndex++,
-                objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Населённый пункт"
-                    },
-                    _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Settlement?.Name
-                        }
-                    :
-                        new LineElemsCreator.SearchData{
-                            BaseItem =  new TypeResponse(){
-                                Id = _baseResponse.Settlement?.Id ?? 0,
-                                Name = _baseResponse.Settlement?.Name ?? "Найти"
-                            },
-                            IdChangedAction = selectedIndex => { _baseRequest.SettlementId = selectedIndex;}
-                        }
-                ]
-            );
-
-            if (settlementElems[^1] is TapGestureRecognizer searchSettlement)
-            {
-                Task.Run(async () =>
-                {
-                    var settlementList = await GetSettlements(_baseResponse.Settlement?.Region?.Id ?? 0);
-
-                    searchSettlement.BindingContext = settlementList;
-                });
-            }
-
-            LineElemsCreator.AddLineElems(
-                grid: _baseInfoGrid,
-                rowIndex: _baseInfoGridRowIndex++,
-                objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Адресс"
-                    },
-                    _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Address
-                        }
-                    :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.Address,
-                            Placeholder = "ул. Ленина, 12",
-                            TextChangedAction = newText => _baseRequest.Address = newText
+                            )
                         }
                 ]
             );
@@ -167,18 +103,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Email"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Населённый пункт")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Email
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement ?.Name)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.Email,
-                            Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => _baseRequest.Email = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateSearchPopupAsLabel(settlementList, selectedIndex => _baseRequest.SettlementId = selectedIndex)
                         }
                 ]
             );
@@ -187,37 +124,98 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Телефон"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Адресс")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.PhoneNumber
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Address)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.PhoneNumber,
-                            Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => _baseRequest.PhoneNumber = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Address = newText, "ул. Ленина, 12",_baseResponse.Address )
+                        }
+                ]
+            );
+
+            LineElemsCreator.AddLineElems(
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
+                objectList: [
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Email")
+                    },
+                    _componentState == ComponentState.Read  ?
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Email)
+                        }
+                    :
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry( newText => _baseRequest.Email = newText, "sh4@edus.by", _baseResponse.Email)
+                        }
+                ]
+            );
+
+            LineElemsCreator.AddLineElems(
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
+                objectList: [
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Телефон")
+                    },
+                    _componentState == ComponentState.Read  ?
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.PhoneNumber)
+                        }
+                    :
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.PhoneNumber = newText, "+375 17 433-09-02", _baseResponse.PhoneNumber)
                         }
                 ]
             );
         }
 
-        protected static async Task<List<TypeResponse>> GetRegion()
+        protected static List<Item> GetRegion()
         {
-            List<TypeResponse>? list = null;
-            var response = await AddressСontroller.GetRegions();
-            if (!string.IsNullOrEmpty(response)) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
-            return list ?? [];
-        }
-        protected static async Task<List<TypeResponse>> GetSettlements(long regionId)
-        {
-            List<TypeResponse>? list = null;
-            var response = await AddressСontroller.GetSettlements(regionId);
-            if (!string.IsNullOrEmpty(response)) list = JsonSerializer.Deserialize<List<TypeResponse>>(response, PageConstants.JsonSerializerOptions) ?? [];
+            var list = new List<Item>();
 
-            return list ?? [];
+            Task.Run(async () =>
+            {
+                TypeResponse[]? arr = null;
+                var response = await AddressСontroller.GetRegions();
+                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+
+                foreach (var elem in arr ?? [])
+                {
+                    list.Add(new Item(elem.Id, elem.Name));
+                }
+            });
+
+            return list;
+        }
+
+        protected static void GetSettlements(List<Item> list, long regionId)
+        {
+            Task.Run(async () =>
+            {
+                TypeResponse[]? arr = null;
+                var response = await AddressСontroller.GetSettlements(regionId);
+                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+
+                foreach (var elem in arr ?? [])
+                {
+                    list.Add(new Item(elem.Id, elem.Name));
+                }
+            });
         }
     }
 }

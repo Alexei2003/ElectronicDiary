@@ -19,14 +19,14 @@ namespace ElectronicDiary.Pages
             ToolbarItemsAdder.AddSettings(ToolbarItems);
             BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
-            var loginEntry = BaseElemCreator.CreateEntry(newText => _login = newText, "Логин");
+            var loginEntry = BaseElemsCreator.CreateEntry(newText => _login = newText, "Логин");
 
-            var passwordEntry = BaseElemCreator.CreateEntry(newText => _password = newText, "Пароль");
+            var passwordEntry = BaseElemsCreator.CreateEntry(newText => _password = newText, "Пароль");
             passwordEntry.IsPassword = true;
 
-            var toProfilePageButton = BaseElemCreator.CreateButton("Вход", ToProfilePageButtonClicked);
+            var toProfilePageButton = BaseElemsCreator.CreateButton("Вход", ToProfilePageButtonClicked);
 
-            var vStack = BaseElemCreator.CreateVerticalStackLayout();
+            var vStack = BaseElemsCreator.CreateVerticalStackLayout();
             vStack.Add(loginEntry);
             vStack.Add(passwordEntry);
             vStack.Add(toProfilePageButton);

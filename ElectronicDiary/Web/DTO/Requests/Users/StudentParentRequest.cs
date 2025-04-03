@@ -2,8 +2,8 @@
 {
     public class StudentParentRequest
     {
-        public long? SchoolStudentId { get; set; } = null;
-        public long? ParentId { get; set; } = null;
-        public long? ParentTypeId { get; set; } = null;
+        public long SchoolStudentId { get; set; } = -1;
+        public long ParentId { get; set; } = -1;
+        public long ParentTypeId { get; set; } = -1;
     }
 }

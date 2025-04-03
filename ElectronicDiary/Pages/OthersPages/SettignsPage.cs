@@ -10,7 +10,7 @@ namespace ElectronicDiary.Pages
             Title = "Настройки";
             BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
-            Content = BaseElemCreator.CreateVerticalStackLayout();
+            Content = BaseElemsCreator.CreateVerticalStackLayout();
         }
     }
 }

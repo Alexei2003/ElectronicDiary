@@ -1,4 +1,6 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.ParentView;
+﻿using CommunityToolkit.Maui.Converters;
+
+using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
@@ -22,7 +24,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected HorizontalStackLayout _mainStack = [];
         protected List<ScrollView> _viewList = [];
-        protected event Action ChageListAction;
+        protected event Action ChageListAction = delegate { };
 
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
@@ -48,7 +50,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += GestureTapped;
-            _grid = BaseElemCreator.CreateGrid();
+            _grid = BaseElemsCreator.CreateGrid();
             _grid.GestureRecognizers.Add(tapGesture);
 
             var rowIndex = 0;
@@ -66,12 +68,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
-            if (_baseResponse.Id != null)
+            if (_baseResponse.Id > -1)
             {
                 var action = string.Empty;
                 if (_maxCountViews == 2)
                 {
-                    action = await BaseElemCreator.CreateActionSheetCreator(
+                    action = await BaseElemsCreator.CreateActionSheetCreator(
                        [
                         "Описание",
                         "Перейти",
@@ -81,7 +83,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 }
                 else
                 {
-                    action = await BaseElemCreator.CreateActionSheetCreator(
+                    action = await BaseElemsCreator.CreateActionSheetCreator(
                        [
                         "Описание",
                         "Редактировать",
@@ -91,16 +93,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 switch (action)
                 {
                     case "Описание":
-                        ShowInfo(_baseResponse.Id.Value);
+                        ShowInfo(_baseResponse.Id);
                         break;
                     case "Перейти":
-                        await MoveTo(_baseResponse.Id.Value);
+                        await MoveTo(_baseResponse.Id);
                         break;
                     case "Редактировать":
-                        Edit(_baseResponse.Id.Value);
+                        Edit(_baseResponse.Id);
                         break;
                     case "Удалить":
-                        Delete(_baseResponse.Id.Value);
+                        Delete(_baseResponse.Id);
                         break;
                     default:
                         return;
@@ -121,9 +123,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual async Task MoveTo(long id)
         {
             string action = string.Empty;
-            action = await BaseElemCreator.CreateActionSheetCreator(
-               [                
-                "Администраторы",       
+            action = await BaseElemsCreator.CreateActionSheetCreator(
+               [
+                "Администраторы",
                 "Учителя",
                 "Классы",
                 "Ученики",
@@ -163,12 +165,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             if (view != null)
             {
                 AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-                _viewList.Add(view.Create(_mainStack, _viewList, _baseResponse.Id ?? -1));
+                _viewList.Add(view.Create(_mainStack, _viewList, _baseResponse.Id));
                 AdminPageStatic.RepaintPage(_mainStack, _viewList);
             }
         }
 
-        protected virtual async Task Edit(long id)
+        protected virtual async void Edit(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
             var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
@@ -179,10 +181,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             ChageListAction.Invoke();
         }
 
-        protected virtual async Task Delete(long id)
+        protected virtual async void Delete(long id)
         {
-            await _controller?.Delete(id);
-            ChageListAction.Invoke();
+            if(_controller != null)
+            {
+                await _controller.Delete(id);
+                ChageListAction.Invoke();
+            }
         }
     }
 }

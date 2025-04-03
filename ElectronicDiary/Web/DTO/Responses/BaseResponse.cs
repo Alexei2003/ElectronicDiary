@@ -2,6 +2,6 @@
 {
     public record BaseResponse
     {
-        public long? Id { get; init; } = null;
+        public long Id { get; init; } = -1;
     }
 }

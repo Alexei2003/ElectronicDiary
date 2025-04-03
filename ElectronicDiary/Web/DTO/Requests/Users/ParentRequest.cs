@@ -2,7 +2,7 @@
 {
     public class ParentRequest : UserRequest
     {
-        public long? ParentType { get; set; } = null;
-        public long? SchoolStudentId { get; set; } = null;
+        public long ParentType { get; set; } = -1;
+        public long SchoolStudentId { get; set; } = -1;
     }
 }

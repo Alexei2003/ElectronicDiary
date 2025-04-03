@@ -1,5 +1,6 @@
-﻿using ElectronicDiary.SaveData.SerializeClasses;
-using System.Text.Json;
+﻿using System.Text.Json;
+
+using ElectronicDiary.SaveData.SerializeClasses;
 
 namespace ElectronicDiary.SaveData
 {

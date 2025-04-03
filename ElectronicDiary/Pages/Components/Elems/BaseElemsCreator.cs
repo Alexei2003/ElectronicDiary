@@ -5,7 +5,7 @@ using ElectronicDiary.SaveData;
 
 namespace ElectronicDiary.Pages.Components.Elems
 {
-    public static class BaseElemCreator
+    public static class BaseElemsCreator
     {
         public static Button CreateButton(string text, EventHandler handler)
         {
@@ -83,17 +83,36 @@ namespace ElectronicDiary.Pages.Components.Elems
             return label;
         }
 
-        public static SearchPopup CreateSearchPopup(List<Item> items, Action<long> idChangedAction)
+        public static Label CreateSearchPopupAsLabel(List<Item> itemList, Action<long> idChangedAction)
         {
-            var popup = new SearchPopup(items, idChangedAction);
+            var searchLabel = BaseElemsCreator.CreateLabel("Поиск");
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += (sender, e) =>
+            {
+                long id = 0;
+                Action<long> idChangedActionLocal = newText => id = newText;
 
-            var page = Application.Current?.Windows[0].Page;
-            page?.ShowPopup(popup);
+                var popup = new SearchPopup(itemList, idChangedActionLocal);
 
-            return popup;
+                popup.Closed += (sender, e) =>
+                {
+                    if (popup.AllItems.Count > 0 && id > -1)
+                    {
+                        if (idChangedAction != null) idChangedAction(id);
+                        searchLabel.Text = popup.AllItems.FirstOrDefault(item => item.Id == id)?.Name ?? "Найти";
+                    }
+                    searchLabel.Focus();
+                };
+
+                var page = Application.Current?.Windows[0].Page;
+                page?.ShowPopup(popup);
+            };
+
+            searchLabel.GestureRecognizers.Add(tapGesture);
+            return searchLabel;
         }
 
-        public static Picker CreatePicker(List<Item>? items, Action<long> idChangedAction, long? baseSelectedId)
+        public static Picker CreatePicker(List<Item> itemList, Action<long> idChangedAction, long? baseSelectedId = null)
         {
             var picker = new Picker
             {
@@ -103,13 +122,13 @@ namespace ElectronicDiary.Pages.Components.Elems
                 // Текст
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
 
-                ItemsSource = items ?? [],
+                ItemsSource = itemList,
                 ItemDisplayBinding = new Binding("Name"),
             };
 
-            if (items != null && baseSelectedId != null)
+            if (itemList != null && baseSelectedId != null)
             {
-                var selectedIndex = items.FindIndex(item => item.Id == baseSelectedId);
+                var selectedIndex = itemList.FindIndex(item => item.Id == baseSelectedId);
                 picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
             }
 
@@ -117,7 +136,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             {
                 picker.SelectedIndexChanged += (sender, e) =>
                 {
-                    if (picker.SelectedItem is Item selectedItem && selectedItem.Id != null)
+                    if (picker.SelectedItem is Item selectedItem)
                     {
                         idChangedAction(selectedItem.Id);
                     }

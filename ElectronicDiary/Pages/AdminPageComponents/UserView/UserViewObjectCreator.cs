@@ -26,7 +26,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     Patronymic = _baseResponse.Patronymic,
                     Email = _baseResponse.Email ?? string.Empty,
                     PhoneNumber = _baseResponse.PhoneNumber ?? string.Empty,
-                    UniversityId = _baseResponse.EducationalInstitution.Id ?? 0,
+                    UniversityId = _baseResponse.EducationalInstitution?.Id ?? 0,
 
                     Login = string.Empty,
                     Password = string.Empty
@@ -38,8 +38,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                    grid: _baseInfoGrid,
                    rowIndex: _baseInfoGridRowIndex++,
                    objectList: [
-                        new LineElemsCreator.ImageData{
-                            PathImage = _baseResponse.PathImage,
+                        new LineElemsCreator.Data
+                        {
+                            CountJoinColumns = 2,
+                            Elem = BaseElemsCreator.CreateImage(_baseResponse.PathImage),
                         }
                    ]);
 
@@ -47,18 +49,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Фамилия"
+                    new LineElemsCreator.Data
+                    {
+                        
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.LastName
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel( _baseResponse.LastName),
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.LastName,
-                            Placeholder = "Дубовский",
-                            TextChangedAction = newText => {if (_baseRequest != null)_baseRequest.LastName = newText; }
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.LastName = newText, "Дубовский", _baseResponse.LastName)
                         }
                 ]
             );
@@ -67,18 +70,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Имя",
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Имя")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.FirstName
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.FirstName)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.FirstName,
-                            Placeholder = "Алексей",
-                            TextChangedAction = newText => {if(_baseRequest!=null) _baseRequest.FirstName = newText; }
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.FirstName = newText, "Алексей", _baseResponse.FirstName)
                         }
                 ]
             );
@@ -87,18 +91,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Отчество"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Отчество")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Patronymic
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Patronymic)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.Patronymic,
-                            Placeholder = "Владимирович",
-                            TextChangedAction = newText => _baseRequest.Patronymic = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Patronymic = newText, "Владимирович", _baseResponse.Patronymic)
                         }
                 ]
             );
@@ -107,18 +112,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Email"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Email")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.Email
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Email)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.Email,
-                            Placeholder = "sh4@edus.by",
-                            TextChangedAction = newText => _baseRequest.Email = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Email = newText, "sh4@edus.by", _baseResponse.Email)
                         }
                 ]
             );
@@ -127,18 +133,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                        Title = "Телефон"
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Телефон")
                     },
                     _componentState == ComponentState.Read  ?
-                        new LineElemsCreator.LabelData{
-                            Title = _baseResponse.PhoneNumber
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.PhoneNumber)
                         }
                     :
-                        new LineElemsCreator.EntryData{
-                            BaseText = _baseResponse.PhoneNumber,
-                            Placeholder = "+375 17 433-09-02",
-                            TextChangedAction = newText => _baseRequest.PhoneNumber = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry( newText => _baseRequest.PhoneNumber = newText, "+375 17 433-09-02", _baseResponse.PhoneNumber)
                         }
                 ]
             );
@@ -149,12 +156,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     rowIndex: _baseInfoGridRowIndex++,
                     objectList:
                     [
-                        new LineElemsCreator.LabelData{
-                            Title = "Логин"
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel("Логин")
                         },
-                        new LineElemsCreator.EntryData{
-                            Placeholder = "admin",
-                            TextChangedAction = newText => _baseRequest.Login = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Login = newText, "admin")
                         }
                     ]
                 );
@@ -163,12 +171,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     rowIndex: _baseInfoGridRowIndex++,
                     objectList:
                     [
-                        new LineElemsCreator.LabelData {
-                            Title = "Пароль"
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateLabel("Пароль")
                         },
-                        new LineElemsCreator.EntryData {
-                            Placeholder = "4Af7@adf",
-                            TextChangedAction = newText => _baseRequest.Password = newText
+                        new LineElemsCreator.Data
+                        {
+                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Password = newText, "4Af7@adf")
                         }
                     ]
                 );

@@ -21,12 +21,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                Title = "Фамилия",
-            },
-            new LineElemsCreator.LabelData{
-                Title =  _baseResponse.LastName,
-            },
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Фамилия"),
+                    },
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_baseResponse.LastName),
+                    },
                 ]
             );
 
@@ -34,12 +36,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                Title = "Имя",
-            },
-            new LineElemsCreator.LabelData{
-                Title = _baseResponse.FirstName
-            },
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Имя"),
+                    },
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_baseResponse.FirstName)
+                    },
                 ]
             );
 
@@ -47,14 +51,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    new LineElemsCreator.LabelData{
-                Title = "Отчество",
-            },
-            new LineElemsCreator.LabelData{
-                Title = _baseResponse.Patronymic
-            },
-                ]
-            );
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel("Отчество"),
+                    },
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_baseResponse.Patronymic)
+                    },
+                        ]
+                    );
         }
     }
 }

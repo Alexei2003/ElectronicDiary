@@ -8,7 +8,7 @@
         public ColorsClass Colors { get; set; } = new();
 
 
-        public class SizesClass 
+        public class SizesClass
         {
             // Размеры
             public Thickness PADDING_ALL_PAGES { get; set; } = new Thickness(10);

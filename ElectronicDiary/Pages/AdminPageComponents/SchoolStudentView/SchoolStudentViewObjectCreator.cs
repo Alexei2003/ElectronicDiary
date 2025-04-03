@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.UserView;
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Users;
@@ -13,6 +14,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
         protected override void CreateUI()
         {
             base.CreateUI();
+
+            var parentSchoolStudent = new ParentSchoolStudent(_baseResponse.Id, false);
+            _infoStack.Add(parentSchoolStudent.Grid);
+            parentSchoolStudent.ShowList();
 
         }
     }

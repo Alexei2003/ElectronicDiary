@@ -1,6 +1,7 @@
-﻿using ElectronicDiary.Pages;
+﻿using System.Net;
+
+using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Others;
-using System.Net;
 
 namespace ElectronicDiary.Web
 {
