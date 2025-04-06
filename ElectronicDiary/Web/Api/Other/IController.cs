@@ -10,6 +10,6 @@ namespace ElectronicDiary.Web.Api.Other
         Task<string?> Edit(string json);
         Task<string?> Delete(long id);
 
-        Task<string?> AddImage(long id, IFormFile image);
+        Task<string?> AddImage(long id, FileResult  image);
     }
 }

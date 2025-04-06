@@ -26,16 +26,23 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 _baseRequest.UniversityId = _baseResponse.EducationalInstitution?.Id ?? -1;
             }
 
+            var image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
+            if(_componentState == AdminPageStatic.ComponentState.Edit)
+            {
+                var tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += AddImageTapped;
+                image.GestureRecognizers.Add(tapGesture);
+            }
             LineElemsCreator.AddLineElems(
-                   grid: _baseInfoGrid,
-                   rowIndex: _baseInfoGridRowIndex++,
-                   objectList: [
-                        new LineElemsCreator.Data
-                        {
-                            CountJoinColumns = 2,
-                            Elem = BaseElemsCreator.CreateImage(_baseResponse.PathImage),
-                        }
-                   ]);
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
+                objectList: [
+                     new LineElemsCreator.Data
+                     {
+                         CountJoinColumns = 2,
+                         Elem = image
+                     }
+                ]);
 
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
@@ -177,6 +184,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
 
                 _baseRequest.UniversityId = _educationalInstitutionId;
             }
+        }
+
+        private async void AddImageTapped(object? sender, EventArgs e)
+        {
+            var result = await FilePicker.Default.PickAsync(new PickOptions
+            {
+                PickerTitle = "Выберите изображение",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (result == null) return;
+
+            await _controller.AddImage(_baseResponse.Id, result);
         }
     }
 }

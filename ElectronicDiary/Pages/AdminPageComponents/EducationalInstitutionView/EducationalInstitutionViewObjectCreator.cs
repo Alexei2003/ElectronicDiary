@@ -32,6 +32,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 _baseRequest.SettlementId = _baseResponse.Settlement?.Id ?? -1;
             }
 
+            var image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
+            if (_componentState == AdminPageStatic.ComponentState.Edit)
+            {
+                var tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += AddImageTapped;
+                image.GestureRecognizers.Add(tapGesture);
+            }
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
@@ -39,7 +46,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                      new LineElemsCreator.Data
                      {
                          CountJoinColumns = 2,
-                         Elem = BaseElemsCreator.CreateImage(_baseResponse.PathImage)
+                         Elem = image
                      }
                 ]);
 
@@ -178,6 +185,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                         }
                 ]
             );
+        }
+
+        private async void AddImageTapped(object? sender, EventArgs e)
+        {
+            var result = await FilePicker.Default.PickAsync(new PickOptions
+            {
+                PickerTitle = "Выберите изображение",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (result == null) return;
+
+            await _controller.AddImage(_baseResponse.Id, result);
         }
 
         private static List<Item> GetRegions()

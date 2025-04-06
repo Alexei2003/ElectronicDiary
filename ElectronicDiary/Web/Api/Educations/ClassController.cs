@@ -39,7 +39,7 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
 
-        public Task<string?> AddImage(long id, IFormFile image)
+        public Task<string?> AddImage(long id, FileResult  image)
         {
             return Task.Run(() => { return "empty method"; });
         }

@@ -34,12 +34,12 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 
-        public Task<string?> AddImage(long id, IFormFile image)
+        public Task<string?> AddImage(long id, FileResult  image)
         {
             string url = $"/addImageEducational?id={id}";
 
             var content = new MultipartFormDataContent();
-            var fileContent = new StreamContent(image.OpenReadStream());
+            var fileContent = new StreamContent(image.OpenReadAsync().Result);
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
             content.Add(fileContent, "image", image.FileName);
 
