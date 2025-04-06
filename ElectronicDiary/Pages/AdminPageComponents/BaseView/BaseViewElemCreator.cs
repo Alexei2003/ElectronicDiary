@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.Maui.Converters;
-
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
@@ -141,16 +140,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                         UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>>();
                     break;
                 case "Учителя":
-                    //view = new TeacherView(_mainStack, _viewList, id);
+                    view = new UserViewListCreator<UserResponse, UserRequest, TeacherController,
+                        UserViewElemCreator<UserResponse, UserRequest, TeacherController,
+                        UserViewObjectCreator<UserResponse, UserRequest, TeacherController>>,
+                        UserViewObjectCreator<UserResponse, UserRequest, TeacherController>>();
                     break;
                 case "Классы":
                     //view = new AdministratorView(_mainStack, _viewList, id);
                     break;
                 case "Ученики":
-                    view = new UserViewListCreator<UserResponse, UserRequest, SchoolStudentController,
-                        UserViewElemCreator<UserResponse, UserRequest, SchoolStudentController,
-                        SchoolStudentViewObjectCreator<UserResponse, UserRequest, SchoolStudentController>>,
-                        SchoolStudentViewObjectCreator<UserResponse, UserRequest, SchoolStudentController>>();
+                    view = new UserViewListCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController,
+                        UserViewElemCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController,
+                        SchoolStudentViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>>,
+                        SchoolStudentViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>>();
                     break;
                 case "Родители":
                     view = new UserViewListCreator<UserResponse, ParentRequest, ParentController,
@@ -183,7 +185,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void Delete(long id)
         {
-            if(_controller != null)
+            if (_controller != null)
             {
                 await _controller.Delete(id);
                 ChageListAction.Invoke();

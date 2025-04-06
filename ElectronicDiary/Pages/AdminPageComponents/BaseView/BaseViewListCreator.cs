@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 
+using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
@@ -73,7 +74,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             verticalStack.Add(_listVerticalStack);
 
-            var _ = CreateListUI();
+            _ = CreateListUI();
 
             return scrollView;
         }
@@ -116,7 +117,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual void ChageListHandler()
         {
-            var _ = CreateListUI();
+            _ = CreateListUI();
         }
 
         protected virtual async Task GetList()

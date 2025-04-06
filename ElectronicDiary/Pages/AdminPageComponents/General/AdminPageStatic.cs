@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Pages.AdminPageComponents
+﻿namespace ElectronicDiary.Pages.AdminPageComponents.General
 {
     public static class AdminPageStatic
     {

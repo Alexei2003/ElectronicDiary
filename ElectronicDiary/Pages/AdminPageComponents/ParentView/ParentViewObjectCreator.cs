@@ -12,13 +12,21 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
         where TController : IController, new()
     {
 
+        private ParentSchoolStudentCreator? _parentSchoolStudent = null;
         protected override void CreateUI()
         {
             base.CreateUI();
 
-            var parentSchoolStudent = new ParentSchoolStudent(_baseResponse.Id, true);
-            _infoStack.Add(parentSchoolStudent.Grid);
-            parentSchoolStudent.ShowList();
+            _parentSchoolStudent = new ParentSchoolStudentCreator(_baseResponse.Id, true);
+            _infoStack.Add(_parentSchoolStudent.Grid);
+            if (_componentState == AdminPageStatic.ComponentState.New)
+            {
+                _parentSchoolStudent.AddSchoolStudent(_baseRequest, _educationalInstitutionId);
+            }
+            else
+            {
+                _ = _parentSchoolStudent.ShowList();
+            }
         }
     }
 }

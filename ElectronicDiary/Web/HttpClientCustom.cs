@@ -67,9 +67,11 @@ namespace ElectronicDiary.Web
                     };
                 }
 
-                var page = Application.Current?.Windows[0].Page;
-                if (page != null) await page.DisplayAlert("Ошибка", message, "OK");
-
+                Application.Current.Dispatcher.Dispatch(() =>
+                {
+                    var page = Application.Current?.Windows[0].Page;
+                    page?.DisplayAlert("Ошибка", message, "OK");
+                });
                 return null;
             }
 

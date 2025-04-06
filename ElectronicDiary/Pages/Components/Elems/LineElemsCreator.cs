@@ -10,24 +10,30 @@
 
         public static void AddLineElems(Grid grid, int rowIndex, Data[] objectList)
         {
-            var indexColumn = 0;
-
-            foreach (var obj in objectList)
+            Application.Current.Dispatcher.Dispatch(() =>
             {
-                if (obj.Elem is View view)
+                var indexColumn = 0;
+
+                foreach (var obj in objectList)
                 {
-                    grid.Add(view, indexColumn++, rowIndex);
-                    if (obj.CountJoinColumns > 0) Grid.SetColumnSpan(view, obj.CountJoinColumns);
+                    if (obj.Elem is View view)
+                    {
+                        grid.Add(view, indexColumn++, rowIndex);
+                        if (obj.CountJoinColumns > 0) Grid.SetColumnSpan(view, obj.CountJoinColumns);
+                    }
                 }
-            }
+            });
         }
 
         private static void ClearGridRows(Grid grid, IView[] elementsToRemove)
         {
-            foreach (var element in elementsToRemove)
+            Application.Current.Dispatcher.Dispatch(() =>
             {
-                grid.Children.Remove(element);
-            }
+                foreach (var element in elementsToRemove)
+                {
+                    grid.Children.Remove(element);
+                }
+            });
         }
 
         public static void ClearGridRows(Grid grid, int index)

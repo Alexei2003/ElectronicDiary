@@ -11,10 +11,9 @@ namespace ElectronicDiary
         {
             UserData.LoadAll();
 
-            var startPage = new ThemedNavigationPage(new LogPage());
-
             Task.Run(async () =>
             {
+                await Task.Delay(1000);
                 if (!string.IsNullOrEmpty(UserData.UserInfo.Role))
                 {
                     var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
@@ -27,15 +26,12 @@ namespace ElectronicDiary
                             {
                                 Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
                             }
-;
                         });
                     }
                 }
             });
 
-            Thread.Sleep(TimeSpan.FromSeconds(1));
-
-            return new Window(startPage)
+            return new Window(new LogPage())
             {
                 Title = "Электронный дневник"
             };

@@ -1,10 +1,9 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
+using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Users;
-
-using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.UserView
 {
@@ -17,7 +16,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         {
             base.CreateUI();
 
-            if (_componentState == ComponentState.Edit)
+            if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
                 _baseRequest = new()
                 {
@@ -51,9 +50,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 objectList: [
                     new LineElemsCreator.Data
                     {
-                        
+                        Elem = BaseElemsCreator.CreateLabel("Фамилия")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel( _baseResponse.LastName),
@@ -74,7 +73,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Имя")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.FirstName)
@@ -95,7 +94,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Отчество")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.Patronymic)
@@ -116,7 +115,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Email")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.Email)
@@ -137,7 +136,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Телефон")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.PhoneNumber)
@@ -149,7 +148,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                         }
                 ]
             );
-            if (_componentState != ComponentState.Read)
+            if (_componentState != AdminPageStatic.ComponentState.Read)
             {
                 LineElemsCreator.AddLineElems(
                     grid: _baseInfoGrid,

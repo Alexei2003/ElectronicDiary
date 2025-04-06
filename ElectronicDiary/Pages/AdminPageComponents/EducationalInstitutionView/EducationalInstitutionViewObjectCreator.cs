@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 
 using ElectronicDiary.Pages.AdminPageComponents.BaseView;
+using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api;
@@ -8,8 +9,6 @@ using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses;
 using ElectronicDiary.Web.DTO.Responses.Educations;
-
-using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
@@ -23,7 +22,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
         {
             base.CreateUI();
 
-            if (_componentState == ComponentState.Edit)
+            if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
                 _baseRequest = new()
                 {
@@ -55,7 +54,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     {
                         Elem = BaseElemsCreator.CreateLabel( "Название")
                     },
-                    _componentState == ComponentState.Read ?
+                    _componentState == AdminPageStatic.ComponentState.Read ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel( _baseResponse.Name)
@@ -77,7 +76,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Регион")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement ?.Region ?.Name)
@@ -85,7 +84,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetRegion(),
+                            Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetRegions(),
                                 selectedIndex =>
                                 {
                                     _baseRequest.RegionId = selectedIndex;
@@ -107,7 +106,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Населённый пункт")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement ?.Name)
@@ -128,7 +127,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Адресс")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.Address)
@@ -149,7 +148,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Email")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.Email)
@@ -170,7 +169,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     {
                         Elem = BaseElemsCreator.CreateLabel("Телефон")
                     },
-                    _componentState == ComponentState.Read  ?
+                    _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateLabel(_baseResponse.PhoneNumber)
@@ -184,7 +183,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             );
         }
 
-        protected static List<Item> GetRegion()
+        private static List<Item> GetRegions()
         {
             var list = new List<Item>();
 
@@ -203,8 +202,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             return list;
         }
 
-        protected static void GetSettlements(List<Item> list, long regionId)
+        private static void GetSettlements(List<Item> list, long regionId)
         {
+            list.Clear();
             Task.Run(async () =>
             {
                 TypeResponse[]? arr = null;

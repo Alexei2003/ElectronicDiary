@@ -2,7 +2,6 @@
 
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
-using ElectronicDiary.Web.DTO.Responses;
 
 namespace ElectronicDiary.Pages.Others
 {
@@ -50,7 +49,7 @@ namespace ElectronicDiary.Pages.Others
 
             _listView.ItemTapped += (sender, e) =>
             {
-                if (e.Item is TypeResponse selectedItem)
+                if (e.Item is Item selectedItem)
                 {
                     HandleItemTapped(selectedItem, IdChangedAction);
                 }
@@ -91,7 +90,7 @@ namespace ElectronicDiary.Pages.Others
             }
         }
 
-        private void HandleItemTapped(TypeResponse selectedItem, Action<long> IdChangedAction)
+        private void HandleItemTapped(Item selectedItem, Action<long> IdChangedAction)
         {
             IdChangedAction(selectedItem.Id);
             Close();

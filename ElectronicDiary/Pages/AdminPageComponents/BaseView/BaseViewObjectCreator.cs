@@ -1,12 +1,11 @@
 ﻿using System.Text.Json;
 
+using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData;
 using ElectronicDiary.Web.Api;
 using ElectronicDiary.Web.DTO.Responses;
-
-using static ElectronicDiary.Pages.AdminPageComponents.AdminPageStatic;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
@@ -26,7 +25,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected long _educationalInstitutionId;
 
 
-        protected ComponentState _componentState;
+        protected AdminPageStatic.ComponentState _componentState;
 
         // Вид объекта
         protected VerticalStackLayout _infoStack = [];
@@ -49,17 +48,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             if (edit)
             {
-                _componentState = ComponentState.Edit;
+                _componentState = AdminPageStatic.ComponentState.Edit;
             }
             else
             {
                 if (_baseResponse.Id > -1)
                 {
-                    _componentState = ComponentState.Read;
+                    _componentState = AdminPageStatic.ComponentState.Read;
                 }
                 else
                 {
-                    _componentState = ComponentState.New;
+                    _componentState = AdminPageStatic.ComponentState.New;
                 }
             }
 
@@ -87,7 +86,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             CreateUI();
 
-            if (_componentState != ComponentState.Read)
+            if (_componentState != AdminPageStatic.ComponentState.Read)
             {
                 var saveButton = BaseElemsCreator.CreateButton("Сохранить", SaveButtonClicked);
                 verticalStack.Add(saveButton);
@@ -105,7 +104,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
             var json = JsonSerializer.Serialize(_baseRequest, PageConstants.JsonSerializerOptions);
-            var response = await _controller.Add(json);
+            var response = _componentState == AdminPageStatic.ComponentState.New ? await _controller.Add(json) : await _controller.Add(json);
+
             if (!string.IsNullOrEmpty(response))
             {
                 ChageListAction.Invoke();

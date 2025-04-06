@@ -28,5 +28,18 @@ namespace ElectronicDiary.Web.Api.Educations
             string url = $"/deleteClass?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
+
+        // Не интерфейсные методы
+        public Task<string?> GetClassByTeacher(long id)
+        {
+            string url = $"/findClassByTeacherId?id={id}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
+
+        public Task<string?> GetTeacherByClass(long id)
+        {
+            string url = $"/getTeacherOfClass?id={id}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using System.Collections.ObjectModel;
+
+using CommunityToolkit.Maui.Views;
 
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData;
@@ -89,7 +91,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += (sender, e) =>
             {
-                long id = 0;
+                long id = -1;
                 Action<long> idChangedActionLocal = newText => id = newText;
 
                 var popup = new SearchPopup(itemList, idChangedActionLocal);
@@ -112,7 +114,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return searchLabel;
         }
 
-        public static Picker CreatePicker(List<Item> itemList, Action<long> idChangedAction, long? baseSelectedId = null)
+        public static Picker CreatePicker(ObservableCollection<Item> itemList, Action<long> idChangedAction, long? baseSelectedId = null)
         {
             var picker = new Picker
             {
@@ -128,7 +130,7 @@ namespace ElectronicDiary.Pages.Components.Elems
 
             if (itemList != null && baseSelectedId != null)
             {
-                var selectedIndex = itemList.FindIndex(item => item.Id == baseSelectedId);
+                var selectedIndex = itemList.IndexOf(itemList.FirstOrDefault(i => i.Id == baseSelectedId));
                 picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
             }
 
