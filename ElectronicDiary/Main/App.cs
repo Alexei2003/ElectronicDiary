@@ -1,7 +1,7 @@
 ﻿using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Others;
-using ElectronicDiary.SaveData;
-using ElectronicDiary.Web.Api;
+using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.Web.Api.Other;
 
 namespace ElectronicDiary
 {

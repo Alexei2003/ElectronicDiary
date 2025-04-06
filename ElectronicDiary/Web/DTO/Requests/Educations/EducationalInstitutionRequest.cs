@@ -1,6 +1,8 @@
-﻿namespace ElectronicDiary.Web.DTO.Requests.Educations
+﻿using ElectronicDiary.Web.DTO.Requests.Other;
+
+namespace ElectronicDiary.Web.DTO.Requests.Educations
 {
-    public class EducationalInstitutionRequest
+    public class EducationalInstitutionRequest : BaseRequest
     {
         public string? Name { get; set; } = null;
         public string? Address { get; set; } = null;

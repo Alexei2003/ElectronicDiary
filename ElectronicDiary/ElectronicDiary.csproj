@@ -72,6 +72,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
 	</ItemGroup>
 
@@ -86,8 +87,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Pages\AdminPageComponents\AdministratorView\" />
 	  <Folder Include="Pages\AdminPageComponents\TeacherView\" />
+	  <Folder Include="Pages\AdminPageComponents\ClassView\" />
 	</ItemGroup>
 
 </Project>

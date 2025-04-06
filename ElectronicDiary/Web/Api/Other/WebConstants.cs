@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Web
+﻿namespace ElectronicDiary.Web.Api.Other
 {
     public static class WebConstants
     {

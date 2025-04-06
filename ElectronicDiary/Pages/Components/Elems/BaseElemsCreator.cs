@@ -2,8 +2,9 @@
 
 using CommunityToolkit.Maui.Views;
 
+using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.Others;
-using ElectronicDiary.SaveData;
+using ElectronicDiary.SaveData.Static;
 
 namespace ElectronicDiary.Pages.Components.Elems
 {

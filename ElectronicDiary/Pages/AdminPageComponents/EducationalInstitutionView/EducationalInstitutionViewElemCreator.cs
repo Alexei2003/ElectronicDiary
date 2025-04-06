@@ -1,6 +1,6 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 

@@ -1,4 +1,9 @@
-﻿using System.Text;
+﻿using System.Net.Http.Headers;
+using System.Text;
+
+using ElectronicDiary.Web.Api.Other;
+
+using Microsoft.AspNetCore.Http;
 
 namespace ElectronicDiary.Web.Api.Users
 {
@@ -22,11 +27,28 @@ namespace ElectronicDiary.Web.Api.Users
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
-
+        public Task<string?> Edit(string json)
+        {
+            const string url = "/changeParent";
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+        }
         public Task<string?> Delete(long id)
         {
             string url = $"/deleteParent?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
+        }
+
+        public Task<string?> AddImage(long id, IFormFile image)
+        {
+            string url = $"/addImageParent?id={id}";
+
+            var content = new MultipartFormDataContent();
+            var fileContent = new StreamContent(image.OpenReadStream());
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
+            content.Add(fileContent, "image", image.FileName);
+
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 
         // Не интерфейсные методы

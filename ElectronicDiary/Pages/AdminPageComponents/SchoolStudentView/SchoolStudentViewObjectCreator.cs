@@ -2,10 +2,9 @@
 
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
-using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api;
-using ElectronicDiary.Web.Api.Educations;
+using ElectronicDiary.Pages.Components.Other;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 using ElectronicDiary.Web.DTO.Responses.Users;
@@ -38,7 +37,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetClasses(), 
+                            Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetClasses(),
                                                     selectedIndex => _baseRequest.ClassId = selectedIndex)
                         }
                 ]
@@ -67,7 +66,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id,elem?.Name));
+                    list.Add(new Item(elem.Id, elem?.Name));
                 }
             });
 

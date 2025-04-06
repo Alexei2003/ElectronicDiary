@@ -1,4 +1,6 @@
-﻿namespace ElectronicDiary.Web.Api.Educations
+﻿using ElectronicDiary.Web.Api.Other;
+
+namespace ElectronicDiary.Web.Api.Educations
 {
     public static class AddressСontroller
     {

@@ -1,6 +1,6 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
-using ElectronicDiary.Web.Api;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Users;
 

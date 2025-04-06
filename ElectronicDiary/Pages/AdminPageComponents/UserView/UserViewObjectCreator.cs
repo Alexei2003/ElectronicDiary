@@ -1,7 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
@@ -18,19 +18,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
 
             if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
-                _baseRequest = new()
-                {
-                    FirstName = _baseResponse.FirstName ?? string.Empty,
-                    LastName = _baseResponse.LastName ?? string.Empty,
-                    Patronymic = _baseResponse.Patronymic,
-                    Email = _baseResponse.Email ?? string.Empty,
-                    PhoneNumber = _baseResponse.PhoneNumber ?? string.Empty,
-                    UniversityId = _baseResponse.EducationalInstitution?.Id ?? 0,
-
-                    Login = string.Empty,
-                    Password = string.Empty
-                };
-
+                _baseRequest.FirstName = _baseResponse.FirstName;
+                _baseRequest.LastName = _baseResponse.LastName;
+                _baseRequest.Patronymic = _baseResponse.Patronymic;
+                _baseRequest.Email = _baseResponse.Email;
+                _baseRequest.PhoneNumber = _baseResponse.PhoneNumber;
+                _baseRequest.UniversityId = _baseResponse.EducationalInstitution?.Id ?? -1;
             }
 
             LineElemsCreator.AddLineElems(
@@ -148,7 +141,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                         }
                 ]
             );
-            if (_componentState != AdminPageStatic.ComponentState.Read)
+            if (_componentState == AdminPageStatic.ComponentState.New)
             {
                 LineElemsCreator.AddLineElems(
                     grid: _baseInfoGrid,

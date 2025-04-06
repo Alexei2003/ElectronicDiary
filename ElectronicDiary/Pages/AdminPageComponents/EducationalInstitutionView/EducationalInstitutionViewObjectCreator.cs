@@ -2,13 +2,13 @@
 
 using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
-using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api;
+using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Web.Api.Educations;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Educations;
-using ElectronicDiary.Web.DTO.Responses;
 using ElectronicDiary.Web.DTO.Responses.Educations;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
@@ -24,15 +24,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 
             if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
-                _baseRequest = new()
-                {
-                    Name = _baseResponse.Name ?? string.Empty,
-                    Address = _baseResponse.Address ?? string.Empty,
-                    Email = _baseResponse.Email,
-                    PhoneNumber = _baseResponse.PhoneNumber,
-                    RegionId = _baseResponse.Settlement?.Region?.Id ?? 0,
-                    SettlementId = _baseResponse.Settlement?.Id ?? 0
-                };
+                _baseRequest.Name = _baseResponse.Name;
+                _baseRequest.Address = _baseResponse.Address;
+                _baseRequest.Email = _baseResponse.Email;
+                _baseRequest.PhoneNumber = _baseResponse.PhoneNumber;
+                _baseRequest.RegionId = _baseResponse.Settlement?.Region?.Id ?? -1;
+                _baseRequest.SettlementId = _baseResponse.Settlement?.Id ?? -1;
             }
 
             LineElemsCreator.AddLineElems(

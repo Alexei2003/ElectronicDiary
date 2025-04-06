@@ -3,7 +3,7 @@
 using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Others;
 
-namespace ElectronicDiary.Web
+namespace ElectronicDiary.Web.Api.Other
 {
     public static class HttpClientCustom
     {

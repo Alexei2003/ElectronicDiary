@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.SaveData;
+using ElectronicDiary.SaveData.Static;
 
 namespace ElectronicDiary.Pages.Others
 {

@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Web.DTO.Responses.Users;
+﻿using ElectronicDiary.Web.DTO.Responses.Other;
+using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Web.DTO.Responses.Educations
 {

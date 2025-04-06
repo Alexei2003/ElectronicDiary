@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace ElectronicDiary.Web.Api
+namespace ElectronicDiary.Web.Api.Other
 {
     public static class AuthorizationСontroller
     {

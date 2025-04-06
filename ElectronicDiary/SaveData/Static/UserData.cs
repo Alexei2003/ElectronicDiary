@@ -2,7 +2,7 @@
 
 using ElectronicDiary.SaveData.SerializeClasses;
 
-namespace ElectronicDiary.SaveData
+namespace ElectronicDiary.SaveData.Static
 {
     public static class UserData
     {

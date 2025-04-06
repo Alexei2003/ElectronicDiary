@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 
 using ElectronicDiary.Pages.AdminPageComponents.General;
-using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.SaveData;
-using ElectronicDiary.Web.Api;
-using ElectronicDiary.Web.DTO.Responses;
+using ElectronicDiary.Pages.Components.Other;
+using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {

@@ -1,17 +1,18 @@
 ﻿using System.Text.Json;
 
 using ElectronicDiary.Pages.AdminPageComponents.General;
-using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.SaveData;
-using ElectronicDiary.Web.Api;
-using ElectronicDiary.Web.DTO.Responses;
+using ElectronicDiary.Pages.Components.Other;
+using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.DTO.Requests.Other;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
     public class BaseViewObjectCreator<TResponse, TRequest, TController>
         where TResponse : BaseResponse, new()
-        where TRequest : new()
+        where TRequest : BaseRequest, new()
         where TController : IController, new()
     {
         protected TResponse _baseResponse = new();
@@ -99,6 +100,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void CreateUI()
         {
             _baseInfoGridRowIndex = 0;
+
+            if (_componentState == AdminPageStatic.ComponentState.Edit)
+            {
+                _baseRequest = new();
+                _baseRequest.Id = _baseResponse.Id;
+            }
         }
 
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)

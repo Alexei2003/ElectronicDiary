@@ -1,11 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json;
 
-using ElectronicDiary.Pages.Components;
 using ElectronicDiary.Pages.Components.Elems;
+using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
-using ElectronicDiary.Web.DTO.Responses;
+using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.General

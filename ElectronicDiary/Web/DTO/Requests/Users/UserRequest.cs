@@ -1,6 +1,8 @@
-﻿namespace ElectronicDiary.Web.DTO.Requests.Users
+﻿using ElectronicDiary.Web.DTO.Requests.Other;
+
+namespace ElectronicDiary.Web.DTO.Requests.Users
 {
-    public class UserRequest
+    public class UserRequest : BaseRequest
     {
         public string? FirstName { get; set; } = null;
         public string? LastName { get; set; } = null;

@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses
+﻿namespace ElectronicDiary.Web.DTO.Responses.Other
 {
     public record BaseResponse
     {

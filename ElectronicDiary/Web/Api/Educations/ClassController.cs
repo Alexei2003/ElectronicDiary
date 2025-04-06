@@ -1,4 +1,9 @@
-﻿using System.Text;
+﻿using System.Net.Http.Headers;
+using System.Text;
+
+using ElectronicDiary.Web.Api.Other;
+
+using Microsoft.AspNetCore.Http;
 
 namespace ElectronicDiary.Web.Api.Educations
 {
@@ -23,10 +28,20 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 
+        public Task<string?> Edit(string json)
+        {
+            return Task.Run(() => { return "empty method"; });
+        }
+
         public Task<string?> Delete(long id)
         {
             string url = $"/deleteClass?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
+        }
+
+        public Task<string?> AddImage(long id, IFormFile image)
+        {
+            return Task.Run(() => { return "empty method"; });
         }
 
         // Не интерфейсные методы

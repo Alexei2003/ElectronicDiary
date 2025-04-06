@@ -1,4 +1,6 @@
-﻿namespace ElectronicDiary.Web.DTO.Responses.Users
+﻿using ElectronicDiary.Web.DTO.Responses.Other;
+
+namespace ElectronicDiary.Web.DTO.Responses.Users
 {
     public record StudentParentResponse : BaseResponse
     {

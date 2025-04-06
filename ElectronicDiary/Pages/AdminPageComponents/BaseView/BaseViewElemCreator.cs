@@ -3,17 +3,18 @@ using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
+using ElectronicDiary.Web.DTO.Requests.Other;
 using ElectronicDiary.Web.DTO.Requests.Users;
-using ElectronicDiary.Web.DTO.Responses;
+using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
     public class BaseViewElemCreator<TResponse, TRequest, TController, TViewObjectCreator>
         where TResponse : BaseResponse, new()
-        where TRequest : new()
+        where TRequest : BaseRequest, new()
         where TController : IController, new()
         where TViewObjectCreator : BaseViewObjectCreator<TResponse, TRequest, TController>, new()
     {

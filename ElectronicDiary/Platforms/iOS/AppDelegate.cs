@@ -1,4 +1,6 @@
-﻿using Foundation;
+﻿using ElectronicDiary.Main;
+
+using Foundation;
 
 namespace ElectronicDiary.Platforms.iOS;
 

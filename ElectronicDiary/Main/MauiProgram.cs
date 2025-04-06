@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace ElectronicDiary;
+namespace ElectronicDiary.Main;
 
 public static class MauiProgram
 {

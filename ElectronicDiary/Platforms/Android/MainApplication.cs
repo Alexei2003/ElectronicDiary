@@ -1,6 +1,8 @@
 ﻿using Android.App;
 using Android.Runtime;
 
+using ElectronicDiary.Main;
+
 namespace ElectronicDiary.Platforms.Android;
 
 [Application]
