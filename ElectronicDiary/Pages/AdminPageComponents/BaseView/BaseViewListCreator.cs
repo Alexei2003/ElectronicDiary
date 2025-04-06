@@ -5,6 +5,7 @@ using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.DTO.Requests.Other;
 using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
@@ -16,7 +17,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
     public class BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : IBaseViewListCreator
         where TResponse : BaseResponse, new()
-        where TRequest : new()
+        where TRequest : BaseRequest, new()
         where TController : IController, new()
         where TViewElemCreator : BaseViewElemCreator<TResponse, TRequest, TController, TViewObjectCreator>, new()
         where TViewObjectCreator : BaseViewObjectCreator<TResponse, TRequest, TController>, new()
