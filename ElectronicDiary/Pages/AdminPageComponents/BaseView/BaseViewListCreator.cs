@@ -77,6 +77,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             _ = CreateListUI();
 
+            AdminPageStatic.CalcViewWidth(scrollView);
             return scrollView;
         }
 

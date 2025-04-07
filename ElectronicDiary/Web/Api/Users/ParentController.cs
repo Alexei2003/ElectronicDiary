@@ -3,8 +3,6 @@ using System.Text;
 
 using ElectronicDiary.Web.Api.Other;
 
-using Microsoft.AspNetCore.Http;
-
 namespace ElectronicDiary.Web.Api.Users
 {
     public class ParentController : IController
@@ -39,7 +37,7 @@ namespace ElectronicDiary.Web.Api.Users
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
 
-        public Task<string?> AddImage(long id, FileResult  image)
+        public Task<string?> AddImage(long id, FileResult image)
         {
             string url = $"/addImageParent?id={id}";
 

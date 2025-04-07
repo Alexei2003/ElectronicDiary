@@ -1,9 +1,6 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
+﻿using System.Text;
 
 using ElectronicDiary.Web.Api.Other;
-
-using Microsoft.AspNetCore.Http;
 
 namespace ElectronicDiary.Web.Api.Educations
 {
@@ -39,7 +36,7 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
 
-        public Task<string?> AddImage(long id, FileResult  image)
+        public Task<string?> AddImage(long id, FileResult image)
         {
             return Task.Run(() => { return "empty method"; });
         }

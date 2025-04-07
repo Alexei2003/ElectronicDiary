@@ -2,6 +2,7 @@
 {
     public class UserInfo
     {
+        public long Id { get; set; } = -1;
         public string? Role { get; set; } = null;
 
         // Авторизация

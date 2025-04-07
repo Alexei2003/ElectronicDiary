@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace ElectronicDiary.Web.Api.Other
+﻿namespace ElectronicDiary.Web.Api.Other
 {
     public interface IController
     {
@@ -10,6 +8,6 @@ namespace ElectronicDiary.Web.Api.Other
         Task<string?> Edit(string json);
         Task<string?> Delete(long id);
 
-        Task<string?> AddImage(long id, FileResult  image);
+        Task<string?> AddImage(long id, FileResult image);
     }
 }

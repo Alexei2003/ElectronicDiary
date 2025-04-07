@@ -5,28 +5,51 @@
         // Обновление видов
         public static void RepaintPage(HorizontalStackLayout mainStack, List<ScrollView> viewList)
         {
-            mainStack.Clear();
-
-            double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
-
-            var widthLocal = 0d;
-            if (Application.Current?.Windows.Count > 0)
+            Application.Current.Dispatcher.Dispatch(() =>
             {
-                widthLocal = Application.Current?.Windows[0].Width ?? 0;
-            }
+                mainStack.Clear();
+
+                double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
+
+                var widthLocal = 0d;
+                if (Application.Current?.Windows.Count > 0)
+                {
+                    widthLocal = Application.Current?.Windows[0].Width ?? 0;
+                }
 
 #if WINDOWS
-            const double coeff = 1;
+                const double coeff = 1;
 #else
-            const double coeff = 2;
+                const double coeff = 2;
 #endif
-            var countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
+                var countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
 
-            for (var i = int.Max(viewList.Count - countColumn, 0); i < viewList.Count; i++)
+                for (var i = int.Max(viewList.Count - countColumn, 0); i < viewList.Count; i++)
+                {
+                    mainStack.Add(viewList[i]);
+                }
+            });
+        }
+        public static void CalcViewWidth(View view)
+        {
+            Application.Current.Dispatcher.Dispatch(() =>
             {
-                viewList[i].MaximumWidthRequest = widthLocal / countColumn * 0.90;
-                mainStack.Add(viewList[i]);
-            }
+                double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
+                var widthLocal = 0d;
+                if (Application.Current?.Windows.Count > 0)
+                {
+                    widthLocal = Application.Current?.Windows[0].Width ?? 0;
+                }
+
+#if WINDOWS
+                const double coeff = 1;
+#else
+                const double coeff = 2;
+#endif
+                var countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
+
+                view.MaximumWidthRequest = widthLocal / countColumn * 0.90;
+            });
         }
 
         public static bool OnBackButtonPressed(HorizontalStackLayout mainStack, List<ScrollView> viewList)

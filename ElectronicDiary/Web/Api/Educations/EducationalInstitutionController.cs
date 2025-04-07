@@ -3,8 +3,6 @@ using System.Text;
 
 using ElectronicDiary.Web.Api.Other;
 
-using Microsoft.AspNetCore.Http;
-
 namespace ElectronicDiary.Web.Api.Educations
 {
     public class EducationalInstitutionСontroller : IController
@@ -34,7 +32,7 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
         }
 
-        public Task<string?> AddImage(long id, FileResult  image)
+        public Task<string?> AddImage(long id, FileResult image)
         {
             string url = $"/addImageEducational?id={id}";
 

@@ -2,7 +2,6 @@
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.Pages.Components.NavigationPage;
-using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.SerializeClasses;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
@@ -31,6 +30,7 @@ namespace ElectronicDiary.Pages
             vStack.Add(loginEntry);
             vStack.Add(passwordEntry);
             vStack.Add(toProfilePageButton);
+            AdminPageStatic.CalcViewWidth(vStack);
             Content = vStack;
         }
 
@@ -41,12 +41,13 @@ namespace ElectronicDiary.Pages
             {
                 UserData.UserInfo = new UserInfo()
                 {
+                    Id = 21,
                     Role = response,
                     Login = _login,
                     Password = _password
                 };
                 UserData.SaveUserInfo();
-                Navigator.SetAsRoot(new PreAdminPage());
+                Navigator.ChoosePage(response, UserData.UserInfo.Id);
             }
         }
     }

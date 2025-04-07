@@ -1,9 +1,8 @@
 ﻿using System.Net;
+using System.Runtime.Caching;
 
 using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Others;
-
-using System.Runtime.Caching;
 
 namespace ElectronicDiary.Web.Api.Other
 {

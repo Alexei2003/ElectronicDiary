@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.Others;
+﻿using ElectronicDiary.Pages.OtherPages;
+using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.SerializeClasses;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;

@@ -33,17 +33,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected Grid _baseInfoGrid = [];
         protected int _baseInfoGridRowIndex = 0;
 
-        public ScrollView Create(HorizontalStackLayout mainStack,
-                                    List<ScrollView> viewList,
-                                    Action chageListAction,
+        public ScrollView Create(HorizontalStackLayout? mainStack,
+                                    List<ScrollView>? viewList,
+                                    Action? chageListAction,
                                     BaseResponse? baseResponse,
                                     long educationalInstitutionId,
                                     bool edit = false)
         {
 
-            _mainStack = mainStack;
-            _viewList = viewList;
-            ChageListAction = chageListAction;
+            _mainStack = mainStack ?? [];
+            _viewList = viewList ?? [];
+            ChageListAction = chageListAction ?? delegate { };
             _baseResponse = (baseResponse as TResponse) ?? new();
             _educationalInstitutionId = educationalInstitutionId;
 
@@ -93,6 +93,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 verticalStack.Add(saveButton);
             }
 
+            AdminPageStatic.CalcViewWidth(scrollView);
             return scrollView;
         }
 

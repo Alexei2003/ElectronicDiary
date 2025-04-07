@@ -1,7 +1,7 @@
 ﻿using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData.Static;
 
-namespace ElectronicDiary.Pages
+namespace ElectronicDiary.Pages.OtherPages
 {
     public partial class SettignsPage : ContentPage
     {

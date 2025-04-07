@@ -10,13 +10,13 @@ namespace ElectronicDiary.Pages.Components.Elems
 {
     public static class BaseElemsCreator
     {
-        public static Button CreateButton(string text, EventHandler handler)
+        public static Button CreateButton(string text, EventHandler handler, bool navigation = false)
         {
             var button = new Button()
             {
                 HorizontalOptions = LayoutOptions.Fill,
 
-                BackgroundColor = UserData.UserSettings.Colors.ACCENT_COLOR,
+                BackgroundColor = navigation ? UserData.UserSettings.Colors.NAVIGATION_PAGE_COLOR : UserData.UserSettings.Colors.ACCENT_COLOR,
                 TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
 
                 FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
@@ -176,7 +176,6 @@ namespace ElectronicDiary.Pages.Components.Elems
             var verticalStackLayout = new VerticalStackLayout
             {
                 // Положение
-                VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Fill,
                 Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
                 Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,

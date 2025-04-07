@@ -1,5 +1,5 @@
 ﻿using ElectronicDiary.Pages;
-using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Static;
@@ -22,13 +22,10 @@ namespace ElectronicDiary
 
                     if (!string.IsNullOrEmpty(response))
                     {
-                        Dispatcher.Dispatch(() =>
+                        if (Current?.Windows.Count > 0)
                         {
-                            if (Current?.Windows.Count > 0)
-                            {
-                                Current.Windows[0].Page = new ThemedNavigationPage(new PreAdminPage());
-                            }
-                        });
+                            Navigator.ChoosePage(response, UserData.UserInfo.Id);
+                        }
 
                         return;
                     }

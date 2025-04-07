@@ -3,8 +3,6 @@ using System.Text;
 
 using ElectronicDiary.Web.Api.Other;
 
-using Microsoft.AspNetCore.Http;
-
 namespace ElectronicDiary.Web.Api.Users
 {
     public class SchoolStudentController : IController
@@ -38,7 +36,7 @@ namespace ElectronicDiary.Web.Api.Users
             string url = $"/deleteSchoolStudent?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
-        public Task<string?> AddImage(long id, FileResult  image)
+        public Task<string?> AddImage(long id, FileResult image)
         {
             string url = $"/addImageSchoolStudent?id={id}";
 

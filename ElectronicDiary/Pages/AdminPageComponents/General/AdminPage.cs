@@ -1,5 +1,4 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
-using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.NavigationPage;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Educations;
@@ -23,8 +22,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
             Title = "Панель администратора";
             ToolbarItemsAdder.AddSettings(ToolbarItems);
             ToolbarItemsAdder.AddLogOut(ToolbarItems);
-
-            // Цвета
             BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
 
             var view = new EducationalInstitutionViewListCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller,
