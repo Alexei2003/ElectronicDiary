@@ -1,4 +1,6 @@
 ﻿using ElectronicDiary.Pages;
+using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
@@ -24,14 +26,24 @@ namespace ElectronicDiary
                         {
                             if (Current?.Windows.Count > 0)
                             {
-                                Current.Windows[0].Page = new ThemedNavigationPage(new EmptyPage());
+                                Current.Windows[0].Page = new ThemedNavigationPage(new PreAdminPage());
                             }
                         });
+
+                        return;
                     }
                 }
+
+                Dispatcher.Dispatch(() =>
+                {
+                    if (Current?.Windows.Count > 0)
+                    {
+                        Current.Windows[0].Page = new ThemedNavigationPage(new LogPage());
+                    }
+                });
             });
 
-            return new Window(new LogPage())
+            return new Window(new EmptyPage())
             {
                 Title = "Электронный дневник"
             };

@@ -17,7 +17,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
         where TRequest : EducationalInstitutionRequest, new()
         where TController : IController, new()
     {
-
+        private Image? _image = null;
         protected override void CreateUI()
         {
             base.CreateUI();
@@ -32,12 +32,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 _baseRequest.SettlementId = _baseResponse.Settlement?.Id ?? -1;
             }
 
-            var image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
+            _image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
             if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
                 var tapGesture = new TapGestureRecognizer();
                 tapGesture.Tapped += AddImageTapped;
-                image.GestureRecognizers.Add(tapGesture);
+                _image.GestureRecognizers.Add(tapGesture);
             }
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
@@ -46,7 +46,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                      new LineElemsCreator.Data
                      {
                          CountJoinColumns = 2,
-                         Elem = image
+                         Elem = _image
                      }
                 ]);
 
@@ -187,6 +187,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             );
         }
 
+        private Stream? _image_stream = null;
         private async void AddImageTapped(object? sender, EventArgs e)
         {
             var result = await FilePicker.Default.PickAsync(new PickOptions
@@ -198,6 +199,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             if (result == null) return;
 
             await _controller.AddImage(_baseResponse.Id, result);
+
+            if (_image != null)
+            {
+                _image_stream?.Dispose();
+                _image_stream = await result.OpenReadAsync();
+                _image.Source = ImageSource.FromStream(() => _image_stream);
+            }
         }
 
         private static List<Item> GetRegions()

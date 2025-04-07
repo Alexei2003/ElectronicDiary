@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.Components.Elems;
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.Pages.Components.NavigationPage;
 using ElectronicDiary.Pages.Others;
@@ -45,7 +46,7 @@ namespace ElectronicDiary.Pages
                     Password = _password
                 };
                 UserData.SaveUserInfo();
-                Navigator.SetAsRoot(new EmptyPage());
+                Navigator.SetAsRoot(new PreAdminPage());
             }
         }
     }

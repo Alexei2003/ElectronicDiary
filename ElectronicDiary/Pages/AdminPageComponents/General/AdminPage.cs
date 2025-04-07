@@ -6,7 +6,7 @@ using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 
-namespace ElectronicDiary.Pages.AdminPageComponents
+namespace ElectronicDiary.Pages.AdminPageComponents.General
 {
     public partial class AdminPage : ContentPage
     {

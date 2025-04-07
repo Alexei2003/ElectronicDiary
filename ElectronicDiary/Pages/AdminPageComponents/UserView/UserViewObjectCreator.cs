@@ -12,6 +12,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         where TRequest : UserRequest, new()
         where TController : IController, new()
     {
+        private Image? _image = null;
         protected override void CreateUI()
         {
             base.CreateUI();
@@ -26,12 +27,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 _baseRequest.UniversityId = _baseResponse.EducationalInstitution?.Id ?? -1;
             }
 
-            var image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
-            if(_componentState == AdminPageStatic.ComponentState.Edit)
+            _image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
+            if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
                 var tapGesture = new TapGestureRecognizer();
                 tapGesture.Tapped += AddImageTapped;
-                image.GestureRecognizers.Add(tapGesture);
+                _image.GestureRecognizers.Add(tapGesture);
             }
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
@@ -40,7 +41,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                      new LineElemsCreator.Data
                      {
                          CountJoinColumns = 2,
-                         Elem = image
+                         Elem = _image
                      }
                 ]);
 
@@ -181,11 +182,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     ]
                 );
 
-
                 _baseRequest.UniversityId = _educationalInstitutionId;
             }
         }
 
+        private Stream? _image_stream = null;
         private async void AddImageTapped(object? sender, EventArgs e)
         {
             var result = await FilePicker.Default.PickAsync(new PickOptions
@@ -197,6 +198,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             if (result == null) return;
 
             await _controller.AddImage(_baseResponse.Id, result);
+
+            if (_image != null)
+            {
+                _image_stream?.Dispose();
+                _image_stream = await result.OpenReadAsync();
+                _image.Source = ImageSource.FromStream(() => _image_stream);
+            }
         }
     }
 }

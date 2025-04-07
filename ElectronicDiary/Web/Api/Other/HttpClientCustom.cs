@@ -3,6 +3,8 @@
 using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Others;
 
+using System.Runtime.Caching;
+
 namespace ElectronicDiary.Web.Api.Other
 {
     public static class HttpClientCustom
@@ -18,6 +20,10 @@ namespace ElectronicDiary.Web.Api.Other
             BaseAddress = new Uri(WebConstants.BASE_URL),
             Timeout = TimeSpan.FromSeconds(30)
         };
+
+        // Добавляем кеш в память
+        private static readonly MemoryCache _cache = MemoryCache.Default;
+        private static readonly TimeSpan _cacheExpiration = TimeSpan.FromMinutes(5);
 
         public enum HttpTypes
         {
