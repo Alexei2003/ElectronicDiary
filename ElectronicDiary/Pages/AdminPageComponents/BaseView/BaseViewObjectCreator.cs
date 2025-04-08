@@ -93,7 +93,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 verticalStack.Add(saveButton);
             }
 
-            AdminPageStatic.CalcViewWidth(scrollView);
             return scrollView;
         }
 

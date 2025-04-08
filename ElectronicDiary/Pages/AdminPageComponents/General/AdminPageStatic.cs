@@ -9,47 +9,34 @@
             {
                 mainStack.Clear();
 
-                double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
-
-                var widthLocal = 0d;
-                if (Application.Current?.Windows.Count > 0)
-                {
-                    widthLocal = Application.Current?.Windows[0].Width ?? 0;
-                }
-
-#if WINDOWS
-                const double coeff = 1;
-#else
-                const double coeff = 2;
-#endif
-                var countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
+                CalcViewWidth(out var width,out var countColumn);
 
                 for (var i = int.Max(viewList.Count - countColumn, 0); i < viewList.Count; i++)
                 {
+                    viewList[i].MaximumWidthRequest = width;
                     mainStack.Add(viewList[i]);
                 }
             });
         }
-        public static void CalcViewWidth(View view)
+
+        public static void CalcViewWidth(out double width, out int countColumn)
         {
-            Application.Current.Dispatcher.Dispatch(() =>
+
+            double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
+            var widthLocal = 0d;
+            if (Application.Current?.Windows.Count > 0)
             {
-                double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
-                var widthLocal = 0d;
-                if (Application.Current?.Windows.Count > 0)
-                {
-                    widthLocal = Application.Current?.Windows[0].Width ?? 0;
-                }
+                widthLocal = Application.Current?.Windows[0].Width ?? 0;
+            }
 
 #if WINDOWS
-                const double coeff = 1;
+            const double coeff = 1;
 #else
-                const double coeff = 2;
+            const double coeff = 2;
 #endif
-                var countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
+            countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
 
-                view.MaximumWidthRequest = widthLocal / countColumn * 0.90;
-            });
+            width = widthLocal / countColumn * 0.90;
         }
 
         public static bool OnBackButtonPressed(HorizontalStackLayout mainStack, List<ScrollView> viewList)

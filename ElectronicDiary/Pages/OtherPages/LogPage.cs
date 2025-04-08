@@ -30,7 +30,6 @@ namespace ElectronicDiary.Pages
             vStack.Add(loginEntry);
             vStack.Add(passwordEntry);
             vStack.Add(toProfilePageButton);
-            AdminPageStatic.CalcViewWidth(vStack);
             Content = vStack;
         }
 

@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.Components.Elems;
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.NavigationPage;
 using ElectronicDiary.SaveData.Static;
 
@@ -21,6 +22,13 @@ namespace ElectronicDiary.Pages.OtherPages
                     new RowDefinition { Height = GridLength.Auto }
                 }
             };
+
+            Application.Current.Dispatcher.Dispatch(() =>
+            {
+                AdminPageStatic.CalcViewWidth(out double width, out _);
+                grid.MaximumWidthRequest = width;
+            });
+
             grid.Add(scrollView, 0, 0);
 
             var hStack = new HorizontalStackLayout
