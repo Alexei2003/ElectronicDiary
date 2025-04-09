@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Security.Cryptography;
 
 using CommunityToolkit.Maui.Views;
 
@@ -88,7 +89,7 @@ namespace ElectronicDiary.Pages.Components.Elems
 
         public static Label CreateSearchPopupAsLabel(List<Item> itemList, Action<long> idChangedAction)
         {
-            var searchLabel = BaseElemsCreator.CreateLabel("Поиск");
+            var searchLabel = CreateLabel("Поиск");
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += (sender, e) =>
             {

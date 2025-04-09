@@ -1,5 +1,4 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.General;
-using ElectronicDiary.Pages.Components.Elems;
+﻿using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.Pages.Components.NavigationPage;
 using ElectronicDiary.SaveData.SerializeClasses;

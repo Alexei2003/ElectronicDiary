@@ -10,7 +10,7 @@ namespace ElectronicDiary.Pages.Components.Other
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase
         };
 
-        // URL
+        // URL 
         public const string NO_IMAGE_URL = "http://77.222.37.9/files/base/no_image.jpg";
     }
 }

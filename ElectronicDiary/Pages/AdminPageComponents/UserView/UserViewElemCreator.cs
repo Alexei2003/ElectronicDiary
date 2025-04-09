@@ -59,8 +59,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     {
                         Elem = BaseElemsCreator.CreateLabel(_baseResponse.Patronymic)
                     },
-                        ]
-                    );
+                ]
+            );
         }
     }
 }

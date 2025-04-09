@@ -40,8 +40,7 @@
             /// <summary> Основной цвет текста (максимальная контрастность) </summary>
             public Color TEXT_COLOR { get; set; } = Color.FromRgb(255, 255, 255);
             /// <summary> Цвет плейсхолдеров в полях ввода (подсказки) </summary>
-            public Color PLACEHOLDER_COLOR { get; set; } = Color.FromRgb(127, 127, 127);
-
+            public Color PLACEHOLDER_COLOR { get; set; } = Color.FromRgb(127, 127, 127);  
         }
     }
 }

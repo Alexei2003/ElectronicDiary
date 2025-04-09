@@ -166,7 +166,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
                     [
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreatePicker(ParentSchoolStudentCreator.GetParentTypes(),
+                            Elem = BaseElemsCreator.CreatePicker(GetParentTypes(),
                                                     selectedIndex => _studentParentRequest.ParentTypeId = selectedIndex)
                         },
                         new LineElemsCreator.Data

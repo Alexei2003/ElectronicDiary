@@ -9,7 +9,7 @@
             {
                 mainStack.Clear();
 
-                CalcViewWidth(out var width,out var countColumn);
+                CalcViewWidth(out var width, out var countColumn);
 
                 for (var i = int.Max(viewList.Count - countColumn, 0); i < viewList.Count; i++)
                 {
