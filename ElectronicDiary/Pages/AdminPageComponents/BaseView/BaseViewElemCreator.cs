@@ -73,7 +73,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 var action = string.Empty;
                 if (_maxCountViews == 2)
                 {
-                    action = await BaseElemsCreator.CreateActionSheetCreator(
+                    action = await BaseElemsCreator.CreateActionSheet(
                        [
                         "Описание",
                         "Перейти",
@@ -83,7 +83,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 }
                 else
                 {
-                    action = await BaseElemsCreator.CreateActionSheetCreator(
+                    action = await BaseElemsCreator.CreateActionSheet(
                        [
                         "Описание",
                         "Редактировать",
@@ -123,7 +123,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual async Task MoveTo(long id)
         {
             string action = string.Empty;
-            action = await BaseElemsCreator.CreateActionSheetCreator(
+            action = await BaseElemsCreator.CreateActionSheet(
                [
                 "Администраторы",
                 "Учителя",

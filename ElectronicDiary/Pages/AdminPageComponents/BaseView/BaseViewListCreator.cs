@@ -31,7 +31,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected int _maxCountViews;
         protected VerticalStackLayout _listVerticalStack = new()
         {
-            Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES
+            Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES
         };
         protected long _educationalInstitutionId;
 
@@ -48,12 +48,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _viewList = viewList;
             _educationalInstitutionId = educationalInstitutionId;
 
+            _ = CreateListUI();
 
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
-                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
             };
 
             var scrollView = new ScrollView()
@@ -74,8 +75,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             verticalStack.Add(addButton);
 
             verticalStack.Add(_listVerticalStack);
-
-            _ = CreateListUI();
 
             return scrollView;
         }
@@ -109,7 +108,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             for (var i = 0; i < _objectsArr.Length; i++)
             {
-
                 var baseViewElemCreator = new TViewElemCreator();
                 var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _educationalInstitutionId);
                 _listVerticalStack.Add(grid);

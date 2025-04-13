@@ -1,11 +1,14 @@
-﻿using ElectronicDiary.Pages;
+﻿using System.Text.Json;
+
+using ElectronicDiary.Pages;
 using ElectronicDiary.Pages.Components.Navigation;
+using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.OtherPages;
-using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
-namespace ElectronicDiary
+namespace ElectronicDiary.Main
 {
     public partial class App : Application
     {
@@ -16,28 +19,22 @@ namespace ElectronicDiary
             Task.Run(async () =>
             {
                 await Task.Delay(1000);
-                if (!string.IsNullOrEmpty(UserData.UserInfo.Role))
+                await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
+                var response = await AuthorizationСontroller.GetUserInfo();
+                if (!string.IsNullOrEmpty(response))
                 {
-                    var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
-
-                    if (!string.IsNullOrEmpty(response))
+                    var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
+                    if (obj != null)
                     {
-                        if (Current?.Windows.Count > 0)
+                        if (obj.Id == UserData.UserInfo.Id && obj.Role == UserData.UserInfo.Role)
                         {
-                            Navigator.ChoosePage(response, UserData.UserInfo.Id);
+                            Navigator.ChoosePage(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                            return;
                         }
-
-                        return;
                     }
                 }
 
-                Dispatcher.Dispatch(() =>
-                {
-                    if (Current?.Windows.Count > 0)
-                    {
-                        Current.Windows[0].Page = new ThemedNavigationPage(new LogPage());
-                    }
-                });
+                Navigator.SetAsRoot(new LogPage());
             });
 
             return new Window(new EmptyPage())

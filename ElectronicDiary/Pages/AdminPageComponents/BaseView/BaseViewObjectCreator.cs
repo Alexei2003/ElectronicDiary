@@ -1,8 +1,5 @@
-﻿using System.Text.Json;
-
-using ElectronicDiary.Pages.AdminPageComponents.General;
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Other;
@@ -66,8 +63,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var verticalStack = new VerticalStackLayout
             {
                 // Положение
-                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
             };
 
             var scrollView = new ScrollView()
@@ -78,7 +75,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _infoStack = new VerticalStackLayout
             {
                 // Положение
-                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
             };
             verticalStack.Add(_infoStack);
 
@@ -110,10 +107,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
-            var json = JsonSerializer.Serialize(_baseRequest, PageConstants.JsonSerializerOptions);
-            var response = _componentState == AdminPageStatic.ComponentState.New ? await _controller.Add(json) : await _controller.Add(json);
 
-            if (!string.IsNullOrEmpty(response))
+            var response = _componentState == AdminPageStatic.ComponentState.New ? await _controller.Add(_baseRequest) : await _controller.Edit(_baseRequest);
+            if (response != null)
             {
                 ChageListAction.Invoke();
                 AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);

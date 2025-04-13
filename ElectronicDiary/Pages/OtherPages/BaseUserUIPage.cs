@@ -1,6 +1,6 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Pages.Components.NavigationPage;
+using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.SaveData.Static;
 
 namespace ElectronicDiary.Pages.OtherPages
@@ -12,7 +12,7 @@ namespace ElectronicDiary.Pages.OtherPages
             Title = title;
             ToolbarItemsAdder.AddSettings(ToolbarItems);
             ToolbarItemsAdder.AddLogOut(ToolbarItems);
-            BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
+            BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
 
             var grid = new Grid
             {
@@ -34,11 +34,16 @@ namespace ElectronicDiary.Pages.OtherPages
             var hStack = new HorizontalStackLayout
             {
                 HorizontalOptions = LayoutOptions.Center,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                BackgroundColor = UserData.Settings.Theme.NavigationPageColor,
             };
-            hStack.Add(BaseElemsCreator.CreateButton("Главная", delegate { }, true));
-            hStack.Add(BaseElemsCreator.CreateButton("Профиль", delegate { }, true));
-            hStack.Add(BaseElemsCreator.CreateButton("Новости", delegate { }, true));
-            hStack.Add(BaseElemsCreator.CreateButton("Дневник", delegate { }, true));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
+            hStack.Add(BaseElemsCreator.CreateImageClicked("loading_image.png"));
 
             grid.Add(hStack, 0, 1);
 

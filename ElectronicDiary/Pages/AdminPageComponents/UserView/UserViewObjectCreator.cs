@@ -12,7 +12,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         where TRequest : UserRequest, new()
         where TController : IController, new()
     {
-        private Image? _image = null;
+        private VerticalStackLayout? _image = null;
         protected override void CreateUI()
         {
             base.CreateUI();
@@ -27,7 +27,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 _baseRequest.UniversityId = _baseResponse.EducationalInstitution?.Id ?? -1;
             }
 
-            _image = BaseElemsCreator.CreateImage(_baseResponse.PathImage);
+            _image = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage);
             if (_componentState == AdminPageStatic.ComponentState.Edit)
             {
                 var tapGesture = new TapGestureRecognizer();
@@ -187,6 +187,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         }
 
         private Stream? _image_stream = null;
+        private FileResult? _imageFile = null;
         private async void AddImageTapped(object? sender, EventArgs e)
         {
             var result = await FilePicker.Default.PickAsync(new PickOptions
@@ -196,14 +197,24 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             });
 
             if (result == null) return;
-
-            await _controller.AddImage(_baseResponse.Id, result);
+            _imageFile = result;
 
             if (_image != null)
             {
                 _image_stream?.Dispose();
                 _image_stream = await result.OpenReadAsync();
-                _image.Source = ImageSource.FromStream(() => _image_stream);
+                Image image = (Image)_image[^1];
+                image.Source = ImageSource.FromStream(() => _image_stream);
+            }
+        }
+
+        protected override void SaveButtonClicked(object? sender, EventArgs e)
+        {
+            base.SaveButtonClicked(sender, e);
+
+            if (_imageFile != null)
+            {
+                _controller.AddImage(_baseResponse.Id, _imageFile);
             }
         }
     }

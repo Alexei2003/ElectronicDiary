@@ -5,9 +5,9 @@ namespace ElectronicDiary.Pages.OtherPages
 {
     public partial class EmptyPage : ContentPage
     {
-        public EmptyPage() 
+        public EmptyPage()
         {
-            BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_PAGE_COLOR;
+            BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
             var image = new Image()
             {
                 Source = ImageSource.FromFile("dotnet_bot.png")

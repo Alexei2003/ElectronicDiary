@@ -14,17 +14,17 @@ namespace ElectronicDiary.Pages.Others
         {
             AllItems = items;
 
-            Color = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR;
+            Color = UserData.Settings.Theme.BackgroundPageColor;
 
             var searchBar = new SearchBar
             {
                 // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-                PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
+                BackgroundColor = UserData.Settings.Theme.AccentColorFields,
+                TextColor = UserData.Settings.Theme.TextColor,
+                PlaceholderColor = UserData.Settings.Theme.PlaceholderColor,
 
                 // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
                 Placeholder = "Введите для поиска...",
             };
 
@@ -36,12 +36,14 @@ namespace ElectronicDiary.Pages.Others
             _listView = new ListView
             {
                 // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                BackgroundColor = UserData.Settings.Theme.BackgroundPageColor,
 
                 ItemsSource = AllItems,
                 ItemTemplate = new DataTemplate(() =>
                 {
                     var label = new Label();
+                    label.BackgroundColor = UserData.Settings.Theme.AccentColorFields;
+                    label.TextColor = UserData.Settings.Theme.TextColor;
                     label.SetBinding(Label.TextProperty, "Name");
                     return new ViewCell { View = label };
                 })
@@ -62,11 +64,11 @@ namespace ElectronicDiary.Pages.Others
 #if WINDOWS
                 HeightRequest = 100,
 #endif
-                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
 
                 // Цвета
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                BackgroundColor = UserData.Settings.Theme.BackgroundPageColor,
 
                 Children =
                 {

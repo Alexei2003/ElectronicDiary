@@ -18,16 +18,20 @@ namespace ElectronicDiary.Pages.Components.Navigation
     {
         public static void SetAsRoot(ContentPage page)
         {
-            Application.Current.Dispatcher.Dispatch(() =>
+            var app = Application.Current;
+            if (app != null)
             {
-                if (Application.Current?.Windows.Count > 0)
+                app.Dispatcher.Dispatch(() =>
                 {
-                    Application.Current.Windows[0].Page = new ThemedNavigationPage(page);
-                }
-            });
+                    if (Application.Current?.Windows.Count > 0)
+                    {
+                        Application.Current.Windows[0].Page = new ThemedNavigationPage(page);
+                    }
+                });
+            }
         }
 
-        public static async void ChoosePage(string role, long id)
+        public static async void ChoosePage(string? role, long id)
         {
             ContentPage? page = null;
             IController? controller = null;

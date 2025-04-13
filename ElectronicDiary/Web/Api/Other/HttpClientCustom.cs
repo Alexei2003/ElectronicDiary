@@ -1,7 +1,11 @@
 ﻿using System.Net;
+using System.Net.Http.Headers;
 using System.Runtime.Caching;
+using System.Text;
+using System.Text.Json;
 
 using ElectronicDiary.Pages;
+using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.Others;
 
 namespace ElectronicDiary.Web.Api.Other
@@ -29,8 +33,27 @@ namespace ElectronicDiary.Web.Api.Other
             GET, POST, PUT, DELETE
         }
 
-        public static async Task<string?> CheckResponse(HttpTypes httpTypes, string url, HttpContent? content = null)
+        public static async Task<string?> CheckResponse(HttpTypes httpTypes, string url, object? request = null, FileResult? image = null)
         {
+            HttpContent? content = null;
+            if (request != null)
+            {
+                var json = JsonSerializer.Serialize(request, PageConstants.JsonSerializerOptions);
+                content = new StringContent(json, Encoding.UTF8, "application/json");
+            }
+            else
+            {
+                if (image != null)
+                {
+                    var contentTmp = new MultipartFormDataContent();
+                    var fileContent = new StreamContent(image.OpenReadAsync().Result);
+                    fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
+                    contentTmp.Add(fileContent, "image", image.FileName);
+                    content = contentTmp;
+                }
+            }
+
+
             HttpResponseMessage response;
             try
             {
@@ -89,7 +112,7 @@ namespace ElectronicDiary.Web.Api.Other
         //    return JsonSerializer.Serialize(cookiesList);
         //}
 
-        //public static void DeserializeCookies(string json)
+        //public static void DeserializeCookies(object request)
         //{
         //    var cookiesList = JsonSerializer.Deserialize<CookieCollection>(json);
         //    _handler.CookieContainer.Add(cookiesList);

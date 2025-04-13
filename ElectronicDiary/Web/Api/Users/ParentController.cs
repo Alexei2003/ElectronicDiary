@@ -1,7 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
-
-using ElectronicDiary.Web.Api.Other;
+﻿using ElectronicDiary.Web.Api.Other;
 
 namespace ElectronicDiary.Web.Api.Users
 {
@@ -19,17 +16,15 @@ namespace ElectronicDiary.Web.Api.Users
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public Task<string?> Add(string json)
+        public Task<string?> Add(object request)
         {
             const string url = "/addNewParent";
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
-        public Task<string?> Edit(string json)
+        public Task<string?> Edit(object request)
         {
             const string url = "/changeParent";
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
         public Task<string?> Delete(long id)
         {
@@ -40,13 +35,7 @@ namespace ElectronicDiary.Web.Api.Users
         public Task<string?> AddImage(long id, FileResult image)
         {
             string url = $"/addImageParent?id={id}";
-
-            var content = new MultipartFormDataContent();
-            var fileContent = new StreamContent(image.OpenReadAsync().Result);
-            fileContent.Headers.ContentType = new MediaTypeHeaderValue(image.ContentType);
-            content.Add(fileContent, "image", image.FileName);
-
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, image: image);
         }
 
         // Не интерфейсные методы
@@ -58,11 +47,10 @@ namespace ElectronicDiary.Web.Api.Users
         }
 
         // Добавить уже существующего родителя ребёнку
-        public static Task<string?> AddParent(string json)
+        public static Task<string?> AddParent(object request)
         {
             const string url = "/addParent";
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         // Удалить связь StudentParent

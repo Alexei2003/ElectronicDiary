@@ -202,8 +202,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
             _studentParentRequest.SchoolStudentId = _userId;
             Task.Run(async () =>
             {
-                var json = JsonSerializer.Serialize(_studentParentRequest, PageConstants.JsonSerializerOptions);
-                var response = await ParentController.AddParent(json);
+                var response = await ParentController.AddParent(_studentParentRequest);
                 if (!string.IsNullOrEmpty(response))
                 {
                     _addParent = false;
@@ -214,7 +213,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
 
         private async void Delete(long id)
         {
-            var action = await BaseElemsCreator.CreateActionSheetCreator(["Удалить"]);
+            var action = await BaseElemsCreator.CreateActionSheet(["Удалить"]);
             if (action == "Удалить")
             {
                 _ = await ParentController.DeleteStudentParent(id);

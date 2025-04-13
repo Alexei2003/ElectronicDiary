@@ -17,5 +17,11 @@ namespace ElectronicDiary.Web.Api.Other
 
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
+        public static Task<string?> GetUserInfo()
+        {
+            const string url = $"/getAuthorizationUserInfo";
+
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url);
+        }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.Pages.Others;
-using ElectronicDiary.SaveData.SerializeClasses;
+using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
 
-namespace ElectronicDiary.Pages.Components.NavigationPage
+namespace ElectronicDiary.Pages.Components.Navigation
 {
     public static class ToolbarItemsAdder
     {

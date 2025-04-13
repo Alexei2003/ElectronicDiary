@@ -1,9 +1,7 @@
 ﻿using System.Collections.ObjectModel;
-using System.Security.Cryptography;
 
 using CommunityToolkit.Maui.Views;
 
-using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Static;
 
@@ -17,10 +15,10 @@ namespace ElectronicDiary.Pages.Components.Elems
             {
                 HorizontalOptions = LayoutOptions.Fill,
 
-                BackgroundColor = navigation ? UserData.UserSettings.Colors.NAVIGATION_PAGE_COLOR : UserData.UserSettings.Colors.ACCENT_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                BackgroundColor = navigation ? UserData.Settings.Theme.NavigationPageColor : UserData.Settings.Theme.AccentColor,
+                TextColor = UserData.Settings.Theme.TextColor,
 
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
                 Text = text,
             };
 
@@ -28,7 +26,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return button;
         }
 
-        public static async Task<string> CreateActionSheetCreator(string[] actionList)
+        public static async Task<string> CreateActionSheet(string[] actionList)
         {
             var page = Application.Current?.Windows[0].Page;
             var action = string.Empty;
@@ -41,28 +39,62 @@ namespace ElectronicDiary.Pages.Components.Elems
             return action;
         }
 
-        public static Image CreateImage(string? url)
+        public static Image CreateImageClicked(string? imagePath)
         {
-            var tmpUrl = url ?? PageConstants.NO_IMAGE_URL;
             var image = new Image
             {
-                MaximumWidthRequest = UserData.UserSettings.Sizes.IMAGE_SIZE,
-                MaximumHeightRequest = UserData.UserSettings.Sizes.IMAGE_SIZE,
-                Source = ImageSource.FromUri(new Uri(tmpUrl))
+                MaximumWidthRequest = UserData.Settings.Sizes.IMAGE_BUTTON_SIZE,
+                MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_BUTTON_SIZE,
+                Source = ImageSource.FromFile(imagePath)
             };
 
             return image;
+        }
+
+        public static VerticalStackLayout CreateImageFromUrl(string? url)
+        {
+            var vStack = new VerticalStackLayout();
+
+            var loadImage = new Image
+            {
+                MaximumWidthRequest = UserData.Settings.Sizes.IMAGE_SIZE,
+                MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
+                Source = ImageSource.FromFile(url == null ? "no_image.png" : "loading_image.png")
+            };
+            vStack.Add(loadImage);
+
+            if (url != null)
+            {
+                var mainImage = new Image
+                {
+                    MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
+                    MinimumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
+                    Source = ImageSource.FromUri(new Uri(url)),
+                };
+                vStack.Add(mainImage);
+
+                mainImage.PropertyChanged += (sender, args) =>
+                {
+                    if (args.PropertyName == Image.IsLoadingProperty.PropertyName)
+                    {
+                        loadImage.IsVisible = mainImage.IsLoading;
+                        mainImage.IsVisible = !mainImage.IsLoading;
+                    }
+                };
+            }
+
+            return vStack;
         }
 
         public static Entry CreateEntry(Action<string>? textChangedAction, string? placeholder, string? text = null)
         {
             var entry = new Entry
             {
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
-                PlaceholderColor = UserData.UserSettings.Colors.PLACEHOLDER_COLOR,
+                BackgroundColor = UserData.Settings.Theme.AccentColorFields,
+                TextColor = UserData.Settings.Theme.TextColor,
+                PlaceholderColor = UserData.Settings.Theme.PlaceholderColor,
 
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
                 Placeholder = placeholder ?? string.Empty,
                 Text = text ?? string.Empty,
             };
@@ -78,9 +110,9 @@ namespace ElectronicDiary.Pages.Components.Elems
         {
             var label = new Label
             {
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                TextColor = UserData.Settings.Theme.TextColor,
 
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
                 Text = text ?? string.Empty,
             };
 
@@ -90,6 +122,7 @@ namespace ElectronicDiary.Pages.Components.Elems
         public static Label CreateSearchPopupAsLabel(List<Item> itemList, Action<long> idChangedAction)
         {
             var searchLabel = CreateLabel("Поиск");
+            searchLabel.BackgroundColor = UserData.Settings.Theme.AccentColorFields;
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += (sender, e) =>
             {
@@ -120,11 +153,10 @@ namespace ElectronicDiary.Pages.Components.Elems
         {
             var picker = new Picker
             {
-                // Цвета
-                TextColor = UserData.UserSettings.Colors.TEXT_COLOR,
+                BackgroundColor = UserData.Settings.Theme.AccentColorFields,
+                TextColor = UserData.Settings.Theme.TextColor,
 
-                // Текст
-                FontSize = UserData.UserSettings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
 
                 ItemsSource = itemList,
                 ItemDisplayBinding = new Binding("Name"),
@@ -132,8 +164,12 @@ namespace ElectronicDiary.Pages.Components.Elems
 
             if (itemList != null && baseSelectedId != null)
             {
-                var selectedIndex = itemList.IndexOf(itemList.FirstOrDefault(i => i.Id == baseSelectedId));
-                picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+                var item = itemList.FirstOrDefault(i => i.Id == baseSelectedId);
+                if (item != null)
+                {
+                    var selectedIndex = itemList.IndexOf(item);
+                    picker.SelectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+                }
             }
 
             if (idChangedAction != null)
@@ -162,11 +198,11 @@ namespace ElectronicDiary.Pages.Components.Elems
                     new ColumnDefinition { Width = GridLength.Star }
                 },
 
-                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
-                ColumnSpacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
-                RowSpacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                ColumnSpacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                RowSpacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
 
-                BackgroundColor = UserData.UserSettings.Colors.BACKGROUND_FILL_COLOR,
+                BackgroundColor = UserData.Settings.Theme.BackgroundFillColor,
             };
 
             return grid;
@@ -178,8 +214,8 @@ namespace ElectronicDiary.Pages.Components.Elems
             {
                 // Положение
                 HorizontalOptions = LayoutOptions.Fill,
-                Padding = UserData.UserSettings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.UserSettings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
             };
 
             return verticalStackLayout;

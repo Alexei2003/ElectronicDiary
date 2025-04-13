@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-using ElectronicDiary.Web.Api.Other;
+﻿using ElectronicDiary.Web.Api.Other;
 
 namespace ElectronicDiary.Web.Api.Educations
 {
@@ -18,14 +16,13 @@ namespace ElectronicDiary.Web.Api.Educations
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public Task<string?> Add(string json)
+        public Task<string?> Add(object request)
         {
             const string url = "/addClass";
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, content);
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
-        public Task<string?> Edit(string json)
+        public Task<string?> Edit(object request)
         {
             return Task.Run(() => { return "empty method"; });
         }

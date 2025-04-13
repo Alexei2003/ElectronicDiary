@@ -7,8 +7,8 @@ namespace ElectronicDiary.Pages.Others
         // Красит полосу навигации
         public ThemedNavigationPage(Page root) : base(root)
         {
-            BarBackgroundColor = UserData.UserSettings.Colors.NAVIGATION_PAGE_COLOR;
-            BarTextColor = UserData.UserSettings.Colors.TEXT_COLOR;
+            BarBackgroundColor = UserData.Settings.Theme.NavigationPageColor;
+            BarTextColor = UserData.Settings.Theme.TextColor;
         }
     }
 }

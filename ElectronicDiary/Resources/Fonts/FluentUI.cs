@@ -7049,9 +7049,9 @@ namespace ElectronicDiary.Resources.Fonts
         public const string text_clear_formatting_24_regular = "\uf7bd";
         public const string text_collapse_20_regular = "\uecf4";
         public const string text_collapse_24_regular = "\uf7be";
-        public const string text_color_16_regular = "\uecf5";
-        public const string text_color_20_regular = "\uf7bf";
-        public const string text_color_24_regular = "\uf7c0";
+        public const string TextColor_16_regular = "\uecf5";
+        public const string TextColor_20_regular = "\uf7bf";
+        public const string TextColor_24_regular = "\uf7c0";
         public const string text_column_one_20_regular = "\uf7c1";
         public const string text_column_one_24_regular = "\uf7c2";
         public const string text_column_one_narrow_20_regular = "\uecf6";

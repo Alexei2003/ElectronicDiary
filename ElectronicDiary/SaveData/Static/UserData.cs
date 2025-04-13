@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 
-using ElectronicDiary.SaveData.SerializeClasses;
+using ElectronicDiary.SaveData.Other;
+using ElectronicDiary.SaveData.Themes;
 
 namespace ElectronicDiary.SaveData.Static
 {
@@ -17,8 +18,6 @@ namespace ElectronicDiary.SaveData.Static
             LoadUserInfo();
             LoadUserSettings();
         }
-
-
 
         private static readonly string USER_INFO_PATH = Path.Combine(FileSystem.AppDataDirectory, "UserInfo.ed");
         public static UserInfo UserInfo { get; set; } = new();
@@ -41,11 +40,11 @@ namespace ElectronicDiary.SaveData.Static
 
 
         private static readonly string USER_SETTINGS_PATH = Path.Combine(FileSystem.AppDataDirectory, "UserSettings.ed");
-        public static UserSettings UserSettings { get; set; } = new();
+        public static Settings Settings { get; set; } = new();
 
         public static void SaveUserSettings()
         {
-            var json = JsonSerializer.Serialize(UserSettings);
+            var json = JsonSerializer.Serialize(Settings.UserSettings);
             File.WriteAllText(USER_SETTINGS_PATH, json);
         }
 
@@ -54,8 +53,14 @@ namespace ElectronicDiary.SaveData.Static
             if (File.Exists(USER_SETTINGS_PATH))
             {
                 var json = File.ReadAllText(USER_SETTINGS_PATH);
-                var obj = JsonSerializer.Deserialize<UserSettings>(json);
-                if (obj != null) UserSettings = obj;
+                var obj = JsonSerializer.Deserialize<Settings.UserSettingsClass>(json);
+                if (obj != null)
+                {
+                    Settings.UserSettings = obj;
+                    Settings.Sizes = new(obj.ScaleFactor);
+                    Settings.Fonts = new(obj.ScaleFactor);
+                    Settings.Theme = ThemesMeneger.ChooseTheme(obj.ThemeIndex);
+                }
             }
         }
     }

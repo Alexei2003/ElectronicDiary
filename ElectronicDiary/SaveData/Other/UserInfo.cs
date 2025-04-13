@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.SaveData.SerializeClasses
+﻿namespace ElectronicDiary.SaveData.Other
 {
     public class UserInfo
     {
