@@ -28,5 +28,31 @@ namespace ElectronicDiary.SaveData.Other
                 _ => RoleType.None,
             };
         }
+
+        public static string ConvertEnumRoleToString(RoleType role)
+        {
+            return role switch
+            {
+                RoleType.MainAdmin => "Main admin",
+                RoleType.LocalAdmin => "Local admin",
+                RoleType.Teacher => "Teacher",
+                RoleType.SchoolStudent => "School student",
+                RoleType.Parent => "Parent",
+                _ => "None"
+            };
+        }
+
+        public static string ConvertEnumRoleToStringRus(RoleType role)
+        {
+            return role switch
+            {
+                RoleType.MainAdmin => "Main admin",
+                RoleType.LocalAdmin => "Local admin",
+                RoleType.Teacher => "Teacher",
+                RoleType.SchoolStudent => "School student",
+                RoleType.Parent => "Parent",
+                _ => "None"
+            };
+        }
     }
 }

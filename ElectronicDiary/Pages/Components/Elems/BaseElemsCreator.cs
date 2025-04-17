@@ -39,7 +39,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return action;
         }
 
-        public static Image CreateImageClicked(string? imagePath)
+        public static Image CreateImageClicked(string? imagePath, EventHandler<TappedEventArgs> handler)
         {
             var image = new Image
             {
@@ -47,6 +47,10 @@ namespace ElectronicDiary.Pages.Components.Elems
                 MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_BUTTON_SIZE,
                 Source = ImageSource.FromFile(imagePath)
             };
+
+            var tapGesture = new TapGestureRecognizer();
+            tapGesture.Tapped += handler;
+            image.GestureRecognizers.Add(tapGesture);
 
             return image;
         }

@@ -111,7 +111,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                     scrollView.MaximumWidthRequest = width;
                 });
                 hStack.Add(scrollView);
-                page = new BaseUserUIPage(hStack, "Профиль", BaseUserUIPage.PageType.Profile);
+                page = new BaseUserUIPage(hStack, BaseUserUIPage.PageType.Profile);
             }
 
             SetAsRoot(page ?? new LogPage());
