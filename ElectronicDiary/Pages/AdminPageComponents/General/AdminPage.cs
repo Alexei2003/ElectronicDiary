@@ -1,4 +1,5 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Educations;
@@ -9,12 +10,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
 {
     public partial class AdminPage : ContentPage
     {
-        private readonly HorizontalStackLayout _mainStack = new()
-        {
-            // Положение
-            HorizontalOptions = LayoutOptions.Center,
-            VerticalOptions = LayoutOptions.Fill,
-        };
+        private readonly HorizontalStackLayout _mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
         private readonly List<ScrollView> _viewList = [];
 
         public AdminPage()

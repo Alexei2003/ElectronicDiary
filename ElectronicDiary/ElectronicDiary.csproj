@@ -67,6 +67,20 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\xml\network_security_config.xml" />
+	  <None Remove="Resources\Images\Black\black_diary_icon.png" />
+	  <None Remove="Resources\Images\Black\black_log_out_icon.png" />
+	  <None Remove="Resources\Images\Black\black_news_icon.png" />
+	  <None Remove="Resources\Images\Black\black_profile_icon.png" />
+	  <None Remove="Resources\Images\Black\black_search_icon.png" />
+	  <None Remove="Resources\Images\Black\black_settings_icon.png" />
+	  <None Remove="Resources\Images\Black\black_shedule_icon.png" />
+	  <None Remove="Resources\Images\White\white_diary_icon.png" />
+	  <None Remove="Resources\Images\White\white_log_out_icon.png" />
+	  <None Remove="Resources\Images\White\white_news_icon.png" />
+	  <None Remove="Resources\Images\White\white_profile_icon.png" />
+	  <None Remove="Resources\Images\White\white_search_icon.png" />
+	  <None Remove="Resources\Images\White\white_settings_icon.png" />
+	  <None Remove="Resources\Images\White\white_shedule_icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -89,6 +103,25 @@
 	<ItemGroup>
 	  <Folder Include="Pages\AdminPageComponents\TeacherView\" />
 	  <Folder Include="Pages\AdminPageComponents\ClassView\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Black\black_chats_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_diary_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_log_out_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_news_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_profile_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_search_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_settings_icon.png" />
+	  <MauiImage Include="Resources\Images\Black\black_shedule_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_chats_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_diary_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_log_out_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_news_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_profile_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_search_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_settings_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_shedule_icon.png" />
 	</ItemGroup>
 
 </Project>

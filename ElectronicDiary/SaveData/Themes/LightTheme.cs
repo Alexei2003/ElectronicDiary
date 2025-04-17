@@ -8,6 +8,8 @@ namespace ElectronicDiary.SaveData.Themes
 {
     public class LightTheme : IAppTheme
     {
+        public bool TextIsBlack => true;
+
         // ОСНОВНЫЕ ФОНОВЫЕ ЦВЕТА
         public Color BackgroundPageColor => Color.FromRgb(250, 250, 250);
         public Color NavigationPageColor => Color.FromRgb(200, 200, 200);

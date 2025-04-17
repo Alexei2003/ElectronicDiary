@@ -4,9 +4,11 @@ using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.Pages.Others;
+using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
@@ -18,20 +20,16 @@ namespace ElectronicDiary.Pages.Components.Navigation
     {
         public static void SetAsRoot(ContentPage page)
         {
-            var app = Application.Current;
-            if (app != null)
+            Application.Current?.Dispatcher.Dispatch(() =>
             {
-                app.Dispatcher.Dispatch(() =>
+                if (Application.Current?.Windows.Count > 0)
                 {
-                    if (Application.Current?.Windows.Count > 0)
-                    {
-                        Application.Current.Windows[0].Page = new ThemedNavigationPage(page);
-                    }
-                });
-            }
+                    Application.Current.Windows[0].Page = new ThemedNavigationPage(page);
+                }
+            });
         }
 
-        public static async void ChoosePage(string? role, long id)
+        public static async void ChoosePageByRole(UserInfo.RoleType role, long id)
         {
             ContentPage? page = null;
             IController? controller = null;
@@ -39,11 +37,11 @@ namespace ElectronicDiary.Pages.Components.Navigation
             string? response = null;
             switch (role)
             {
-                case "Main admin":
+                case UserInfo.RoleType.MainAdmin:
                     page = new PreAdminPage();
                     break;
 
-                case "Local admin":
+                case UserInfo.RoleType.LocalAdmin:
                     controller = new AdministratorController();
                     response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
@@ -57,7 +55,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                     }
                     break;
 
-                case "Teacher":
+                case UserInfo.RoleType.Teacher:
                     controller = new TeacherController();
                     response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
@@ -71,7 +69,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                     }
                     break;
 
-                case "School student":
+                case UserInfo.RoleType.SchoolStudent:
                     controller = new TeacherController();
                     response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
@@ -85,7 +83,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                     }
                     break;
 
-                case "Parent":
+                case UserInfo.RoleType.Parent:
                     controller = new ParentController();
                     response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
@@ -106,7 +104,14 @@ namespace ElectronicDiary.Pages.Components.Navigation
 
             if (page == null && scrollView != null)
             {
-                page = new BaseUserUIPage(scrollView, "Профиль");
+                var hStack = BaseElemsCreator.CreateHorizontalStackLayout();
+                Application.Current?.Dispatcher.Dispatch(() =>
+                {
+                    AdminPageStatic.CalcViewWidth(out double width, out _);
+                    scrollView.MaximumWidthRequest = width;
+                });
+                hStack.Add(scrollView);
+                page = new BaseUserUIPage(hStack, "Профиль", BaseUserUIPage.PageType.Profile);
             }
 
             SetAsRoot(page ?? new LogPage());

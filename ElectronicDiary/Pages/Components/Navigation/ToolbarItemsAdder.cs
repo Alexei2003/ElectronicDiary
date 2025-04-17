@@ -25,7 +25,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
 
         public static void AddSettings(IList<ToolbarItem> toolbarItems)
         {
-            AddElem(toolbarItems, "Настройки", "settings_icon.svg", SettingsClicked);
+            AddElem(toolbarItems, "Настройки", UserData.Settings.Theme.TextIsBlack ? "black_settings_icon.png" : "white_settings_icon.png", SettingsClicked);
         }
         private static void SettingsClicked(object? sender, EventArgs e)
         {
@@ -37,7 +37,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
 
         public static void AddLogOut(IList<ToolbarItem> toolbarItems)
         {
-            AddElem(toolbarItems, "Выход", "log_out_icon.svg", LogOutClicked);
+            AddElem(toolbarItems, "Выход", UserData.Settings.Theme.TextIsBlack ? "black_log_out_icon.png" : "white_log_out_icon.png", LogOutClicked);
         }
         private async static void LogOutClicked(object? sender, EventArgs e)
         {

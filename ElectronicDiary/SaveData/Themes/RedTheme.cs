@@ -2,6 +2,8 @@
 {
     public class RedTheme : IAppTheme
     {
+        public bool TextIsBlack => false;
+
         // ОСНОВНЫЕ ФОНОВЫЕ ЦВЕТА
         public Color BackgroundPageColor => Color.FromRgb(40, 20, 20);
         public Color NavigationPageColor => Color.FromRgb(80, 40, 40);

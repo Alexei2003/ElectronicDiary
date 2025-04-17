@@ -188,22 +188,21 @@ namespace ElectronicDiary.Pages.Components.Elems
 
 
 
-        public static Grid CreateGrid()
+        public static Grid CreateGrid(int countColumns = 2, bool padding = true)
         {
             var grid = new Grid
             {
-                ColumnDefinitions =
-                {
-                    new ColumnDefinition { Width = GridLength.Star },
-                    new ColumnDefinition { Width = GridLength.Star }
-                },
-
-                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
                 ColumnSpacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
                 RowSpacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
 
                 BackgroundColor = UserData.Settings.Theme.BackgroundFillColor,
             };
+            if (padding) { grid.Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES; }
+
+            for (int i = 0; i<countColumns; i++)
+            {
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            }
 
             return grid;
         }
@@ -219,6 +218,18 @@ namespace ElectronicDiary.Pages.Components.Elems
             };
 
             return verticalStackLayout;
+        }
+
+        public static HorizontalStackLayout CreateHorizontalStackLayout()
+        {
+            var hStack = new HorizontalStackLayout()
+            {
+                // Положение
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Fill,
+            };
+
+            return hStack;
         }
 
     }

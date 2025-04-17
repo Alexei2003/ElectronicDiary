@@ -50,12 +50,12 @@ namespace ElectronicDiary.Pages
                     UserData.UserInfo = new UserInfo()
                     {
                         Id = obj.Id,
-                        Role = obj.Role,
+                        Role = UserInfo.ConverStringRoleToEnum(obj.Role),
                         Login = _login,
                         Password = _password
                     };
                     UserData.SaveUserInfo();
-                    Navigator.ChoosePage(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                    Navigator.ChoosePageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
                 }
             }
         }

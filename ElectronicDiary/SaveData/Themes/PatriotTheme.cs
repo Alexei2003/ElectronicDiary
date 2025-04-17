@@ -8,6 +8,8 @@ namespace ElectronicDiary.SaveData.Themes
 {
     public class PatriotTheme : IAppTheme
     {
+        public bool TextIsBlack => true;
+
         // ОСНОВНЫЕ ФОНОВЫЕ ЦВЕТА
         public Color BackgroundPageColor => Color.FromRgb(0, 124, 48);
         public Color NavigationPageColor => Color.FromRgb(207, 23, 33);

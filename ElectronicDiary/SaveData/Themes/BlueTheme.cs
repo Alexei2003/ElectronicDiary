@@ -8,6 +8,8 @@ namespace ElectronicDiary.SaveData.Themes
 {
     public class BlueTheme : IAppTheme
     {
+        public bool TextIsBlack => false;
+
         // ОСНОВНЫЕ ФОНОВЫЕ ЦВЕТА
         public Color BackgroundPageColor => Color.FromRgb(20, 20, 40);
         public Color NavigationPageColor => Color.FromRgb(40, 40, 80);

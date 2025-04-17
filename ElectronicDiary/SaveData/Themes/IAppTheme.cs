@@ -8,6 +8,8 @@ namespace ElectronicDiary.SaveData.Themes
 {
     public interface IAppTheme
     {
+        bool TextIsBlack { get; }
+
         // ОСНОВНЫЕ ФОНОВЫЕ ЦВЕТА
 
         /// <summary> Основной фон страниц приложения (самый темный слой) </summary>

@@ -31,9 +31,16 @@ namespace ElectronicDiary.SaveData.Static
         {
             if (File.Exists(USER_INFO_PATH))
             {
-                var json = File.ReadAllText(USER_INFO_PATH);
-                var obj = JsonSerializer.Deserialize<UserInfo>(json);
-                if (obj != null) UserInfo = obj;
+                try
+                {
+                    var json = File.ReadAllText(USER_INFO_PATH);
+                    var obj = JsonSerializer.Deserialize<UserInfo>(json);
+                    if (obj != null) UserInfo = obj;
+                }
+                catch 
+                {
+                    UserInfo = new(); 
+                }
             }
         }
 
@@ -52,14 +59,21 @@ namespace ElectronicDiary.SaveData.Static
         {
             if (File.Exists(USER_SETTINGS_PATH))
             {
-                var json = File.ReadAllText(USER_SETTINGS_PATH);
-                var obj = JsonSerializer.Deserialize<Settings.UserSettingsClass>(json);
-                if (obj != null)
+                try
                 {
-                    Settings.UserSettings = obj;
-                    Settings.Sizes = new(obj.ScaleFactor);
-                    Settings.Fonts = new(obj.ScaleFactor);
-                    Settings.Theme = ThemesMeneger.ChooseTheme(obj.ThemeIndex);
+                    var json = File.ReadAllText(USER_SETTINGS_PATH);
+                    var obj = JsonSerializer.Deserialize<Settings.UserSettingsClass>(json);
+                    if (obj != null)
+                    {
+                        Settings.UserSettings = obj;
+                        Settings.Sizes = new(obj.ScaleFactor);
+                        Settings.Fonts = new(obj.ScaleFactor);
+                        Settings.Theme = ThemesMeneger.ChooseTheme(obj.ThemeIndex);
+                    }
+                }
+                catch
+                {
+                    Settings.UserSettings = new();
                 }
             }
         }
