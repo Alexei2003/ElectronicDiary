@@ -19,7 +19,6 @@ namespace ElectronicDiary.Main
 
             Task.Run(async () =>
             {
-                await Task.Delay(1000);
                 await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
                 var response = await AuthorizationСontroller.GetUserInfo();
                 if (!string.IsNullOrEmpty(response))
@@ -29,12 +28,13 @@ namespace ElectronicDiary.Main
                     {
                         if (obj.Id == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
                         {
+                            await Task.Delay(3000);
                             Navigator.ChoosePageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
                             return;
                         }
                     }
                 }
-
+                await Task.Delay(3000);
                 Navigator.SetAsRoot(new LogPage());
             });
 

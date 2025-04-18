@@ -85,6 +85,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.1.1" />
+		<PackageReference Include="CommunityToolkit.Maui.MediaElement" Version="6.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.3" />
 		<PackageReference Include="System.Runtime.Caching" Version="9.0.3" />
@@ -122,6 +123,15 @@
 	  <MauiImage Include="Resources\Images\White\white_search_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_settings_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_shedule_icon.png" />
+	  <MauiImage Include="Resources\Raw\jane_doe.mp4">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiImage>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiAsset Update="Resources\Raw\jane_doe.mp4">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </MauiAsset>
 	</ItemGroup>
 
 </Project>
