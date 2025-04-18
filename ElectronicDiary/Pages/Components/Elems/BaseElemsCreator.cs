@@ -39,7 +39,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return action;
         }
 
-        public static Image CreateImageClicked(string? imagePath, EventHandler<TappedEventArgs> handler)
+        public static Image CreateImageFromFile(string? imagePath, EventHandler<TappedEventArgs> handler)
         {
             var image = new Image
             {
@@ -55,7 +55,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return image;
         }
 
-        public static VerticalStackLayout CreateImageFromUrl(string? url)
+        public static VerticalStackLayout CreateImageFromUrl(string? url, EventHandler<TappedEventArgs>? handler)
         {
             var vStack = new VerticalStackLayout();
 
@@ -75,6 +75,12 @@ namespace ElectronicDiary.Pages.Components.Elems
                     MinimumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
                     Source = ImageSource.FromUri(new Uri(url)),
                 };
+                if(handler != null)
+                {
+                    var tapGesture = new TapGestureRecognizer();
+                    tapGesture.Tapped += handler;
+                    mainImage.GestureRecognizers.Add(tapGesture);
+                }
                 vStack.Add(mainImage);
 
                 mainImage.PropertyChanged += (sender, args) =>

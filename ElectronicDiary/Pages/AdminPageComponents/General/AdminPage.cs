@@ -24,7 +24,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
                         EducationalInstitutionViewElemCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller,
                         EducationalInstitutionViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>>,
                         EducationalInstitutionViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>>();
-            _viewList.Add(view.Create(_mainStack, _viewList));
+            var scrollView = new ScrollView()
+            {
+                Content = view.Create(_mainStack, _viewList)
+            };
+            _viewList.Add(scrollView);
 
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
 

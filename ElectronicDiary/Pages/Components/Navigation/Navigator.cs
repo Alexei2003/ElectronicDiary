@@ -29,18 +29,30 @@ namespace ElectronicDiary.Pages.Components.Navigation
             });
         }
 
-        public static async void ChoosePageByRole(UserInfo.RoleType role, long id)
+        public static async void ChooseRootPageByRole(UserInfo.RoleType role, long id)
         {
             ContentPage? page = null;
-            IController? controller = null;
-            ScrollView? scrollView = null;
-            string? response = null;
             switch (role)
             {
                 case UserInfo.RoleType.MainAdmin:
                     page = new PreAdminPage();
                     break;
 
+                default:
+                    page = await GetProfileByRole(role, id);
+                    break;
+            }
+
+            SetAsRoot(page ?? new LogPage());
+        }
+
+        public static async Task<ContentPage> GetProfileByRole(UserInfo.RoleType role, long id)
+        {
+            IController? controller = null;
+            VerticalStackLayout? vStack = null;
+            string? response = null;
+            switch (role)
+            {
                 case UserInfo.RoleType.LocalAdmin:
                     controller = new AdministratorController();
                     response = await controller.GetById(id);
@@ -50,7 +62,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         if (responseObject != null)
                         {
                             var creator = new UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>();
-                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
                     break;
@@ -64,7 +76,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         if (responseObject != null)
                         {
                             var creator = new UserViewObjectCreator<UserResponse, UserRequest, TeacherController>();
-                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
                     break;
@@ -78,10 +90,10 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         if (responseObject != null)
                         {
                             var creator = new SchoolStudentViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>();
-                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
-                    break;
+                    break; 
 
                 case UserInfo.RoleType.Parent:
                     controller = new ParentController();
@@ -92,29 +104,34 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         if (responseObject != null)
                         {
                             var creator = new ParentViewObjectCreator<UserResponse, ParentRequest, ParentController>();
-                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
                     break;
 
                 default:
-                    page = new EmptyPage();
+                    vStack = null;
                     break;
+
             }
 
-            if (page == null && scrollView != null)
+            ContentPage page;
+            if (vStack != null)
             {
                 var hStack = BaseElemsCreator.CreateHorizontalStackLayout();
                 Application.Current?.Dispatcher.Dispatch(() =>
                 {
-                    AdminPageStatic.CalcViewWidth(out double width, out _);
-                    scrollView.MaximumWidthRequest = width;
+                    AdminPageStatic.CalcViewWidth(out var width, out _);
+                    vStack.MaximumWidthRequest = width;
                 });
-                hStack.Add(scrollView);
-                page = new BaseUserUIPage(hStack, BaseUserUIPage.PageType.Profile);
+                page = new BaseUserUIPage([vStack], BaseUserUIPage.PageType.Profile);
+            }
+            else
+            {
+                page = new EmptyPage();
             }
 
-            SetAsRoot(page ?? new LogPage());
+            return page;
         }
     }
 }

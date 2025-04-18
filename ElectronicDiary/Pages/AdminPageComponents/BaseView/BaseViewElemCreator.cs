@@ -114,8 +114,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void ShowInfo(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId);
+            var verticalStack = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
+            var scrollView = new ScrollView()
+            {
+                Content = verticalStack
+            };
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
@@ -168,7 +172,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             if (view != null)
             {
                 AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-                _viewList.Add(view.Create(_mainStack, _viewList, _baseResponse.Id));
+                var scrollView = new ScrollView()
+                {
+                    Content = view.Create(_mainStack, _viewList, _baseResponse.Id)
+                };
+                _viewList.Add(scrollView);
                 AdminPageStatic.RepaintPage(_mainStack, _viewList);
             }
         }
@@ -176,8 +184,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual async void Edit(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
+            var vStack = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
+            var scrollView = new ScrollView()
+            {
+                Content = vStack
+            };
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
 

@@ -5,7 +5,7 @@
         // Обновление видов
         public static void RepaintPage(HorizontalStackLayout mainStack, List<ScrollView> viewList)
         {
-            Application.Current.Dispatcher.Dispatch(() =>
+            Application.Current?.Dispatcher.Dispatch(() =>
             {
                 mainStack.Clear();
 
@@ -13,6 +13,7 @@
 
                 for (var i = int.Max(viewList.Count - countColumn, 0); i < viewList.Count; i++)
                 {
+                    viewList[i].MinimumWidthRequest = width;
                     viewList[i].MaximumWidthRequest = width;
                     mainStack.Add(viewList[i]);
                 }
@@ -23,10 +24,10 @@
         {
 
             double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
-            var widthLocal = 0d;
+            var widthWindow = 0d;
             if (Application.Current?.Windows.Count > 0)
             {
-                widthLocal = Application.Current?.Windows[0].Width ?? 0;
+                widthWindow = Application.Current?.Windows[0].Width ?? 0d;
             }
 
 #if WINDOWS
@@ -34,9 +35,10 @@
 #else
             const double coeff = 2;
 #endif
-            countColumn = int.Min((int)(widthLocal * coeff / dpi / 2), 3);
-
-            width = widthLocal / countColumn * 0.90;
+            countColumn = int.Max(int.Min((int)(widthWindow * coeff / dpi / 2), 3), 0);
+            
+            const double val = 1.10 * 4 / coeff;  
+            width = val * dpi / coeff;
         }
 
         public static bool OnBackButtonPressed(HorizontalStackLayout mainStack, List<ScrollView> viewList)

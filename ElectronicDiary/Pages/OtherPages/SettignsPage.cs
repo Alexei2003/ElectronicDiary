@@ -114,7 +114,7 @@ namespace ElectronicDiary.Pages.OtherPages
             }
 
             UserData.SaveUserSettings();
-            Navigator.ChoosePageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+            Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
         }
     }
 }

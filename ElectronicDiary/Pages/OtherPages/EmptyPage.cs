@@ -7,18 +7,19 @@ namespace ElectronicDiary.Pages.OtherPages
 {
     public partial class EmptyPage : ContentPage
     {
-        //public EmptyPage()
-        //{
-        //    BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
-        //    var image = new Image()
-        //    {
-        //        Source = ImageSource.FromFile("dotnet_bot.png")
-        //    };
-        //    var vStack = BaseElemsCreator.CreateVerticalStackLayout();
-        //    vStack.Add(image);
-        //    Content = vStack;
-        //}
-
+#if !WINDOWS
+        public EmptyPage()
+        {
+            BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
+            var image = new Image()
+            {
+                Source = ImageSource.FromFile("dotnet_bot.png")
+            };
+            var vStack = BaseElemsCreator.CreateVerticalStackLayout();
+            vStack.Add(image);
+            Content = vStack;
+        }
+#else
         public EmptyPage()
         {
             BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
@@ -36,5 +37,6 @@ namespace ElectronicDiary.Pages.OtherPages
             vStack.Add(mediaElement);
             Content = vStack;
         }
+#endif
     }
 }

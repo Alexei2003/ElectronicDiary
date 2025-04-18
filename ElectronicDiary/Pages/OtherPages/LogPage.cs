@@ -55,7 +55,7 @@ namespace ElectronicDiary.Pages
                         Password = _password
                     };
                     UserData.SaveUserInfo();
-                    Navigator.ChoosePageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                    Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
                 }
             }
         }

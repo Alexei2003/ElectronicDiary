@@ -12,7 +12,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
     public interface IBaseViewListCreator
     {
-        ScrollView Create(HorizontalStackLayout mainStack, List<ScrollView> viewList, long educationalInstitutionId = -1);
+        VerticalStackLayout Create(HorizontalStackLayout mainStack, List<ScrollView> viewList, long educationalInstitutionId = -1);
     }
 
     public class BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : IBaseViewListCreator
@@ -42,7 +42,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         }
 
         protected Grid _grid = [];
-        public ScrollView Create(HorizontalStackLayout mainStack, List<ScrollView> viewList, long educationalInstitutionId = -1)
+        public VerticalStackLayout Create(HorizontalStackLayout mainStack, List<ScrollView> viewList, long educationalInstitutionId = -1)
         {
             _mainStack = mainStack;
             _viewList = viewList;
@@ -76,7 +76,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             verticalStack.Add(_listVerticalStack);
 
-            return scrollView;
+            return verticalStack;
         }
 
         // Пусто
@@ -92,8 +92,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
             var viewObjectCreator = new TViewObjectCreator();
-            var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _educationalInstitutionId);
+            var vStack = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _educationalInstitutionId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
+            var scrollView = new ScrollView()
+            {
+                Content = vStack
+            };
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }

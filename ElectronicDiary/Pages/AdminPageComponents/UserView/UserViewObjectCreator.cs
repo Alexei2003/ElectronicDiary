@@ -27,13 +27,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 _baseRequest.UniversityId = _baseResponse.EducationalInstitution?.Id ?? -1;
             }
 
-            _image = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage);
-            if (_componentState == AdminPageStatic.ComponentState.Edit)
-            {
-                var tapGesture = new TapGestureRecognizer();
-                tapGesture.Tapped += AddImageTapped;
-                _image.GestureRecognizers.Add(tapGesture);
-            }
+            _image = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage, 
+                _componentState == AdminPageStatic.ComponentState.Edit ? AddImageTapped : null);
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,

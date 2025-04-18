@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.Components.Elems;
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
@@ -9,9 +10,12 @@ namespace ElectronicDiary.Pages.OtherPages
     public partial class BaseUserUIPage : ContentPage
     {
         private PageType _pageName;
-        public BaseUserUIPage(IView hStack, PageType pageName)
+        private VerticalStackLayout[] _mainStackArr;
+        private HorizontalStackLayout _mainStack;
+        public BaseUserUIPage(VerticalStackLayout[] mainStackArr, PageType pageName)
         {
             _pageName = pageName;
+            _mainStackArr = mainStackArr;
 
             Title = UserInfo.ConvertEnumRoleToStringRus(UserData.UserInfo.Role);
             ToolbarItemsAdder.AddSettings(ToolbarItems);
@@ -27,7 +31,9 @@ namespace ElectronicDiary.Pages.OtherPages
                 }
             };
             Content = grid;
-            grid.Add(hStack, 0, 0);
+            _mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+            SizeChanged += WindowSizeChanged;
+            grid.Add(_mainStack, 0, 0);
 
             var countColumns = 6;
             switch (UserData.UserInfo.Role)
@@ -44,12 +50,61 @@ namespace ElectronicDiary.Pages.OtherPages
             CreateNavigationButtons(gridButtons, countColumns, pageName);
         }
 
+        private void WindowSizeChanged(object? sender, EventArgs e)
+        {
+
+            foreach (var view in _mainStack)
+            {
+                view.DisconnectHandlers();
+            }
+            _mainStack.Clear();
+            AdminPageStatic.CalcViewWidth(out var width, out var count);
+
+            if (count != 1)
+            {
+                var vStackMain = BaseElemsCreator.CreateVerticalStackLayout();
+                foreach (var vStack in _mainStackArr)
+                {
+                    vStack.MinimumWidthRequest = width;
+                    vStack.MaximumWidthRequest = width;
+                    var scrollView = new ScrollView()
+                    {
+                        Content = vStack
+                    };
+                    vStackMain.Add(scrollView);
+                }
+                Application.Current?.Dispatcher.Dispatch(() =>
+                {
+                    _mainStack.Add(vStackMain);
+                });
+            }
+            else
+            {
+                foreach (var vStack in _mainStackArr)
+                {
+                    vStack.MinimumWidthRequest = width;
+                    vStack.MaximumWidthRequest = width;
+                    var scrollView = new ScrollView()
+                    {
+                        Content = vStack
+                    };
+
+                    Application.Current?.Dispatcher.Dispatch(() =>
+                    {
+                        _mainStack.Add(scrollView);
+                    });
+                }
+
+            }
+
+        }
+
         public enum PageType
         {
             Profile, Chats, News, Shedule, Diary, Search
         }
 
-        public void CreateNavigationButtons(Grid gridButtons, int countColumns, PageType pageName)
+        private void CreateNavigationButtons(Grid gridButtons, int countColumns, PageType pageName)
         {
             var elemArr = new LineElemsCreator.Data[countColumns];
             var colorButton = UserData.Settings.Theme.TextIsBlack ? "black_" : "white_";
@@ -69,7 +124,7 @@ namespace ElectronicDiary.Pages.OtherPages
             }
             elemArr[indexColumn++] = new LineElemsCreator.Data
             {
-                Elem = BaseElemsCreator.CreateImageClicked(path, ProfileTapped)
+                Elem = BaseElemsCreator.CreateImageFromFile(path, ProfileTapped)
             };
 
             path = "chats_icon.png";
@@ -85,7 +140,7 @@ namespace ElectronicDiary.Pages.OtherPages
             }
             elemArr[indexColumn++] = new LineElemsCreator.Data
             {
-                Elem = BaseElemsCreator.CreateImageClicked(path, ChatsTapped)
+                Elem = BaseElemsCreator.CreateImageFromFile(path, ChatsTapped)
             };
 
             path = "news_icon.png";
@@ -101,7 +156,7 @@ namespace ElectronicDiary.Pages.OtherPages
             }
             elemArr[indexColumn++] = new LineElemsCreator.Data
             {
-                Elem = BaseElemsCreator.CreateImageClicked(path, NewsTapped)
+                Elem = BaseElemsCreator.CreateImageFromFile(path, NewsTapped)
             };
 
             if (countColumns == 6)
@@ -119,7 +174,7 @@ namespace ElectronicDiary.Pages.OtherPages
                 }
                 elemArr[indexColumn++] = new LineElemsCreator.Data
                 {
-                    Elem = BaseElemsCreator.CreateImageClicked(path, SheduleTapped)
+                    Elem = BaseElemsCreator.CreateImageFromFile(path, SheduleTapped)
                 };
             }
 
@@ -138,7 +193,7 @@ namespace ElectronicDiary.Pages.OtherPages
                 }
                 elemArr[indexColumn++] = new LineElemsCreator.Data
                 {
-                    Elem = BaseElemsCreator.CreateImageClicked(path, DiaryTapped)
+                    Elem = BaseElemsCreator.CreateImageFromFile(path, DiaryTapped)
                 };
             }
 
@@ -155,7 +210,7 @@ namespace ElectronicDiary.Pages.OtherPages
             }
             elemArr[indexColumn++] = new LineElemsCreator.Data
             {
-                Elem = BaseElemsCreator.CreateImageClicked(path, SearchTapped)
+                Elem = BaseElemsCreator.CreateImageFromFile(path, SearchTapped)
             };
 
             LineElemsCreator.AddLineElems(
@@ -165,51 +220,51 @@ namespace ElectronicDiary.Pages.OtherPages
             );
         }
 
-        public void ProfileTapped(object? sender, EventArgs e)
+        private async void ProfileTapped(object? sender, EventArgs e)
         {
-            if(_pageName != PageType.Profile)
+            if (_pageName != PageType.Profile)
             {
-                Navigation.PushAsync(new BaseUserUIPage(BaseElemsCreator.CreateVerticalStackLayout(), PageType.Profile));
+                await Navigation.PushAsync(await Navigator.GetProfileByRole(UserData.UserInfo.Role, UserData.UserInfo.Id));
             }
         }
 
-        public void ChatsTapped(object? sender, EventArgs e)
+        private void ChatsTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Chats)
             {
-                Navigation.PushAsync(new BaseUserUIPage(BaseElemsCreator.CreateVerticalStackLayout(), PageType.Chats));
+                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Chats));
             }
         }
 
-        public void NewsTapped(object? sender, EventArgs e)
+        private void NewsTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.News)
             {
-                Navigation.PushAsync(new BaseUserUIPage(BaseElemsCreator.CreateVerticalStackLayout(), PageType.News));
+                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.News));
             }
         }
 
-        public void SheduleTapped(object? sender, EventArgs e)
+        private void SheduleTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Shedule)
             {
-                Navigation.PushAsync(new BaseUserUIPage(BaseElemsCreator.CreateVerticalStackLayout(), PageType.Shedule));
+                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Shedule));
             }
         }
 
-        public void DiaryTapped(object? sender, EventArgs e)
+        private void DiaryTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Diary)
             {
-                Navigation.PushAsync(new BaseUserUIPage(BaseElemsCreator.CreateVerticalStackLayout(), PageType.Diary));
+                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Diary));
             }
         }
 
-        public void SearchTapped(object? sender, EventArgs e)
+        private void SearchTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Search)
             {
-                Navigation.PushAsync(new BaseUserUIPage(BaseElemsCreator.CreateVerticalStackLayout(), PageType.Search));
+                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Search));
             }
         }
     }

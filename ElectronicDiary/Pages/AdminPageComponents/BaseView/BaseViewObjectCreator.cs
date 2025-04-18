@@ -30,7 +30,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected Grid _baseInfoGrid = [];
         protected int _baseInfoGridRowIndex = 0;
 
-        public ScrollView Create(HorizontalStackLayout? mainStack,
+        public VerticalStackLayout Create(HorizontalStackLayout? mainStack,
                                     List<ScrollView>? viewList,
                                     Action? chageListAction,
                                     BaseResponse? baseResponse,
@@ -67,11 +67,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
             };
 
-            var scrollView = new ScrollView()
-            {
-                Content = verticalStack
-            };
-
             _infoStack = new VerticalStackLayout
             {
                 // Положение
@@ -90,7 +85,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 verticalStack.Add(saveButton);
             }
 
-            return scrollView;
+            return verticalStack;
         }
 
         // Пусто

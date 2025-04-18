@@ -29,7 +29,7 @@ namespace ElectronicDiary.Main
                         if (obj.Id == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
                         {
                             await Task.Delay(3000);
-                            Navigator.ChoosePageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                            Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
                             return;
                         }
                     }
