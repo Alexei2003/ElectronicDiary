@@ -66,7 +66,7 @@ namespace ElectronicDiary.Web.Api.Other
                     _ => throw new ArgumentOutOfRangeException(nameof(httpTypes), httpTypes, null)
                 };
 
-                var str = response.Content.ReadAsStringAsync();
+                var str = await response.Content.ReadAsStringAsync();
                 // Статус код 200-299
                 response.EnsureSuccessStatusCode();
             }
