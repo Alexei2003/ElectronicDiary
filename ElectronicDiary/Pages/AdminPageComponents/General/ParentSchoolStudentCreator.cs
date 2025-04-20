@@ -231,7 +231,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
                 var response = await ParentController.GetParentType();
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
-                Application.Current.Dispatcher.Dispatch(() =>
+                Application.Current?.Dispatcher.Dispatch(() =>
                 {
                     foreach (var elem in arr ?? [])
                     {

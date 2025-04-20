@@ -2,9 +2,6 @@
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.SaveData.Static;
-using ElectronicDiary.Web.Api.Educations;
-using ElectronicDiary.Web.DTO.Requests.Educations;
-using ElectronicDiary.Web.DTO.Responses.Educations;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.General
 {
@@ -20,18 +17,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
             ToolbarItemsAdder.AddLogOut(ToolbarItems);
             BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
 
-            var view = new EducationalInstitutionViewListCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller,
-                        EducationalInstitutionViewElemCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller,
-                        EducationalInstitutionViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>>,
-                        EducationalInstitutionViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>>();
-            var scrollView = new ScrollView()
-            {
-                Content = view.Create(_mainStack, _viewList)
-            };
+            var view = new EducationalInstitutionViewListCreator();
+
+            var scrollView = view.Create(_mainStack, _viewList);
+
             _viewList.Add(scrollView);
 
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
-
             Content = _mainStack;
             SizeChanged += WindowSizeChanged;
         }

@@ -3,6 +3,7 @@ using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
+using ElectronicDiary.Pages.OtherViews.NewsView;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Other;
@@ -28,16 +29,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
-
+        protected bool _readOnly = false;
 
 
         protected Grid _grid = [];
         public Grid Create(HorizontalStackLayout mainStack,
-                                   List<ScrollView> viewList,
-                                   Action chageListAction,
-                                   BaseResponse? baseResponse,
-                                   int maxCountViews,
-                                   long educationalInstitutionId)
+                           List<ScrollView> viewList,
+                           Action chageListAction,
+                           BaseResponse? baseResponse,
+                           int maxCountViews,
+                           long educationalInstitutionId,
+                           bool readOnly = false)
         {
             _mainStack = mainStack;
             _viewList = viewList;
@@ -45,8 +47,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _baseResponse = baseResponse as TResponse ?? new();
             _educationalInstitutionId = educationalInstitutionId;
             _maxCountViews = maxCountViews;
-
-
+            _readOnly = readOnly;
 
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += GestureTapped;
@@ -68,58 +69,60 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
-            if (_baseResponse.Id > -1)
+            if (!_readOnly)
             {
-                var action = string.Empty;
-                if (_maxCountViews == 2)
+                if (_baseResponse.Id > -1)
                 {
-                    action = await BaseElemsCreator.CreateActionSheet(
-                       [
-                        "Описание",
-                        "Перейти",
-                        "Редактировать",
-                        "Удалить"]);
+                    var action = string.Empty;
+                    if (_maxCountViews == 2)
+                    {
+                        action = await BaseElemsCreator.CreateActionSheet(
+                           [
+                            "Описание",
+                            "Перейти",
+                            "Редактировать",
+                            "Удалить"]);
 
-                }
-                else
-                {
-                    action = await BaseElemsCreator.CreateActionSheet(
-                       [
-                        "Описание",
-                        "Редактировать",
-                        "Удалить"]);
-                }
+                    }
+                    else
+                    {
+                        action = await BaseElemsCreator.CreateActionSheet(
+                           [
+                            "Описание",
+                            "Редактировать",
+                            "Удалить"]);
+                    }
 
-                switch (action)
-                {
-                    case "Описание":
-                        ShowInfo(_baseResponse.Id);
-                        break;
-                    case "Перейти":
-                        await MoveTo(_baseResponse.Id);
-                        break;
-                    case "Редактировать":
-                        Edit(_baseResponse.Id);
-                        break;
-                    case "Удалить":
-                        Delete(_baseResponse.Id);
-                        break;
-                    default:
-                        return;
+                    switch (action)
+                    {
+                        case "Описание":
+                            ShowInfo(_baseResponse.Id);
+                            break;
+                        case "Перейти":
+                            await MoveTo(_baseResponse.Id);
+                            break;
+                        case "Редактировать":
+                            Edit(_baseResponse.Id);
+                            break;
+                        case "Удалить":
+                            Delete(_baseResponse.Id);
+                            break;
+                        default:
+                            return;
+                    }
                 }
             }
-            AdminPageStatic.RepaintPage(_mainStack, _viewList);
+            else
+            {
+                ShowInfo(_baseResponse.Id);
+            }
         }
 
         protected virtual void ShowInfo(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var verticalStack = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId);
+            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-            var scrollView = new ScrollView()
-            {
-                Content = verticalStack
-            };
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
@@ -133,19 +136,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 "Учителя",
                 "Классы",
                 "Ученики",
-                "Родители"]);
+                "Родители",
+                "Новости"]);
 
-            IBaseViewListCreator? view = null;
+            IBaseViewListCreator? viewCreator = null;
             switch (action)
             {
                 case "Администраторы":
-                    view = new UserViewListCreator<UserResponse, UserRequest, AdministratorController,
+                    viewCreator = new UserViewListCreator<UserResponse, UserRequest, AdministratorController,
                         UserViewElemCreator<UserResponse, UserRequest, AdministratorController,
                         UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>>,
                         UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>>();
                     break;
                 case "Учителя":
-                    view = new UserViewListCreator<UserResponse, UserRequest, TeacherController,
+                    viewCreator = new UserViewListCreator<UserResponse, UserRequest, TeacherController,
                         UserViewElemCreator<UserResponse, UserRequest, TeacherController,
                         UserViewObjectCreator<UserResponse, UserRequest, TeacherController>>,
                         UserViewObjectCreator<UserResponse, UserRequest, TeacherController>>();
@@ -154,42 +158,41 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                     //view = new AdministratorView(_mainStack, _viewList, id);
                     break;
                 case "Ученики":
-                    view = new UserViewListCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController,
+                    viewCreator = new UserViewListCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController,
                         UserViewElemCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController,
-                        SchoolStudentViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>>,
-                        SchoolStudentViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>>();
+                        SchoolStudentViewObjectCreator>,
+                        SchoolStudentViewObjectCreator>();
                     break;
                 case "Родители":
-                    view = new UserViewListCreator<UserResponse, ParentRequest, ParentController,
+                    viewCreator = new UserViewListCreator<UserResponse, ParentRequest, ParentController,
                         UserViewElemCreator<UserResponse, ParentRequest, ParentController,
-                        ParentViewObjectCreator<UserResponse, ParentRequest, ParentController>>,
-                        ParentViewObjectCreator<UserResponse, ParentRequest, ParentController>>();
+                        ParentViewObjectCreator>,
+                        ParentViewObjectCreator>();
+                    break;
+                case "Новости":
+                    viewCreator = new NewsViewListCreator();
                     break;
                 default:
                     return;
             }
 
-            if (view != null)
+            if (viewCreator != null)
             {
                 AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
                 var scrollView = new ScrollView()
                 {
-                    Content = view.Create(_mainStack, _viewList, _baseResponse.Id)
+                    Content = viewCreator.Create(_mainStack, _viewList, _baseResponse.Id)
                 };
                 _viewList.Add(scrollView);
                 AdminPageStatic.RepaintPage(_mainStack, _viewList);
             }
         }
 
-        protected virtual async void Edit(long id)
+        protected virtual void Edit(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var vStack = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
+            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-            var scrollView = new ScrollView()
-            {
-                Content = vStack
-            };
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
 

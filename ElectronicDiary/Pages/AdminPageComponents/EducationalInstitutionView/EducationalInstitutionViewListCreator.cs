@@ -1,21 +1,17 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
-    public sealed class EducationalInstitutionViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator>
-        where TResponse : EducationalInstitutionResponse, new()
-        where TRequest : EducationalInstitutionRequest, new()
-        where TController : IController, new()
-        where TViewElemCreator : BaseViewElemCreator<TResponse, TRequest, TController, TViewObjectCreator>, new()
-        where TViewObjectCreator : BaseViewObjectCreator<TResponse, TRequest, TController>, new()
+    public sealed class EducationalInstitutionViewListCreator : BaseViewListCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller, EducationalInstitutionViewElemCreator, EducationalInstitutionViewObjectCreator>
     {
         public EducationalInstitutionViewListCreator()
         {
             _maxCountViews = 2;
+            _titleView = "Список учебных заведений";
         }
 
         private string _regionFilter = string.Empty;
@@ -36,7 +32,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem  = BaseElemsCreator.CreateEntry(newText => _regionFilter = newText, "Минская область")
+                        Elem  = BaseElemsCreator.CreateEditor(newText => _regionFilter = newText, "Минская область")
                     },
                 ]
             );
@@ -51,7 +47,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem  = BaseElemsCreator.CreateEntry(newText => _settlementFilter = newText, "г.Солигорск")
+                        Elem  = BaseElemsCreator.CreateEditor(newText => _settlementFilter = newText, "г.Солигорск")
                     },
                 ]
             );
@@ -66,7 +62,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem  = BaseElemsCreator.CreateEntry(newText => _nameFilter = newText, "ГУО ...")
+                        Elem  = BaseElemsCreator.CreateEditor(newText => _nameFilter = newText, "ГУО ...")
                     },
                 ]
             );
@@ -75,15 +71,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
         // Получение списка объектов
         protected override void FilterList()
         {
-            bool isRegionFilterEmpty = string.IsNullOrEmpty(_regionFilter);
-            bool isSettlementFilterEmpty = string.IsNullOrEmpty(_settlementFilter);
-            bool isNameFilterEmpty = string.IsNullOrEmpty(_nameFilter);
+            bool regionFilter = string.IsNullOrEmpty(_regionFilter);
+            bool settlementFilter = string.IsNullOrEmpty(_settlementFilter);
+            bool nameFilter = string.IsNullOrEmpty(_nameFilter);
 
             _objectsArr = [.. _objectsArr
                 .Where(e =>
-                    (isRegionFilterEmpty || (e.Settlement?.Region?.Name ?? string.Empty).Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
-                    (isSettlementFilterEmpty || (e.Settlement?.Name ?? string.Empty).Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&
-                    (isNameFilterEmpty || (e.Name ?? string.Empty).Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
+                    (!regionFilter || (e.Settlement?.Region?.Name ?? string.Empty).Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (!settlementFilter || (e.Settlement?.Name ?? string.Empty).Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (!nameFilter || (e.Name ?? string.Empty).Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
         }
     }
 }

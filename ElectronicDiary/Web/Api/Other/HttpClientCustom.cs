@@ -54,7 +54,7 @@ namespace ElectronicDiary.Web.Api.Other
             }
 
 
-            HttpResponseMessage response;
+            HttpResponseMessage response = null;
             try
             {
                 response = httpTypes switch
@@ -66,11 +66,13 @@ namespace ElectronicDiary.Web.Api.Other
                     _ => throw new ArgumentOutOfRangeException(nameof(httpTypes), httpTypes, null)
                 };
 
+                var str = response.Content.ReadAsStringAsync();
                 // Статус код 200-299
                 response.EnsureSuccessStatusCode();
             }
             catch (Exception ex)
             {
+                
                 var message = "Что-то пошло не так. Если ошибка повторяется, сообщите в поддержку";
                 if (ex is HttpRequestException httpEx)
                 {
@@ -85,17 +87,18 @@ namespace ElectronicDiary.Web.Api.Other
 
                     message = httpEx.StatusCode switch
                     {
-                        HttpStatusCode.Unauthorized => "Войдите в систему для доступа",
-                        HttpStatusCode.Forbidden => "Доступ к этому разделу запрещён",
-                        HttpStatusCode.NotFound => "Информация не найдена",
-                        HttpStatusCode.InternalServerError => "Проблема на сервере. Попробуйте позже",
-                        HttpStatusCode.ServiceUnavailable => "Сервис временно не работает",
-                        HttpStatusCode.GatewayTimeout or HttpStatusCode.RequestTimeout => "Слишком долгий ответ. Проверьте интернет и повторите",
-                        _ => "Ошибка связи с сервером"
+                        HttpStatusCode.Unauthorized => "Войдите в систему для доступа.",
+                        HttpStatusCode.Forbidden => "Доступ к этому разделу запрещён.",
+                        HttpStatusCode.NotFound => "Информация не найдена.",
+                        HttpStatusCode.InternalServerError => "Проблема на сервере. Попробуйте позже.",
+                        HttpStatusCode.ServiceUnavailable => "Сервис временно не работает.",
+                        HttpStatusCode.GatewayTimeout or HttpStatusCode.RequestTimeout => "Слишком долгий ответ. Проверьте интернет и повторите.",
+                        _ => "Ошибка связи с сервером."
                     };
+                    message += $" Код {response?.StatusCode}";
                 }
 
-                Application.Current.Dispatcher.Dispatch(() =>
+                Application.Current?.Dispatcher.Dispatch(() =>
                 {
                     var page = Application.Current?.Windows[0].Page;
                     page?.DisplayAlert("Ошибка", message, "OK");

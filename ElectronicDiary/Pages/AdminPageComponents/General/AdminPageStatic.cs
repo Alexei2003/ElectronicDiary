@@ -22,8 +22,7 @@
 
         public static void CalcViewWidth(out double width, out int countColumn)
         {
-
-            double dpi = DeviceDisplay.MainDisplayInfo.Density * 160;
+            double dpi = DeviceDisplay.MainDisplayInfo.Density * 640;
             var widthWindow = 0d;
             if (Application.Current?.Windows.Count > 0)
             {
@@ -31,14 +30,13 @@
             }
 
 #if WINDOWS
-            const double coeff = 1;
+            const double coeffFixAndroidWidth = 1;
 #else
-            const double coeff = 2;
+            const double coeffFixAndroidWidth = 3.3;
 #endif
-            countColumn = int.Max(int.Min((int)(widthWindow * coeff / dpi / 2), 3), 0);
-            
-            const double val = 1.10 * 4 / coeff;  
-            width = val * dpi / coeff;
+            countColumn = int.Max(int.Min((int)(widthWindow * coeffFixAndroidWidth / dpi), 3), 1);
+
+            width = 0.9 * dpi / (coeffFixAndroidWidth);
         }
 
         public static bool OnBackButtonPressed(HorizontalStackLayout mainStack, List<ScrollView> viewList)

@@ -1,7 +1,5 @@
 ﻿using ElectronicDiary.SaveData.Themes;
 
-using static ElectronicDiary.SaveData.Other.UserSettingConstants;
-
 namespace ElectronicDiary.SaveData.Other
 {
     public class Settings

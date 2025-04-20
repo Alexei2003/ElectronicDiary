@@ -1,15 +1,12 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
-using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.ParentView
 {
-    public class ParentViewObjectCreator<TResponse, TRequest, TController> : UserViewObjectCreator<TResponse, TRequest, TController>
-        where TResponse : UserResponse, new()
-        where TRequest : ParentRequest, new()
-        where TController : IController, new()
+    public class ParentViewObjectCreator : UserViewObjectCreator<UserResponse, ParentRequest, ParentController>
     {
 
         private ParentSchoolStudentCreator? _parentSchoolStudent = null;

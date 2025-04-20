@@ -12,7 +12,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 {
     public interface IBaseViewListCreator
     {
-        VerticalStackLayout Create(HorizontalStackLayout mainStack, List<ScrollView> viewList, long educationalInstitutionId = -1);
+        ScrollView Create(HorizontalStackLayout mainStack,
+                                   List<ScrollView> viewList,
+                                   long educationalInstitutionId = -1,
+                                   bool edit = false);
     }
 
     public class BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : IBaseViewListCreator
@@ -42,11 +45,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         }
 
         protected Grid _grid = [];
-        public VerticalStackLayout Create(HorizontalStackLayout mainStack, List<ScrollView> viewList, long educationalInstitutionId = -1)
+        protected bool _readOnly = false;
+        public ScrollView Create(HorizontalStackLayout mainStack,
+                                          List<ScrollView> viewList,
+                                          long educationalInstitutionId = -1,
+                                          bool readOnly = false)
         {
             _mainStack = mainStack;
             _viewList = viewList;
             _educationalInstitutionId = educationalInstitutionId;
+            _readOnly = readOnly;
 
             _ = CreateListUI();
 
@@ -71,17 +79,29 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             var getButton = BaseElemsCreator.CreateButton("Найти", GetButtonClicked);
             verticalStack.Add(getButton);
 
-            var addButton = BaseElemsCreator.CreateButton("Добавить", AddButtonClicked);
-            verticalStack.Add(addButton);
-
+            if (!readOnly)
+            {
+                var addButton = BaseElemsCreator.CreateButton("Добавить", AddButtonClicked);
+                verticalStack.Add(addButton);
+            }
             verticalStack.Add(_listVerticalStack);
 
-            return verticalStack;
+            return new ScrollView() { Content = verticalStack };
         }
 
-        // Пусто
+        protected string _titleView = string.Empty;
         protected virtual void CreateFilterUI(ref int rowIndex)
         {
+            LineElemsCreator.AddLineElems(
+                grid: _grid,
+                rowIndex: rowIndex++,
+                objectList: [
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateLabel(_titleView),
+                    },
+                ]
+            );
         }
 
         protected virtual async void GetButtonClicked(object? sender, EventArgs e)
@@ -92,12 +112,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
             var viewObjectCreator = new TViewObjectCreator();
-            var vStack = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _educationalInstitutionId);
+            var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _educationalInstitutionId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-            var scrollView = new ScrollView()
-            {
-                Content = vStack
-            };
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
@@ -108,14 +124,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         {
             await GetList();
 
-            _listVerticalStack.Clear();
-
-            for (var i = 0; i < _objectsArr.Length; i++)
+            Application.Current?.Dispatcher.Dispatch(() =>
             {
-                var baseViewElemCreator = new TViewElemCreator();
-                var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _educationalInstitutionId);
-                _listVerticalStack.Add(grid);
-            }
+                _listVerticalStack.Clear();
+
+                for (var i = 0; i < _objectsArr.Length; i++)
+                {
+                    var baseViewElemCreator = new TViewElemCreator();
+                    var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _educationalInstitutionId, _readOnly);
+                    _listVerticalStack.Add(grid);
+                }
+            });
         }
 
         protected virtual void ChageListHandler()

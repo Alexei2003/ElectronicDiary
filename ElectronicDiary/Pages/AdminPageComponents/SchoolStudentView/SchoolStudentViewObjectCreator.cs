@@ -4,17 +4,14 @@ using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
-using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
 {
-    public class SchoolStudentViewObjectCreator<TResponse, TRequest, TController> : UserViewObjectCreator<TResponse, TRequest, TController>
-        where TResponse : SchoolStudentResponse, new()
-        where TRequest : SchoolStudentRequest, new()
-        where TController : IController, new()
+    public class SchoolStudentViewObjectCreator : UserViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>
     {
         private ParentSchoolStudentCreator? _parentSchoolStudent = null;
         protected override void CreateUI()

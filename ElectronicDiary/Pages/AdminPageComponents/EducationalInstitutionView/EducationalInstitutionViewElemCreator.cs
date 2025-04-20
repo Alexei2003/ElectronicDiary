@@ -1,16 +1,12 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
-    public class EducationalInstitutionViewElemCreator<TResponse, TRequest, TController, TViewObjectCreator> : BaseViewElemCreator<TResponse, TRequest, TController, TViewObjectCreator>
-        where TResponse : EducationalInstitutionResponse, new()
-        where TRequest : EducationalInstitutionRequest, new()
-        where TController : IController, new()
-        where TViewObjectCreator : BaseViewObjectCreator<TResponse, TRequest, TController>, new()
+    public class EducationalInstitutionViewElemCreator : BaseViewElemCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller, EducationalInstitutionViewObjectCreator>
     {
 
         protected override void CreateUI(ref int rowIndex)

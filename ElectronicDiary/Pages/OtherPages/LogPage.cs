@@ -22,10 +22,9 @@ namespace ElectronicDiary.Pages
             ToolbarItemsAdder.AddSettings(ToolbarItems);
             BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
 
-            var loginEntry = BaseElemsCreator.CreateEntry(newText => _login = newText, "Логин");
+            var loginEntry = BaseElemsCreator.CreateEditor(newText => _login = newText, "Логин");
 
-            var passwordEntry = BaseElemsCreator.CreateEntry(newText => _password = newText, "Пароль");
-            passwordEntry.IsPassword = true;
+            var passwordEntry = BaseElemsCreator.CreateEditor(newText => _password = newText, "Пароль");
 
             var toProfilePageButton = BaseElemsCreator.CreateButton("Вход", ToProfilePageButtonClicked);
 
@@ -40,7 +39,7 @@ namespace ElectronicDiary.Pages
 
         private async void ToProfilePageButtonClicked(object? sender, EventArgs e)
         {
-            await AuthorizationСontroller.LogIn(_login, _password);
+            await AuthorizationСontroller.LogIn(_login.Trim(), _password.Trim());
             var response = await AuthorizationСontroller.GetUserInfo();
             if (!string.IsNullOrEmpty(response))
             {

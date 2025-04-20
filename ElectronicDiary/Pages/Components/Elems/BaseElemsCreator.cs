@@ -65,6 +65,13 @@ namespace ElectronicDiary.Pages.Components.Elems
                 MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
                 Source = ImageSource.FromFile(url == null ? "no_image.png" : "loading_image.png")
             };
+            if (handler != null)
+            {
+                var tapGesture = new TapGestureRecognizer();
+                tapGesture.Tapped += handler;
+                loadImage.GestureRecognizers.Add(tapGesture);
+            }
+
             vStack.Add(loadImage);
 
             if (url != null)
@@ -73,32 +80,39 @@ namespace ElectronicDiary.Pages.Components.Elems
                 {
                     MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
                     MinimumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
-                    Source = ImageSource.FromUri(new Uri(url)),
+                    Source = ImageSource.FromUri(new Uri(url + $"?t={DateTime.Now.Ticks}")),
                 };
-                if(handler != null)
+                if (handler != null)
                 {
                     var tapGesture = new TapGestureRecognizer();
                     tapGesture.Tapped += handler;
                     mainImage.GestureRecognizers.Add(tapGesture);
                 }
+
                 vStack.Add(mainImage);
 
-                mainImage.PropertyChanged += (sender, args) =>
+                loadImage.IsVisible = true;
+                mainImage.IsVisible = false;
+                Task.Run(async () =>
                 {
-                    if (args.PropertyName == Image.IsLoadingProperty.PropertyName)
+                    while (!mainImage.IsVisible)
                     {
-                        loadImage.IsVisible = mainImage.IsLoading;
-                        mainImage.IsVisible = !mainImage.IsLoading;
+                        await Task.Delay(1000);
+                        Application.Current?.Dispatcher.Dispatch(() =>
+                        {
+                            loadImage.IsVisible = mainImage.IsLoading;
+                            mainImage.IsVisible = !mainImage.IsLoading;
+                        });
                     }
-                };
+                });
             }
 
             return vStack;
         }
 
-        public static Entry CreateEntry(Action<string>? textChangedAction, string? placeholder, string? text = null)
+        public static Editor CreateEditor(Action<string>? textChangedAction, string? placeholder, string? text = null)
         {
-            var entry = new Entry
+            var editor = new Editor
             {
                 BackgroundColor = UserData.Settings.Theme.AccentColorFields,
                 TextColor = UserData.Settings.Theme.TextColor,
@@ -107,17 +121,24 @@ namespace ElectronicDiary.Pages.Components.Elems
                 FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
                 Placeholder = placeholder ?? string.Empty,
                 Text = text ?? string.Empty,
+
+                AutoSize = EditorAutoSizeOption.TextChanges,
             };
             if (textChangedAction != null)
             {
-                entry.TextChanged += (sender, e) => textChangedAction(e.NewTextValue);
+                editor.TextChanged += (sender, e) => textChangedAction(e.NewTextValue);
             }
 
-            return entry;
+            return editor;
         }
 
-        public static Label CreateLabel(string? text)
+        public static Label CreateLabel(string? text, int maxLength = -1)
         {
+            if (text != null && maxLength > 0 && text.Length > maxLength)
+            {
+                text = text.Substring(0, maxLength) + " …";
+            }
+
             var label = new Label
             {
                 TextColor = UserData.Settings.Theme.TextColor,
@@ -209,7 +230,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             };
             if (padding) { grid.Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES; }
 
-            for (int i = 0; i<countColumns; i++)
+            for (int i = 0; i < countColumns; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
             }

@@ -12,7 +12,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         where TRequest : UserRequest, new()
         where TController : IController, new()
     {
-        private VerticalStackLayout? _image = null;
+        private VerticalStackLayout? _imageStack = null;
         protected override void CreateUI()
         {
             base.CreateUI();
@@ -24,10 +24,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                 _baseRequest.Patronymic = _baseResponse.Patronymic;
                 _baseRequest.Email = _baseResponse.Email;
                 _baseRequest.PhoneNumber = _baseResponse.PhoneNumber;
-                _baseRequest.UniversityId = _baseResponse.EducationalInstitution?.Id ?? -1;
             }
 
-            _image = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage, 
+            _imageStack = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage,
                 _componentState == AdminPageStatic.ComponentState.Edit ? AddImageTapped : null);
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
@@ -36,7 +35,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                      new LineElemsCreator.Data
                      {
                          CountJoinColumns = 2,
-                         Elem = _image
+                         Elem = _imageStack
                      }
                 ]);
 
@@ -56,7 +55,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.LastName = newText, "Дубовский", _baseResponse.LastName)
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.LastName = newText, "Дубовский", _baseResponse.LastName)
                         }
                 ]
             );
@@ -77,7 +76,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.FirstName = newText, "Алексей", _baseResponse.FirstName)
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.FirstName = newText, "Алексей", _baseResponse.FirstName)
                         }
                 ]
             );
@@ -98,7 +97,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Patronymic = newText, "Владимирович", _baseResponse.Patronymic)
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.Patronymic = newText, "Владимирович", _baseResponse.Patronymic)
                         }
                 ]
             );
@@ -119,7 +118,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Email = newText, "sh4@edus.by", _baseResponse.Email)
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.Email = newText, "sh4@edus.by", _baseResponse.Email)
                         }
                 ]
             );
@@ -140,7 +139,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry( newText => _baseRequest.PhoneNumber = newText, "+375 17 433-09-02", _baseResponse.PhoneNumber)
+                            Elem = BaseElemsCreator.CreateEditor( newText => _baseRequest.PhoneNumber = newText, "+375 17 433-09-02", _baseResponse.PhoneNumber)
                         }
                 ]
             );
@@ -157,7 +156,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                         },
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Login = newText, "admin")
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.Login = newText, "admin")
                         }
                     ]
                 );
@@ -172,7 +171,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                         },
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Password = newText, "4Af7@adf")
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.Password = newText, "4Af7@adf")
                         }
                     ]
                 );
@@ -194,11 +193,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             if (result == null) return;
             _imageFile = result;
 
-            if (_image != null)
+            if (_imageStack != null)
             {
                 _image_stream?.Dispose();
                 _image_stream = await result.OpenReadAsync();
-                Image image = (Image)_image[^1];
+                Image image = (Image)_imageStack[^1];
                 image.Source = ImageSource.FromStream(() => _image_stream);
             }
         }

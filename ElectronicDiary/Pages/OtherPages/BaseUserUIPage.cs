@@ -1,6 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
+using ElectronicDiary.Pages.OtherViews.NewsView;
 using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.SaveData.Themes;
@@ -10,12 +11,13 @@ namespace ElectronicDiary.Pages.OtherPages
     public partial class BaseUserUIPage : ContentPage
     {
         private PageType _pageName;
-        private VerticalStackLayout[] _mainStackArr;
-        private HorizontalStackLayout _mainStack;
-        public BaseUserUIPage(VerticalStackLayout[] mainStackArr, PageType pageName)
+        private readonly HorizontalStackLayout _mainStack = [];
+        private readonly List<ScrollView> _viewList = [];
+        public BaseUserUIPage(HorizontalStackLayout mainStack, List<ScrollView> viewList, PageType pageName)
         {
+            _mainStack = mainStack;
+            _viewList = viewList;
             _pageName = pageName;
-            _mainStackArr = mainStackArr;
 
             Title = UserInfo.ConvertEnumRoleToStringRus(UserData.UserInfo.Role);
             ToolbarItemsAdder.AddSettings(ToolbarItems);
@@ -31,7 +33,6 @@ namespace ElectronicDiary.Pages.OtherPages
                 }
             };
             Content = grid;
-            _mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
             SizeChanged += WindowSizeChanged;
             grid.Add(_mainStack, 0, 0);
 
@@ -52,51 +53,17 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private void WindowSizeChanged(object? sender, EventArgs e)
         {
+            AdminPageStatic.RepaintPage(_mainStack, _viewList);
+        }
 
-            foreach (var view in _mainStack)
+        protected override bool OnBackButtonPressed()
+        {
+            AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);
+            if (_mainStack.Count == 1)
             {
-                view.DisconnectHandlers();
+                return base.OnBackButtonPressed();
             }
-            _mainStack.Clear();
-            AdminPageStatic.CalcViewWidth(out var width, out var count);
-
-            if (count != 1)
-            {
-                var vStackMain = BaseElemsCreator.CreateVerticalStackLayout();
-                foreach (var vStack in _mainStackArr)
-                {
-                    vStack.MinimumWidthRequest = width;
-                    vStack.MaximumWidthRequest = width;
-                    var scrollView = new ScrollView()
-                    {
-                        Content = vStack
-                    };
-                    vStackMain.Add(scrollView);
-                }
-                Application.Current?.Dispatcher.Dispatch(() =>
-                {
-                    _mainStack.Add(vStackMain);
-                });
-            }
-            else
-            {
-                foreach (var vStack in _mainStackArr)
-                {
-                    vStack.MinimumWidthRequest = width;
-                    vStack.MaximumWidthRequest = width;
-                    var scrollView = new ScrollView()
-                    {
-                        Content = vStack
-                    };
-
-                    Application.Current?.Dispatcher.Dispatch(() =>
-                    {
-                        _mainStack.Add(scrollView);
-                    });
-                }
-
-            }
-
+            return true;
         }
 
         public enum PageType
@@ -232,7 +199,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Chats)
             {
-                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Chats));
+               // Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Chats));
             }
         }
 
@@ -240,7 +207,12 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.News)
             {
-                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.News));
+                var viewCreator = new NewsViewListCreator(2);
+                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+                var viewList = new List<ScrollView>();
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.EducationId, true);
+                viewList.Add(scrollView);
+                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.News));
             }
         }
 
@@ -248,7 +220,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Shedule)
             {
-                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Shedule));
+                //Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Shedule));
             }
         }
 
@@ -256,7 +228,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Diary)
             {
-                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Diary));
+                //Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Diary));
             }
         }
 
@@ -264,7 +236,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Search)
             {
-                Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Search));
+                //Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Search));
             }
         }
     }

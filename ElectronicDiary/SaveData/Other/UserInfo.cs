@@ -1,11 +1,10 @@
-﻿using System.Text.Json;
-
-namespace ElectronicDiary.SaveData.Other
+﻿namespace ElectronicDiary.SaveData.Other
 {
     public class UserInfo
     {
         public long Id { get; set; } = -1;
         public RoleType Role { get; set; } = RoleType.None;
+        public long EducationId { get; set; } = -1;
 
         // Авторизация
         public string? Login { get; set; } = null;
@@ -46,12 +45,12 @@ namespace ElectronicDiary.SaveData.Other
         {
             return role switch
             {
-                RoleType.MainAdmin => "Main admin",
-                RoleType.LocalAdmin => "Local admin",
-                RoleType.Teacher => "Teacher",
-                RoleType.SchoolStudent => "School student",
-                RoleType.Parent => "Parent",
-                _ => "None"
+                RoleType.MainAdmin => "Главный администратор",
+                RoleType.LocalAdmin => "Локальный администратор",
+                RoleType.Teacher => "Учитель",
+                RoleType.SchoolStudent => "Ученик школы",
+                RoleType.Parent => "Родитель",
+                _ => "Нет"
             };
         }
     }

@@ -37,9 +37,9 @@ namespace ElectronicDiary.SaveData.Static
                     var obj = JsonSerializer.Deserialize<UserInfo>(json);
                     if (obj != null) UserInfo = obj;
                 }
-                catch 
+                catch
                 {
-                    UserInfo = new(); 
+                    UserInfo = new();
                 }
             }
         }

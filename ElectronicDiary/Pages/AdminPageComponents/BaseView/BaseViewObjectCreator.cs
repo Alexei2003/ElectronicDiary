@@ -30,7 +30,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected Grid _baseInfoGrid = [];
         protected int _baseInfoGridRowIndex = 0;
 
-        public VerticalStackLayout Create(HorizontalStackLayout? mainStack,
+        public ScrollView Create(HorizontalStackLayout? mainStack,
                                     List<ScrollView>? viewList,
                                     Action? chageListAction,
                                     BaseResponse? baseResponse,
@@ -81,11 +81,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             if (_componentState != AdminPageStatic.ComponentState.Read)
             {
-                var saveButton = BaseElemsCreator.CreateButton("Сохранить", SaveButtonClicked);
+                var saveButton = BaseElemsCreator.CreateButton(text: "Сохранить", SaveButtonClicked);
                 verticalStack.Add(saveButton);
             }
 
-            return verticalStack;
+            return new ScrollView() { Content = verticalStack };
         }
 
         // Пусто
@@ -102,7 +102,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
-
             var response = _componentState == AdminPageStatic.ComponentState.New ? await _controller.Add(_baseRequest) : await _controller.Edit(_baseRequest);
             if (response != null)
             {

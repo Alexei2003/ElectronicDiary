@@ -9,6 +9,7 @@ using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Other;
+using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
@@ -49,7 +50,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
         public static async Task<ContentPage> GetProfileByRole(UserInfo.RoleType role, long id)
         {
             IController? controller = null;
-            VerticalStackLayout? vStack = null;
+            ScrollView? scrollView = null;
             string? response = null;
             switch (role)
             {
@@ -61,8 +62,9 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
+                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? - 1;
                             var creator = new UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>();
-                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
                     break;
@@ -75,8 +77,9 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
+                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? -1;
                             var creator = new UserViewObjectCreator<UserResponse, UserRequest, TeacherController>();
-                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
                     break;
@@ -89,11 +92,12 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         var responseObject = JsonSerializer.Deserialize<SchoolStudentResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
-                            var creator = new SchoolStudentViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>();
-                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? -1;
+                            var creator = new SchoolStudentViewObjectCreator();
+                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
-                    break; 
+                    break;
 
                 case UserInfo.RoleType.Parent:
                     controller = new ParentController();
@@ -103,28 +107,28 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
-                            var creator = new ParentViewObjectCreator<UserResponse, ParentRequest, ParentController>();
-                            vStack = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? - 1;
+                            var creator = new ParentViewObjectCreator();
+                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
                     }
                     break;
 
                 default:
-                    vStack = null;
+                    scrollView = null;
                     break;
 
             }
 
             ContentPage page;
-            if (vStack != null)
+            if (scrollView != null)
             {
-                var hStack = BaseElemsCreator.CreateHorizontalStackLayout();
                 Application.Current?.Dispatcher.Dispatch(() =>
                 {
                     AdminPageStatic.CalcViewWidth(out var width, out _);
-                    vStack.MaximumWidthRequest = width;
+                    scrollView.MaximumWidthRequest = width;
                 });
-                page = new BaseUserUIPage([vStack], BaseUserUIPage.PageType.Profile);
+                page = new BaseUserUIPage(BaseElemsCreator.CreateHorizontalStackLayout(), [scrollView], BaseUserUIPage.PageType.Profile);
             }
             else
             {

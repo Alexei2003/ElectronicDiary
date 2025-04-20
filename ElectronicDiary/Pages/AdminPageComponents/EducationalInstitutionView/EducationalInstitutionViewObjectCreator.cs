@@ -5,19 +5,15 @@ using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Web.Api.Educations;
-using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
-    public class EducationalInstitutionViewObjectCreator<TResponse, TRequest, TController> : BaseViewObjectCreator<TResponse, TRequest, TController>
-        where TResponse : EducationalInstitutionResponse, new()
-        where TRequest : EducationalInstitutionRequest, new()
-        where TController : IController, new()
+    public class EducationalInstitutionViewObjectCreator : BaseViewObjectCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller>
     {
-        private VerticalStackLayout? _image = null;
+        private VerticalStackLayout? _imageStack = null;
         protected override void CreateUI()
         {
             base.CreateUI();
@@ -32,7 +28,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 _baseRequest.SettlementId = _baseResponse.Settlement?.Id ?? -1;
             }
 
-            _image = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage,
+            _imageStack = BaseElemsCreator.CreateImageFromUrl(_baseResponse.PathImage,
                 _componentState == AdminPageStatic.ComponentState.Edit ? AddImageTapped : null);
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
@@ -41,7 +37,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                      new LineElemsCreator.Data
                      {
                          CountJoinColumns = 2,
-                         Elem = _image
+                         Elem = _imageStack
                      }
                 ]);
 
@@ -61,7 +57,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry( newText =>  _baseRequest.Name = newText, "ГУО ...",_baseResponse.Name )
+                            Elem = BaseElemsCreator.CreateEditor( newText =>  _baseRequest.Name = newText, "ГУО ...",_baseResponse.Name )
                         }
                 ]
             );
@@ -134,7 +130,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.Address = newText, "ул. Ленина, 12",_baseResponse.Address )
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.Address = newText, "ул. Ленина, 12",_baseResponse.Address )
                         }
                 ]
             );
@@ -155,7 +151,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry( newText => _baseRequest.Email = newText, "sh4@edus.by", _baseResponse.Email)
+                            Elem = BaseElemsCreator.CreateEditor( newText => _baseRequest.Email = newText, "sh4@edus.by", _baseResponse.Email)
                         }
                 ]
             );
@@ -176,7 +172,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     :
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateEntry(newText => _baseRequest.PhoneNumber = newText, "+375 17 433-09-02", _baseResponse.PhoneNumber)
+                            Elem = BaseElemsCreator.CreateEditor(newText => _baseRequest.PhoneNumber = newText, "+375 17 433-09-02", _baseResponse.PhoneNumber)
                         }
                 ]
             );
@@ -195,11 +191,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             if (result == null) return;
             _imageFile = result;
 
-            if (_image != null)
+            if (_imageStack != null)
             {
                 _image_stream?.Dispose();
                 _image_stream = await result.OpenReadAsync();
-                Image image = (Image)_image[^1];
+                Image image = (Image)_imageStack[^1];
                 image.Source = ImageSource.FromStream(() => _image_stream);
             }
         }

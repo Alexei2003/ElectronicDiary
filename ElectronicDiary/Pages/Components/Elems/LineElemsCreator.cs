@@ -10,7 +10,7 @@
 
         public static void AddLineElems(Grid grid, int rowIndex, Data[] objectList)
         {
-            Application.Current.Dispatcher.Dispatch(() =>
+            Application.Current?.Dispatcher.Dispatch(() =>
             {
                 var indexColumn = 0;
 
@@ -27,7 +27,7 @@
 
         private static void ClearGridRows(Grid grid, IView[] elementsToRemove)
         {
-            Application.Current.Dispatcher.Dispatch(() =>
+            Application.Current?.Dispatcher.Dispatch(() =>
             {
                 foreach (var element in elementsToRemove)
                 {

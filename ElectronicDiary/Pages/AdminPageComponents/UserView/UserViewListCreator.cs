@@ -15,6 +15,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
     {
         public UserViewListCreator()
         {
+            _titleView = "Список пользователй";
             _maxCountViews = 3;
         }
 
@@ -36,7 +37,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateEntry(newText => _lastNameFilter = newText, "Дубовский")
+                        Elem = BaseElemsCreator.CreateEditor(newText => _lastNameFilter = newText, "Дубовский")
                     },
                 ]
             );
@@ -51,7 +52,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateEntry(newText => _firstNameFilter = newText, "Алексей")
+                        Elem = BaseElemsCreator.CreateEditor(newText => _firstNameFilter = newText, "Алексей")
                     },
                 ]
             );
@@ -67,7 +68,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateEntry(newText => _patronymicFilter = newText,  "Владимирович")
+                        Elem = BaseElemsCreator.CreateEditor(newText => _patronymicFilter = newText,  "Владимирович")
                     },
                 ]
             );
@@ -76,15 +77,15 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         // Получение списка объектов
         protected override void FilterList()
         {
-            bool filterByLastName = string.IsNullOrEmpty(_lastNameFilter);
-            bool filterByFirstName = string.IsNullOrEmpty(_firstNameFilter);
-            bool filterByPatronymic = string.IsNullOrEmpty(_patronymicFilter);
+            bool lastNameFilter = string.IsNullOrEmpty(_lastNameFilter);
+            bool firstNameFilter = string.IsNullOrEmpty(_firstNameFilter);
+            bool patronymicFilter = string.IsNullOrEmpty(_patronymicFilter);
 
             _objectsArr = [.. _objectsArr
                 .Where(e =>
-                    (!filterByLastName || (e.LastName ?? string.Empty).Contains(_lastNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
-                    (!filterByFirstName || (e.FirstName ?? string.Empty).Contains(_firstNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
-                    (!filterByPatronymic || (e.Patronymic ?? string.Empty).Contains(_patronymicFilter!, StringComparison.OrdinalIgnoreCase)))];
+                    (!lastNameFilter || (e.LastName ?? string.Empty).Contains(_lastNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (!firstNameFilter || (e.FirstName ?? string.Empty).Contains(_firstNameFilter!, StringComparison.OrdinalIgnoreCase)) &&
+                    (!patronymicFilter || (e.Patronymic ?? string.Empty).Contains(_patronymicFilter!, StringComparison.OrdinalIgnoreCase)))];
         }
     }
 }
