@@ -1,5 +1,6 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.GroupView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
@@ -52,16 +53,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ClassView
 
         protected override async Task MoveTo(long id)
         {
-            //var viewCreator = new UserViewListCreator<UserResponse, ParentRequest, ParentController,
-            //    UserViewElemCreator<UserResponse, ParentRequest, ParentController,
-            //    ParentViewObjectCreator>,
-            //    ParentViewObjectCreator>();
+            var viewCreator = new GroupViewListCreator();
 
-            //AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-            //var scrollView = viewCreator.Create(_mainStack, _viewList, _baseResponse.Id);
+            AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
+            var scrollView = viewCreator.Create(_mainStack, _viewList, _baseResponse.Id);
 
-            //_viewList.Add(scrollView);
-            //AdminPageStatic.RepaintPage(_mainStack, _viewList);
+            _viewList.Add(scrollView);
+            AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
     }
 }

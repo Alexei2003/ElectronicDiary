@@ -24,7 +24,8 @@ namespace ElectronicDiary.Web.Api.Social
 
         public Task<string?> Edit(object request)
         {
-            return Task.Run(() => "empty method");
+            const string url = "/changeNews";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         public Task<string?> Delete(long id)

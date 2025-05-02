@@ -1,5 +1,4 @@
 ﻿using ElectronicDiary.Web.DTO.Requests.Other;
-using ElectronicDiary.Web.DTO.Requests.Users;
 
 namespace ElectronicDiary.Web.DTO.Requests.Educations
 {

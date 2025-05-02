@@ -2,40 +2,38 @@
 
 namespace ElectronicDiary.Web.Api.Educations
 {
-    public class EducationalInstitutionСontroller : IController
+    public class GroupController : IController
     {
         public Task<string?> GetAll(long id)
         {
-            const string url = "/getSchools";
+            string url = $"/findGroupsByClassId?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
         public Task<string?> GetById(long id)
         {
-            string url = $"/getSchoolsById?id={id}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+            return Task.Run(() => { return "empty method"; });
         }
         public Task<string?> Edit(object request)
         {
-            const string url = "/changeEducationalInstitution";
+            const string url = "/changeGroup";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         public Task<string?> Add(object request)
         {
-            const string url = "/addEducationalInstitution";
+            const string url = "/addGroup";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         public Task<string?> AddImage(long id, FileResult image)
         {
-            string url = $"/addImageEducational?id={id}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, image: image);
+            return Task.Run(() => { return "empty method"; });
         }
 
         public Task<string?> Delete(long id)
         {
-            string url = $"/deleteEducationalInstitution?id={id}";
+            string url = $"/deleteGroupById?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
     }

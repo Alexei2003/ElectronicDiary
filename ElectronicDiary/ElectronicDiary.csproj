@@ -108,7 +108,6 @@
 	<ItemGroup>
 	  <Folder Include="Pages\AdminPageComponents\TeacherView\" />
 	  <Folder Include="Pages\AdminPageComponents\CommentView\" />
-	  <Folder Include="Pages\AdminPageComponents\GroupView\" />
 	</ItemGroup>
 
 	<ItemGroup>

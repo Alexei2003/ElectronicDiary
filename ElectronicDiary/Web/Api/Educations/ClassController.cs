@@ -4,9 +4,9 @@ namespace ElectronicDiary.Web.Api.Educations
 {
     public class ClassController : IController
     {
-        public Task<string?> GetAll(long schoolId)
+        public Task<string?> GetAll(long id)
         {
-            string url = $"/getClasses?schoolId={schoolId}";
+            string url = $"/getClasses?schoolId={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
@@ -24,7 +24,8 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> Edit(object request)
         {
-            return Task.Run(() => { return "empty method"; });
+            const string url = "/changeClass";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         public Task<string?> Delete(long id)

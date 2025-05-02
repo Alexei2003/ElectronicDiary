@@ -4,9 +4,9 @@ namespace ElectronicDiary.Web.Api.Users
 {
     public class TeacherController : IController
     {
-        public Task<string?> GetAll(long schoolId)
+        public Task<string?> GetAll(long id)
         {
-            string url = $"/getTeachers?schoolId={schoolId}";
+            string url = $"/getTeachers?schoolId={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
@@ -47,9 +47,9 @@ namespace ElectronicDiary.Web.Api.Users
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public static Task<string?> GetTeachersToClass(long schoolId)
+        public static Task<string?> GetTeachersToClass(long id)
         {
-            string url = $"/getTeachersToClass?schoolId={schoolId}";
+            string url = $"/getTeachersToClass?schoolId={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
     }

@@ -95,7 +95,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 objectList: [
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel(_titleView),
+                        Elem = BaseElemsCreator.CreateTitleLabel(_titleView),
+                        CountJoinColumns = 2
                     },
                 ]
             );

@@ -1,11 +1,4 @@
-﻿using System.Text.Json;
-
-using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Pages.Components.Other;
-using ElectronicDiary.Web.Api.Other;
-using ElectronicDiary.Web.DTO.Responses.Users;
-
-namespace ElectronicDiary.Pages.AdminPageComponents.General
+﻿namespace ElectronicDiary.Pages.AdminPageComponents.General
 {
     public static class AdminPageStatic
     {
@@ -41,7 +34,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.General
 #else
             const double coeffFixAndroidWidth = 3.3;
 #endif
-            countColumn = int.Max(int.Min((int)(widthWindow * coeffFixAndroidWidth / dpi), 3), 1);
+            countColumn = int.Max((int)(widthWindow * coeffFixAndroidWidth / dpi), 1);
 
             width = 0.9 * dpi / (coeffFixAndroidWidth);
         }

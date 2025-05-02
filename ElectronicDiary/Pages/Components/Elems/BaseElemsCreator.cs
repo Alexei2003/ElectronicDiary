@@ -23,6 +23,19 @@ namespace ElectronicDiary.Pages.Components.Elems
             };
 
             button.Clicked += handler;
+
+            button.Pressed += (sender, e) =>
+            {
+                button.ScaleTo(0.97, 50, Easing.SinInOut);
+                button.FadeTo(0.5, 50);
+            };
+
+            button.Released += (sender, e) =>
+            {
+                button.ScaleTo(1.0, 50, Easing.SinInOut);
+                button.FadeTo(1.0, 50);
+            };
+
             return button;
         }
 
@@ -132,7 +145,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return editor;
         }
 
-        public static Label CreateLabel(string? text, int maxLength = -1)
+        public static Label CreateLabel(string? text, int maxLength = 100)
         {
             if (text != null && maxLength > 0 && text.Length > maxLength)
             {
@@ -147,6 +160,14 @@ namespace ElectronicDiary.Pages.Components.Elems
                 Text = text ?? string.Empty,
             };
 
+            return label;
+        }
+
+        public static Label CreateTitleLabel(string? text, int maxLength = -1)
+        {
+            var label = CreateLabel(text, maxLength);
+            label.FontSize = 2 * UserData.Settings.Fonts.BASE_FONT_SIZE;
+            label.HorizontalTextAlignment = TextAlignment.Center;
             return label;
         }
 

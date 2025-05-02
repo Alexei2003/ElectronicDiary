@@ -102,7 +102,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void SaveButtonClicked(object? sender, EventArgs e)
         {
-            var response = _componentState == AdminPageStatic.ComponentState.New ? await _controller.Add(_baseRequest) : await _controller.Edit(_baseRequest);
+            var response = _componentState == AdminPageStatic.ComponentState.New ?
+                await _controller.Add(_baseRequest) :
+                await _controller.Edit(_baseRequest);
             if (response != null)
             {
                 ChageListAction.Invoke();

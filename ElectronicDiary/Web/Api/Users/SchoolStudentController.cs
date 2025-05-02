@@ -4,9 +4,9 @@ namespace ElectronicDiary.Web.Api.Users
 {
     public class SchoolStudentController : IController
     {
-        public Task<string?> GetAll(long schoolId)
+        public Task<string?> GetAll(long id)
         {
-            string url = $"/getSchoolStudents?schoolId={schoolId}";
+            string url = $"/getSchoolStudents?schoolId={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 

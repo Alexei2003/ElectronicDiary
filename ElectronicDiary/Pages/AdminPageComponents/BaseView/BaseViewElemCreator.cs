@@ -91,7 +91,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                            [
                             "Описание",
                             "Редактирование",
-                            "Удалить"]);
+                            "Удаление"]);
                     }
 
                     switch (action)
@@ -106,7 +106,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                             Delete(_baseResponse.Id);
                             break;
                         default:
-                            if(action == _moveToName)
+                            if (action == _moveToName)
                             {
                                 await MoveTo(_baseResponse.Id);
                             }
@@ -196,8 +196,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
-
-            ChageListAction.Invoke();
         }
 
         protected virtual async void Delete(long id)
