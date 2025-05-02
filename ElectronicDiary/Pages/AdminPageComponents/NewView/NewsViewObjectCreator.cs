@@ -94,7 +94,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
                 ]
             );
 
-            _baseRequest.EducationalInstitutionId = _educationalInstitutionId;
+            _baseRequest.EducationalInstitutionId = _objetParentId;
         }
     }
 }

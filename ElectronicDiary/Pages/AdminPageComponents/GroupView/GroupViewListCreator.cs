@@ -26,7 +26,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupView
                 objectList: [
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel("Название"),                  
+                        Elem = BaseElemsCreator.CreateLabel("Название"),
                     },
                     new LineElemsCreator.Data
                     {

@@ -8,6 +8,7 @@ using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Educations;
+using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
@@ -46,19 +47,19 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             _infoStack.Add(scrollView);
         }
 
-        private List<Item> GetClasses()
+        private List<TypeResponse> GetClasses()
         {
-            var list = new List<Item>();
+            var list = new List<TypeResponse>();
 
             Task.Run(async () =>
             {
                 ClassResponse[]? arr = null;
-                var response = await _controller.GetAll(_educationalInstitutionId);
+                var response = await _controller.GetAll(_objetParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<ClassResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id, elem?.Name));
+                    list.Add(new TypeResponse(elem.Id, elem?.Name));
                 }
             });
 

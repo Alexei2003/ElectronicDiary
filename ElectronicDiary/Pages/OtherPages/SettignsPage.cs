@@ -6,6 +6,7 @@ using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.SaveData.Themes;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.OtherPages
 {
@@ -70,21 +71,21 @@ namespace ElectronicDiary.Pages.OtherPages
         private const float START_SCALE_FACTOR = 0.5f;
         private const float SCALE_FACTOR = 0.25f;
         private const int SCALE_COUNT = 7;
-        private static ObservableCollection<Item> GetScaleList()
+        private static ObservableCollection<TypeResponse> GetScaleList()
         {
-            var list = new ObservableCollection<Item>();
+            var list = new ObservableCollection<TypeResponse>();
 
             for (var i = 0; i < SCALE_COUNT; i++)
             {
-                list.Add(new Item(i, $"{(START_SCALE_FACTOR + i * SCALE_FACTOR) * 100}%"));
+                list.Add(new TypeResponse(i, $"{(START_SCALE_FACTOR + i * SCALE_FACTOR) * 100}%"));
             }
 
             return list;
         }
 
-        private static ObservableCollection<Item> GetThemeList()
+        private static ObservableCollection<TypeResponse> GetThemeList()
         {
-            var list = new ObservableCollection<Item>()
+            var list = new ObservableCollection<TypeResponse>()
             {
                 new(0, "Тёмная"),
                 new(1, "Светлая"),

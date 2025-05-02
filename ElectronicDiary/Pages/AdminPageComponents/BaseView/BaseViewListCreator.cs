@@ -14,7 +14,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
     {
         ScrollView Create(HorizontalStackLayout mainStack,
                                    List<ScrollView> viewList,
-                                   long educationalInstitutionId = -1,
+                                   long objetParentId = -1,
                                    bool edit = false);
     }
 
@@ -36,7 +36,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         {
             Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES
         };
-        protected long _educationalInstitutionId;
+        protected long _objetParentId;
 
         public BaseViewListCreator() : base()
         {
@@ -48,12 +48,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected bool _readOnly = false;
         public ScrollView Create(HorizontalStackLayout mainStack,
                                           List<ScrollView> viewList,
-                                          long educationalInstitutionId = -1,
+                                          long objetParentId = -1,
                                           bool readOnly = false)
         {
             _mainStack = mainStack;
             _viewList = viewList;
-            _educationalInstitutionId = educationalInstitutionId;
+            _objetParentId = objetParentId;
             _readOnly = readOnly;
 
             _ = CreateListUI();
@@ -133,7 +133,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
             var viewObjectCreator = new TViewObjectCreator();
-            var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _educationalInstitutionId);
+            var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _objetParentId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
@@ -152,7 +152,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 for (var i = 0; i < _objectsArr.Length; i++)
                 {
                     var baseViewElemCreator = new TViewElemCreator();
-                    var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _educationalInstitutionId, _readOnly);
+                    var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _objetParentId, _readOnly);
                     _listVerticalStack.Add(grid);
                 }
             });
@@ -165,7 +165,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async Task GetList()
         {
-            var response = await _controller.GetAll(_educationalInstitutionId);
+            var response = await _controller.GetAll(_objetParentId);
             if (!string.IsNullOrEmpty(response)) _objectsArr = JsonSerializer.Deserialize<TResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
             FilterList();
         }
@@ -174,6 +174,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void FilterList()
         {
 
+        }
+
+        protected virtual void ChangeList()
+        {
+            ChageListAction.Invoke();
         }
     }
 }

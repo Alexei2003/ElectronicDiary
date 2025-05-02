@@ -20,7 +20,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected List<ScrollView> _viewList = [];
         protected event Action ChageListAction = delegate { };
 
-        protected long _educationalInstitutionId;
+        protected long _objetParentId;
 
 
         protected AdminPageStatic.ComponentState _componentState;
@@ -29,12 +29,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected VerticalStackLayout _infoStack = [];
         protected Grid _baseInfoGrid = [];
         protected int _baseInfoGridRowIndex = 0;
+        protected VerticalStackLayout _vStack = [];
 
         public ScrollView Create(HorizontalStackLayout? mainStack,
                                     List<ScrollView>? viewList,
                                     Action? chageListAction,
                                     BaseResponse? baseResponse,
-                                    long educationalInstitutionId,
+                                    long objetParentId,
                                     bool edit = false)
         {
 
@@ -42,7 +43,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _viewList = viewList ?? [];
             ChageListAction = chageListAction ?? delegate { };
             _baseResponse = (baseResponse as TResponse) ?? new();
-            _educationalInstitutionId = educationalInstitutionId;
+            _objetParentId = objetParentId;
 
             if (edit)
             {
@@ -60,7 +61,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 }
             }
 
-            var verticalStack = new VerticalStackLayout
+            _vStack = new VerticalStackLayout
             {
                 // Положение
                 Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
@@ -72,7 +73,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 // Положение
                 Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
             };
-            verticalStack.Add(_infoStack);
+            _vStack.Add(_infoStack);
 
             _baseInfoGrid = BaseElemsCreator.CreateGrid();
             _infoStack.Add(_baseInfoGrid);
@@ -82,10 +83,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             if (_componentState != AdminPageStatic.ComponentState.Read)
             {
                 var saveButton = BaseElemsCreator.CreateButton(text: "Сохранить", SaveButtonClicked);
-                verticalStack.Add(saveButton);
+                _vStack.Add(saveButton);
             }
 
-            return new ScrollView() { Content = verticalStack };
+            return new ScrollView() { Content = _vStack };
         }
 
         // Пусто

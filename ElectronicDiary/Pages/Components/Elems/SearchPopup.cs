@@ -2,15 +2,16 @@
 
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.Others
 {
     public partial class SearchPopup : Popup
     {
-        public List<Item> AllItems { get; set; }
+        public List<TypeResponse> AllItems { get; set; }
         private readonly ListView _listView;
 
-        public SearchPopup(List<Item> items, Action<long> IdChangedAction)
+        public SearchPopup(List<TypeResponse> items, Action<long> IdChangedAction)
         {
             AllItems = items;
 
@@ -51,7 +52,7 @@ namespace ElectronicDiary.Pages.Others
 
             _listView.ItemTapped += (sender, e) =>
             {
-                if (e.Item is Item selectedItem)
+                if (e.Item is TypeResponse selectedItem)
                 {
                     HandleItemTapped(selectedItem, IdChangedAction);
                 }
@@ -92,7 +93,7 @@ namespace ElectronicDiary.Pages.Others
             }
         }
 
-        private void HandleItemTapped(Item selectedItem, Action<long> IdChangedAction)
+        private void HandleItemTapped(TypeResponse selectedItem, Action<long> IdChangedAction)
         {
             IdChangedAction(selectedItem.Id);
             Close();

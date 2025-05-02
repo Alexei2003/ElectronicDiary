@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Views;
 
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.Components.Elems
 {
@@ -171,7 +172,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return label;
         }
 
-        public static Label CreateSearchPopupAsLabel(List<Item> itemList, Action<long> idChangedAction)
+        public static Label CreateSearchPopupAsLabel(List<TypeResponse> itemList, Action<long> idChangedAction)
         {
             var searchLabel = CreateLabel("Поиск");
             searchLabel.BackgroundColor = UserData.Settings.Theme.AccentColorFields;
@@ -179,9 +180,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             tapGesture.Tapped += (sender, e) =>
             {
                 long id = -1;
-                Action<long> idChangedActionLocal = newText => id = newText;
-
-                var popup = new SearchPopup(itemList, idChangedActionLocal);
+                var popup = new SearchPopup(itemList, newText => id = newText);
 
                 popup.Closed += (sender, e) =>
                 {
@@ -201,7 +200,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             return searchLabel;
         }
 
-        public static Picker CreatePicker(ObservableCollection<Item> itemList, Action<long> idChangedAction, long? baseSelectedId = null)
+        public static Picker CreatePicker(ObservableCollection<TypeResponse> itemList, Action<long> idChangedAction, long? baseSelectedId = null)
         {
             var picker = new Picker
             {
@@ -228,7 +227,7 @@ namespace ElectronicDiary.Pages.Components.Elems
             {
                 picker.SelectedIndexChanged += (sender, e) =>
                 {
-                    if (picker.SelectedItem is Item selectedItem)
+                    if (picker.SelectedItem is TypeResponse selectedItem)
                     {
                         idChangedAction(selectedItem.Id);
                     }

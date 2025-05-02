@@ -17,25 +17,25 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
     {
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
-            Delete(_educationalInstitutionId);
+            Delete(_objetParentId);
         }
 
 
-        private static ObservableCollection<Item> GetParentTypes()
+        private static ObservableCollection<TypeResponse> GetParentTypes()
         {
-            var list = new ObservableCollection<Item>();
+            var list = new ObservableCollection<TypeResponse>();
 
             Task.Run(async () =>
             {
-                TypeResponse[]? arr = null;
+                Web.DTO.Responses.Other.TypeResponse[]? arr = null;
                 var response = await StudentParentController.GetParentType();
-                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<Web.DTO.Responses.Other.TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 Application.Current?.Dispatcher.Dispatch(() =>
                 {
                     foreach (var elem in arr ?? [])
                     {
-                        list.Add(item: new Item(elem.Id, elem.Name));
+                        list.Add(item: new TypeResponse(elem.Id, elem.Name));
                     }
                 });
             });
@@ -43,39 +43,39 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
             return list;
         }
 
-        private static List<Item> GetSchoolStudents(long _educationalInstitutionId)
+        private static List<TypeResponse> GetSchoolStudents(long _objetParentId)
         {
-            var list = new List<Item>();
+            var list = new List<TypeResponse>();
 
             Task.Run(async () =>
             {
                 UserResponse[]? arr = null;
                 var controller = new SchoolStudentController();
-                var response = await controller.GetAll(_educationalInstitutionId);
+                var response = await controller.GetAll(_objetParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id, $"{elem?.LastName} {elem?.FirstName} {elem?.Patronymic}"));
+                    list.Add(new TypeResponse(elem.Id, $"{elem?.LastName} {elem?.FirstName} {elem?.Patronymic}"));
                 }
             });
 
             return list;
         }
 
-        private List<Item> GetParents()
+        private List<TypeResponse> GetParents()
         {
-            var list = new List<Item>();
+            var list = new List<TypeResponse>();
 
             Task.Run(async () =>
             {
                 UserResponse[]? arr = null;
-                var response = await _controller.GetById(_educationalInstitutionId);
+                var response = await _controller.GetById(_objetParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id, $"{elem?.LastName} {elem?.FirstName} {elem?.Patronymic}"));
+                    list.Add(new TypeResponse(elem.Id, $"{elem?.LastName} {elem?.FirstName} {elem?.Patronymic}"));
                 }
             });
 

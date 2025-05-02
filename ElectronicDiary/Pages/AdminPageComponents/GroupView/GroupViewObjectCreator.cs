@@ -1,5 +1,6 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.GroupMemberView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
@@ -20,29 +21,33 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupView
             }
             else
             {
-                _baseRequest.ClassRoom = _educationalInstitutionId;
+                _baseRequest.ClassRoom = _objetParentId;
             }
 
-                LineElemsCreator.AddLineElems(
-                    grid: _baseInfoGrid,
-                    rowIndex: _baseInfoGridRowIndex++,
-                    objectList: [
-                        new LineElemsCreator.Data
+            LineElemsCreator.AddLineElems(
+                grid: _baseInfoGrid,
+                rowIndex: _baseInfoGridRowIndex++,
+                objectList: [
+                    new LineElemsCreator.Data
+                {
+                    Elem = BaseElemsCreator.CreateLabel( "Название")
+                },
+                _componentState == AdminPageStatic.ComponentState.Read ?
+                    new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel( "Название")
-                    },
-                    _componentState == AdminPageStatic.ComponentState.Read ?
-                        new LineElemsCreator.Data
-                        {
-                            Elem = BaseElemsCreator.CreateLabel( _baseResponse.GroupName)
-                        }
-                    :
-                        new LineElemsCreator.Data
-                        {
-                            Elem = BaseElemsCreator.CreateEditor( newText =>  _baseRequest.GroupName = newText, "Английский 2",_baseResponse.GroupName )
-                        }
-                    ]
-                );
+                        Elem = BaseElemsCreator.CreateLabel( _baseResponse.GroupName)
+                    }
+                :
+                    new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateEditor( newText =>  _baseRequest.GroupName = newText, "Английский 2",_baseResponse.GroupName )
+                    }
+                ]
+            );
+
+            var viewCreator = new GroupMemberViewListCreator();
+            var scrollView = viewCreator.Create([], [],_baseResponse.Id);
+            _vStack.Add(scrollView);
         }
     }
 }

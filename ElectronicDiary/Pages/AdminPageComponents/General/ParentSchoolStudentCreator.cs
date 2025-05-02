@@ -115,7 +115,7 @@
 //            }
 //        }
 
-//        public void AddSchoolStudent(ParentRequest request, long _educationalInstitutionId)
+//        public void AddSchoolStudent(ParentRequest request, long _objetParentId)
 //        {
 //            ShowBase();
 
@@ -130,7 +130,7 @@
 //                    },
 //                    new LineElemsCreator.Data
 //                    {
-//                        Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetSchoolStudents(_educationalInstitutionId),
+//                        Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetSchoolStudents(_objetParentId),
 //                                                selectedIndex => request.SchoolStudentId = selectedIndex)
 //                    }
 //                ]
@@ -243,7 +243,7 @@
 //            return list;
 //        }
 
-//        private static List<Item> GetSchoolStudents(long _educationalInstitutionId)
+//        private static List<Item> GetSchoolStudents(long _objetParentId)
 //        {
 //            var list = new List<Item>();
 
@@ -251,7 +251,7 @@
 //            {
 //                UserResponse[]? arr = null;
 //                var controller = new SchoolStudentController();
-//                var response = await controller.GetAll(_educationalInstitutionId);
+//                var response = await controller.GetAll(_objetParentId);
 //                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
 //                foreach (var elem in arr ?? [])

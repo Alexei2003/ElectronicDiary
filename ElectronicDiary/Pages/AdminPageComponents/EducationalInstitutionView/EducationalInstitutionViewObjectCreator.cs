@@ -62,7 +62,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                 ]
             );
 
-            List<Item> settlementList = [];
+            List<TypeResponse> settlementList = [];
             LineElemsCreator.AddLineElems(
                 grid: _baseInfoGrid,
                 rowIndex: _baseInfoGridRowIndex++,
@@ -210,37 +210,37 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
             }
         }
 
-        private static List<Item> GetRegions()
+        private static List<TypeResponse> GetRegions()
         {
-            var list = new List<Item>();
+            var list = new List<TypeResponse>();
 
             Task.Run(async () =>
             {
-                TypeResponse[]? arr = null;
+                Web.DTO.Responses.Other.TypeResponse[]? arr = null;
                 var response = await AddressСontroller.GetRegions();
-                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<Web.DTO.Responses.Other.TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id, elem.Name));
+                    list.Add(new TypeResponse(elem.Id, elem.Name));
                 }
             });
 
             return list;
         }
 
-        private static void GetSettlements(List<Item> list, long regionId)
+        private static void GetSettlements(List<TypeResponse> list, long regionId)
         {
             list.Clear();
             Task.Run(async () =>
             {
-                TypeResponse[]? arr = null;
+                Web.DTO.Responses.Other.TypeResponse[]? arr = null;
                 var response = await AddressСontroller.GetSettlements(regionId);
-                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<Web.DTO.Responses.Other.TypeResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id, elem.Name));
+                    list.Add(new TypeResponse(elem.Id, elem.Name));
                 }
             });
         }

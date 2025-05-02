@@ -8,6 +8,7 @@ using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
+using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.ClassView
@@ -67,20 +68,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ClassView
             );
         }
 
-        private List<Item> GetTeachers()
+        private List<TypeResponse> GetTeachers()
         {
-            var list = new List<Item>();
+            var list = new List<TypeResponse>();
 
             Task.Run(async () =>
             {
                 UserResponse[]? arr = null;
                 var controller = new TeacherController();
-                var response = await controller.GetAll(_educationalInstitutionId);
+                var response = await controller.GetAll(_objetParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
                 {
-                    list.Add(new Item(elem.Id, $"{elem?.LastName} {elem?.FirstName} {elem?.Patronymic}"));
+                    list.Add(new TypeResponse(elem.Id, $"{elem?.LastName} {elem?.FirstName} {elem?.Patronymic}"));
                 }
             });
 

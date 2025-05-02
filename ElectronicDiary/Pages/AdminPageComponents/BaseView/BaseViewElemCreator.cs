@@ -29,7 +29,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected event Action ChageListAction = delegate { };
 
         protected int _maxCountViews;
-        protected long _educationalInstitutionId;
+        protected long _objetParentId;
         protected bool _readOnly = false;
 
         protected Grid _grid = [];
@@ -38,14 +38,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                            Action chageListAction,
                            BaseResponse? baseResponse,
                            int maxCountViews,
-                           long educationalInstitutionId,
+                           long objetParentId,
                            bool readOnly = false)
         {
             _mainStack = mainStack;
             _viewList = viewList;
             ChageListAction = chageListAction;
             _baseResponse = baseResponse as TResponse ?? new();
-            _educationalInstitutionId = educationalInstitutionId;
+            _objetParentId = objetParentId;
             _maxCountViews = maxCountViews;
             _readOnly = readOnly;
 
@@ -88,10 +88,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                     else
                     {
                         action = await BaseElemsCreator.CreateActionSheet(
-                           [
+                            [
                             "Описание",
-                            "Редактирование",
-                            "Удаление"]);
+                                "Редактирование",
+                                "Удаление"]);
                     }
 
                     switch (action)
@@ -123,7 +123,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void ShowInfo(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId);
+            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _objetParentId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
@@ -192,7 +192,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void Edit(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _educationalInstitutionId, true);
+            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _objetParentId, true);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
@@ -208,10 +208,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 if (accept && _controller != null)
                 {
                     await _controller.Delete(id);
-                    ChageListAction.Invoke();
+                    ChangeList();
                 }
             }
+        }
 
+        protected virtual void ChangeList()
+        {
+            ChageListAction.Invoke();
         }
     }
 }
