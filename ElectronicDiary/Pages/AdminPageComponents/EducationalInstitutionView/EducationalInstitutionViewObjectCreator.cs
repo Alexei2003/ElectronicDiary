@@ -74,7 +74,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
                     _componentState == AdminPageStatic.ComponentState.Read  ?
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement ?.Region ?.Name)
+                            Elem = BaseElemsCreator.CreateLabel(_baseResponse.Settlement?.Region?.Name)
                         }
                     :
                         new LineElemsCreator.Data

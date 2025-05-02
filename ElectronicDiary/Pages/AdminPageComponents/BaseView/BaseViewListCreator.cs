@@ -38,7 +38,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         };
         protected long _educationalInstitutionId;
 
-        public BaseViewListCreator()
+        public BaseViewListCreator() : base()
         {
             _maxCountViews = 0;
             ChageListAction += ChageListHandler;
@@ -58,7 +58,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             _ = CreateListUI();
 
-            var verticalStack = new VerticalStackLayout
+            var vStack = new VerticalStackLayout
             {
                 // Положение
                 Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
@@ -67,30 +67,27 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
             var scrollView = new ScrollView()
             {
-                Content = verticalStack
+                Content = vStack
             };
 
             _grid = BaseElemsCreator.CreateGrid();
 
             var rowIndex = 0;
             CreateFilterUI(ref rowIndex);
-            verticalStack.Add(_grid);
+            vStack.Add(_grid);
 
-            var getButton = BaseElemsCreator.CreateButton("Найти", GetButtonClicked);
-            verticalStack.Add(getButton);
+            CreateGetButton(vStack);
+            CreateAddButton(vStack);
+            CreateColumnTitle(vStack);
 
-            if (!readOnly)
-            {
-                var addButton = BaseElemsCreator.CreateButton("Добавить", AddButtonClicked);
-                verticalStack.Add(addButton);
-            }
-            verticalStack.Add(_listVerticalStack);
+            vStack.Add(_listVerticalStack);
 
-            return new ScrollView() { Content = verticalStack };
+            return new ScrollView() { Content = vStack };
         }
 
         protected string _titleView = string.Empty;
-        protected virtual void CreateFilterUI(ref int rowIndex)
+
+        protected virtual void CreateTitile(ref int rowIndex)
         {
             LineElemsCreator.AddLineElems(
                 grid: _grid,
@@ -102,6 +99,29 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                     },
                 ]
             );
+        }
+
+        protected virtual void CreateFilterUI(ref int rowIndex)
+        {
+            CreateTitile(ref rowIndex);
+
+        }
+
+        protected virtual void CreateGetButton(VerticalStackLayout vStack)
+        {
+            var getButton = BaseElemsCreator.CreateButton("Найти", GetButtonClicked);
+            vStack.Add(getButton);
+        }
+
+        protected virtual void CreateAddButton(VerticalStackLayout vStack)
+        {
+            var addButton = BaseElemsCreator.CreateButton("Добавить", AddButtonClicked);
+            vStack.Add(addButton);
+        }
+
+        protected virtual void CreateColumnTitle(VerticalStackLayout vStack)
+        {
+
         }
 
         protected virtual async void GetButtonClicked(object? sender, EventArgs e)

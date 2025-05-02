@@ -1,7 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.NewsView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
-using ElectronicDiary.Pages.OtherViews.NewsView;
 using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.SaveData.Themes;
@@ -199,7 +199,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Chats)
             {
-               // Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Chats));
+                // Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Chats));
             }
         }
 

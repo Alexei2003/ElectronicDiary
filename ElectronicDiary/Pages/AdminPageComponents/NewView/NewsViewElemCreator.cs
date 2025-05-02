@@ -4,7 +4,7 @@ using ElectronicDiary.Web.Api.Social;
 using ElectronicDiary.Web.DTO.Requests.Social;
 using ElectronicDiary.Web.DTO.Responses.Social;
 
-namespace ElectronicDiary.Pages.OtherViews.NewsView
+namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
 {
     public class NewsViewElemCreator : BaseViewElemCreator<NewsResponse, NewsRequest, NewsController, NewsViewObjectCreator>
     {

@@ -1,9 +1,10 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+﻿using ElectronicDiary.Pages.AdminPageComponents.ClassView;
+using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.NewsView;
 using ElectronicDiary.Pages.AdminPageComponents.ParentView;
 using ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.Pages.OtherViews.NewsView;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Other;
@@ -30,7 +31,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected int _maxCountViews;
         protected long _educationalInstitutionId;
         protected bool _readOnly = false;
-
 
         protected Grid _grid = [];
         public Grid Create(HorizontalStackLayout mainStack,
@@ -66,7 +66,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         }
 
-
+        protected bool _moveTo = false;
+        protected string _moveToName = "Перейти к ";
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
             if (!_readOnly)
@@ -74,14 +75,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 if (_baseResponse.Id > -1)
                 {
                     var action = string.Empty;
-                    if (_maxCountViews == 2)
+                    if (_moveTo)
                     {
                         action = await BaseElemsCreator.CreateActionSheet(
                            [
                             "Описание",
-                            "Перейти",
-                            "Редактировать",
-                            "Удалить"]);
+                            _moveToName,
+                            "Редактирование",
+                            "Удаление"]);
 
                     }
                     else
@@ -89,7 +90,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                         action = await BaseElemsCreator.CreateActionSheet(
                            [
                             "Описание",
-                            "Редактировать",
+                            "Редактирование",
                             "Удалить"]);
                     }
 
@@ -98,16 +99,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                         case "Описание":
                             ShowInfo(_baseResponse.Id);
                             break;
-                        case "Перейти":
-                            await MoveTo(_baseResponse.Id);
-                            break;
-                        case "Редактировать":
+                        case "Редактирование":
                             Edit(_baseResponse.Id);
                             break;
-                        case "Удалить":
+                        case "Удаление":
                             Delete(_baseResponse.Id);
                             break;
                         default:
+                            if(action == _moveToName)
+                            {
+                                await MoveTo(_baseResponse.Id);
+                            }
                             return;
                     }
                 }
@@ -126,6 +128,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
         }
+
 
         protected virtual async Task MoveTo(long id)
         {
@@ -155,7 +158,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                         UserViewObjectCreator<UserResponse, UserRequest, TeacherController>>();
                     break;
                 case "Классы":
-                    //view = new AdministratorView(_mainStack, _viewList, id);
+                    viewCreator = new ClassViewListCreator();
                     break;
                 case "Ученики":
                     viewCreator = new UserViewListCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController,
@@ -179,10 +182,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             if (viewCreator != null)
             {
                 AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
-                var scrollView = new ScrollView()
-                {
-                    Content = viewCreator.Create(_mainStack, _viewList, _baseResponse.Id)
-                };
+                var scrollView = viewCreator.Create(_mainStack, _viewList, _baseResponse.Id);
+
                 _viewList.Add(scrollView);
                 AdminPageStatic.RepaintPage(_mainStack, _viewList);
             }
@@ -201,11 +202,18 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async void Delete(long id)
         {
-            if (_controller != null)
+            var page = Application.Current?.Windows[0].Page;
+            if (page != null)
             {
-                await _controller.Delete(id);
-                ChageListAction.Invoke();
+                var accept = await page.DisplayAlert("Подтверждение", "Удаление объекта", "Да", "Нет");
+
+                if (accept && _controller != null)
+                {
+                    await _controller.Delete(id);
+                    ChageListAction.Invoke();
+                }
             }
+
         }
     }
 }

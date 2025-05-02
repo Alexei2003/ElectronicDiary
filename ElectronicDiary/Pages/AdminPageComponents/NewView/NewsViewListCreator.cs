@@ -4,11 +4,11 @@ using ElectronicDiary.Web.Api.Social;
 using ElectronicDiary.Web.DTO.Requests.Social;
 using ElectronicDiary.Web.DTO.Responses.Social;
 
-namespace ElectronicDiary.Pages.OtherViews.NewsView
+namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
 {
     public class NewsViewListCreator : BaseViewListCreator<NewsResponse, NewsRequest, NewsController, NewsViewElemCreator, NewsViewObjectCreator>
     {
-        public NewsViewListCreator()
+        public NewsViewListCreator() : base()
         {
             _maxCountViews = 3;
             _titleView = "Список новостей";
@@ -47,7 +47,7 @@ namespace ElectronicDiary.Pages.OtherViews.NewsView
 
             _objectsArr = [.. _objectsArr
                 .Where(e =>
-                    (!titleFilter || (e.Title ?? string.Empty).Contains(_titleFilter!, StringComparison.OrdinalIgnoreCase)))];
+                    !titleFilter || (e.Title ?? string.Empty).Contains(_titleFilter!, StringComparison.OrdinalIgnoreCase))];
         }
     }
 }

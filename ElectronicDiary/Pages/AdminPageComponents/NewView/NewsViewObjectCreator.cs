@@ -1,5 +1,4 @@
-﻿
-using ElectronicDiary.Pages.AdminPageComponents.BaseView;
+﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData.Static;
@@ -7,7 +6,7 @@ using ElectronicDiary.Web.Api.Social;
 using ElectronicDiary.Web.DTO.Requests.Social;
 using ElectronicDiary.Web.DTO.Responses.Social;
 
-namespace ElectronicDiary.Pages.OtherViews.NewsView
+namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
 {
     public class NewsViewObjectCreator : BaseViewObjectCreator<NewsResponse, NewsRequest, NewsController>
     {
@@ -47,7 +46,7 @@ namespace ElectronicDiary.Pages.OtherViews.NewsView
                 ]
             );
 
-            if(_componentState == AdminPageStatic.ComponentState.Read)
+            if (_componentState == AdminPageStatic.ComponentState.Read)
             {
                 LineElemsCreator.AddLineElems(
                     grid: _baseInfoGrid,

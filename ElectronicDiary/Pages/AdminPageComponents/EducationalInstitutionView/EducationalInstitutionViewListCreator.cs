@@ -8,7 +8,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
 {
     public sealed class EducationalInstitutionViewListCreator : BaseViewListCreator<EducationalInstitutionResponse, EducationalInstitutionRequest, EducationalInstitutionСontroller, EducationalInstitutionViewElemCreator, EducationalInstitutionViewObjectCreator>
     {
-        public EducationalInstitutionViewListCreator()
+        public EducationalInstitutionViewListCreator() : base()
         {
             _maxCountViews = 2;
             _titleView = "Список учебных заведений";

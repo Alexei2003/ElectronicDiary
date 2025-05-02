@@ -1,4 +1,11 @@
-﻿namespace ElectronicDiary.Pages.AdminPageComponents.General
+﻿using System.Text.Json;
+
+using ElectronicDiary.Pages.Components.Elems;
+using ElectronicDiary.Pages.Components.Other;
+using ElectronicDiary.Web.Api.Other;
+using ElectronicDiary.Web.DTO.Responses.Users;
+
+namespace ElectronicDiary.Pages.AdminPageComponents.General
 {
     public static class AdminPageStatic
     {
@@ -61,5 +68,6 @@
         {
             Read, New, Edit
         }
+
     }
 }

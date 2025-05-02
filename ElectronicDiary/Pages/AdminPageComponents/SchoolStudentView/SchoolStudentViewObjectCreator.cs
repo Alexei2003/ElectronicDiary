@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 
 using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView.StudentWithParents;
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
@@ -13,7 +14,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
 {
     public class SchoolStudentViewObjectCreator : UserViewObjectCreator<SchoolStudentResponse, SchoolStudentRequest, SchoolStudentController>
     {
-        private ParentSchoolStudentCreator? _parentSchoolStudent = null;
         protected override void CreateUI()
         {
             base.CreateUI();
@@ -40,17 +40,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                 ]
             );
 
-            _parentSchoolStudent = new ParentSchoolStudentCreator(_baseResponse.Id, false);
-            _infoStack.Add(_parentSchoolStudent.Grid);
-            if (_componentState == AdminPageStatic.ComponentState.Edit)
-            {
-                _ = _parentSchoolStudent.AddParent();
-            }
-            else
-            {
-                _ = _parentSchoolStudent.ShowList();
-            }
+            var view = new StudenWithtParentsViewListCreator();
+            var flag = _componentState != AdminPageStatic.ComponentState.Edit;
+            var scrollView = view.Create([], [], _baseResponse.Id, flag);
+            _infoStack.Add(scrollView);
         }
+
         private List<Item> GetClasses()
         {
             var list = new List<Item>();

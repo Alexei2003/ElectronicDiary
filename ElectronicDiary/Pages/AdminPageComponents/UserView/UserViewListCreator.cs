@@ -13,7 +13,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
         where TViewElemCreator : BaseViewElemCreator<TResponse, TRequest, TController, TViewObjectCreator>, new()
         where TViewObjectCreator : BaseViewObjectCreator<TResponse, TRequest, TController>, new()
     {
-        public UserViewListCreator()
+        public UserViewListCreator() : base()
         {
             _titleView = "Список пользователй";
             _maxCountViews = 3;

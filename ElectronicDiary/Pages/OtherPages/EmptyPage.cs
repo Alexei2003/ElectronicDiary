@@ -1,13 +1,11 @@
-﻿using CommunityToolkit.Maui.Views;
-
-using ElectronicDiary.Pages.Components.Elems;
+﻿using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData.Static;
 
 namespace ElectronicDiary.Pages.OtherPages
 {
     public partial class EmptyPage : ContentPage
     {
-#if !WINDOWS
+
         public EmptyPage()
         {
             BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
@@ -19,24 +17,24 @@ namespace ElectronicDiary.Pages.OtherPages
             vStack.Add(image);
             Content = vStack;
         }
-#else
-        public EmptyPage()
-        {
-            BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
 
-            var mediaElement = new MediaElement
-            {
-                Source = MediaSource.FromFile("D:\\WPS\\ElectronicDiary\\ElectronicDiary\\Resources\\Raw\\jane_doe.mp4"),
-                //Source = MediaSource.FromUri("https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4"),
-                ShouldAutoPlay = true,
-                ShouldShowPlaybackControls = false,
-                MaximumHeightRequest = 700
-            };
+        //public EmptyPage()
+        //{
+        //    BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
 
-            var vStack = BaseElemsCreator.CreateVerticalStackLayout();
-            vStack.Add(mediaElement);
-            Content = vStack;
-        }
-#endif
+        //    var mediaElement = new MediaElement
+        //    {
+        //        Source = MediaSource.FromFile("D:\\WPS\\ElectronicDiary\\ElectronicDiary\\Resources\\Raw\\jane_doe.mp4"),
+        //        //Source = MediaSource.FromUri("https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_1mb.mp4"),
+        //        ShouldAutoPlay = true,
+        //        ShouldShowPlaybackControls = false,
+        //        MaximumHeightRequest = 700
+        //    };
+
+        //    var vStack = BaseElemsCreator.CreateVerticalStackLayout();
+        //    vStack.Add(mediaElement);
+        //    Content = vStack;
+        //}
+
     }
 }

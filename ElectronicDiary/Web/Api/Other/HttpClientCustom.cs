@@ -72,7 +72,7 @@ namespace ElectronicDiary.Web.Api.Other
             }
             catch (Exception ex)
             {
-                
+
                 var message = "Что-то пошло не так. Если ошибка повторяется, сообщите в поддержку";
                 if (ex is HttpRequestException httpEx)
                 {

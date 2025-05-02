@@ -62,7 +62,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
-                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? - 1;
+                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? -1;
                             var creator = new UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>();
                             scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
@@ -107,7 +107,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
-                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? - 1;
+                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? -1;
                             var creator = new ParentViewObjectCreator();
                             scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
                         }
