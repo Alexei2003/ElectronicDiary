@@ -25,9 +25,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
             );
         }
 
-        protected override async void GestureTapped(object? sender, EventArgs e)
+        protected override void GestureTapped(object? sender, EventArgs e)
         {
-            Delete(_baseResponse.Id);
+            if (!_readOnly)
+            {
+                Delete(_baseResponse.Id);
+            }
         }
 
         protected override async void Delete(long id)

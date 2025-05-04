@@ -90,8 +90,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                         action = await BaseElemsCreator.CreateActionSheet(
                             [
                             "Описание",
-                                "Редактирование",
-                                "Удаление"]);
+                            "Редактирование",
+                            "Удаление"]);
                     }
 
                     switch (action)
@@ -108,7 +108,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                         default:
                             if (action == _moveToName)
                             {
-                                await MoveTo(_baseResponse.Id);
+                                MoveTo(_baseResponse.Id);
                             }
                             return;
                     }
@@ -130,7 +130,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         }
 
 
-        protected virtual async Task MoveTo(long id)
+        protected virtual async void MoveTo(long id)
         {
             string action = string.Empty;
             action = await BaseElemsCreator.CreateActionSheet(

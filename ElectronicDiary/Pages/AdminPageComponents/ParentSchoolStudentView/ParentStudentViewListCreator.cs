@@ -47,7 +47,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
             vStack.Add(grid);
         }
 
-        protected virtual void AddButtonClicked(object? sender, EventArgs e)
+        protected override void AddButtonClicked(object? sender, EventArgs e)
         {
 
         }

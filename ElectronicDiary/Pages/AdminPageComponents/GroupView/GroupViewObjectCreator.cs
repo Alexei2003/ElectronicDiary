@@ -46,7 +46,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupView
             );
 
             var viewCreator = new GroupMemberViewListCreator();
-            var scrollView = viewCreator.Create([], [],_baseResponse.Id);
+            var scrollView = viewCreator.Create([], [], _baseResponse.Id, _componentState != AdminPageStatic.ComponentState.Edit, _objetParentId);
             _vStack.Add(scrollView);
         }
     }

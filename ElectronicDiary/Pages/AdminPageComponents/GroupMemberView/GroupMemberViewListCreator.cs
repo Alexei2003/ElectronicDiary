@@ -48,17 +48,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
         private long _classId = -1;
         protected override async Task GetList()
         {
-            var response = await _controller.GetAll(_objetParentId);
-            if (!string.IsNullOrEmpty(response))
+            _classId = _objetPreParentId;
+            if (_objetParentId != -1)
             {
-                var tmp = JsonSerializer.Deserialize<GroupInfoResponse>(response, PageConstants.JsonSerializerOptions);
-                _classId = tmp?.Group?.ClassRoom?.Id ?? -1;
-                _objectsArr = tmp?.GroupMembers?.Select(m => new TypeResponse(
-                    m.SchoolStudent?.Id ?? -1,
-                    $"{m.SchoolStudent?.LastName} {m.SchoolStudent?.FirstName} {m.SchoolStudent?.Patronymic}"
-                )).ToArray();
+                var response = await _controller.GetAll(_objetParentId);
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var tmp = JsonSerializer.Deserialize<GroupInfoResponse>(response, PageConstants.JsonSerializerOptions);
+                    _objectsArr = tmp?.GroupMembers?.Select(m => new TypeResponse(
+                        m.SchoolStudent?.Id ?? -1,
+                        $"{m.SchoolStudent?.LastName} {m.SchoolStudent?.FirstName} {m.SchoolStudent?.Patronymic}"
+                    )).ToArray();
+                }
+                FilterList();
             }
-            FilterList();
         }
 
         // Получение списка объектов
@@ -71,11 +74,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
                     (!nameFilter || (e.Name ?? string.Empty).Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
         }
 
-        protected override void AddButtonClicked(object? sender, EventArgs e)
+        protected override async void AddButtonClicked(object? sender, EventArgs e)
         {
             var studentsList = new TypeResponse();
             long id = -1;
-            var popup = new SearchPopup(GetStudentsFromClass(), newText => id = newText);
+            var popup = new SearchPopup(await GetStudentsFromClass(), newText => id = newText);
             var page = Application.Current?.Windows[0].Page;
             page?.ShowPopup(popup);
 
@@ -93,21 +96,20 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
             };
         }
 
-        private List<TypeResponse> GetStudentsFromClass()
+        private async Task<List<TypeResponse>> GetStudentsFromClass()
         {
             var list = new List<TypeResponse>();
 
-            Task.Run(async () =>
+            var response = await SchoolStudentController.GetStudentsOfClass(_classId);
+            if (!string.IsNullOrEmpty(response))
             {
-                var response = await SchoolStudentController.GetStudentsOfClass(_classId);
-                var studentArr = new SchoolStudentResponse[0];
-                if (!string.IsNullOrEmpty(response)) studentArr = JsonSerializer.Deserialize<SchoolStudentResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                var studentArr = JsonSerializer.Deserialize<SchoolStudentResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var student in studentArr)
                 {
                     list.Add(new TypeResponse(student.Id, $"{student?.LastName} {student?.FirstName} {student?.Patronymic}"));
                 }
-            });
+            }
 
             return list;
         }

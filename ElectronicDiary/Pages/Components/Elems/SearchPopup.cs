@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Maui.Views;
 
-using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.DTO.Responses.Other;
 

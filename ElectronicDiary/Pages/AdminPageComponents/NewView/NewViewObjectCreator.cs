@@ -8,7 +8,7 @@ using ElectronicDiary.Web.DTO.Responses.Social;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
 {
-    public class NewsViewObjectCreator : BaseViewObjectCreator<NewsResponse, NewsRequest, NewsController>
+    public class NewViewObjectCreator : BaseViewObjectCreator<NewsResponse, NewsRequest, NewsController>
     {
         protected override void CreateUI()
         {

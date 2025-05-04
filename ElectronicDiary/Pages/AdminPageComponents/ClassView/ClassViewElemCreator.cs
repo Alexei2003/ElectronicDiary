@@ -51,7 +51,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ClassView
             );
         }
 
-        protected override async Task MoveTo(long id)
+        protected override void MoveTo(long id)
         {
             var viewCreator = new GroupViewListCreator();
 

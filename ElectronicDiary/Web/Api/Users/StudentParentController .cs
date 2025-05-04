@@ -6,12 +6,12 @@ namespace ElectronicDiary.Web.Api.Users
     {
         public virtual Task<string?> GetAll(long id)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         public virtual Task<string?> GetById(long id)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         // Добавить уже существующего родителя ребёнку
@@ -22,7 +22,7 @@ namespace ElectronicDiary.Web.Api.Users
         }
         public virtual Task<string?> Edit(object request)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
         public virtual Task<string?> Delete(long id)
         {
@@ -32,7 +32,7 @@ namespace ElectronicDiary.Web.Api.Users
 
         public virtual Task<string?> AddImage(long id, FileResult image)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         // Не интерфейсные методы

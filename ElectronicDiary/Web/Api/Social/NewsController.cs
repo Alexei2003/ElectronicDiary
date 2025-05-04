@@ -36,7 +36,7 @@ namespace ElectronicDiary.Web.Api.Social
 
         public Task<string?> AddImage(long id, FileResult image)
         {
-            return Task.Run(() => "empty method");
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         // Не интерфейсные методы

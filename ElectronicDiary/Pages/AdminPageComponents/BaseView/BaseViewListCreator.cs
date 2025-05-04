@@ -13,9 +13,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
     public interface IBaseViewListCreator
     {
         ScrollView Create(HorizontalStackLayout mainStack,
-                                   List<ScrollView> viewList,
-                                   long objetParentId = -1,
-                                   bool edit = false);
+                                List<ScrollView> viewList,
+                                long objetParentId = -1,
+                                bool readOnly = false,
+                                long objetPreParentId = -1);
     }
 
     public class BaseViewListCreator<TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator> : IBaseViewListCreator
@@ -37,6 +38,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES
         };
         protected long _objetParentId;
+        protected long _objetPreParentId;
 
         public BaseViewListCreator() : base()
         {
@@ -49,12 +51,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         public ScrollView Create(HorizontalStackLayout mainStack,
                                           List<ScrollView> viewList,
                                           long objetParentId = -1,
-                                          bool readOnly = false)
+                                          bool readOnly = false,
+                                          long objetPreParentId = -1)
         {
             _mainStack = mainStack;
             _viewList = viewList;
             _objetParentId = objetParentId;
             _readOnly = readOnly;
+            _objetPreParentId = objetPreParentId;
 
             _ = CreateListUI();
 
@@ -77,7 +81,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             vStack.Add(_grid);
 
             CreateGetButton(vStack);
-            CreateAddButton(vStack);
+            if (!_readOnly)
+            {
+                CreateAddButton(vStack);
+            }
             CreateColumnTitle(vStack);
 
             vStack.Add(_listVerticalStack);

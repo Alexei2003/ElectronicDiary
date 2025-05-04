@@ -54,7 +54,7 @@ namespace ElectronicDiary.Web.Api.Other
             }
 
 
-            HttpResponseMessage response = null;
+            HttpResponseMessage? response = null;
             try
             {
                 response = httpTypes switch

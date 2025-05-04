@@ -6,7 +6,7 @@ using ElectronicDiary.Web.DTO.Responses.Social;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
 {
-    public class NewsViewElemCreator : BaseViewElemCreator<NewsResponse, NewsRequest, NewsController, NewsViewObjectCreator>
+    public class NewViewElemCreator : BaseViewElemCreator<NewsResponse, NewsRequest, NewsController, NewViewObjectCreator>
     {
         protected override void CreateUI(ref int rowIndex)
         {

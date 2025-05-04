@@ -6,7 +6,7 @@ using ElectronicDiary.Web.DTO.Responses.Social;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.NewsView
 {
-    public class NewsViewListCreator : BaseViewListCreator<NewsResponse, NewsRequest, NewsController, NewsViewElemCreator, NewsViewObjectCreator>
+    public class NewsViewListCreator : BaseViewListCreator<NewsResponse, NewsRequest, NewsController, NewViewElemCreator, NewViewObjectCreator>
     {
         public NewsViewListCreator() : base()
         {

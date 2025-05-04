@@ -1,9 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.BaseView;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Other;
-using ElectronicDiary.Web.DTO.Responses.Educations;
 using ElectronicDiary.Web.DTO.Responses.Other;
-using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
 {

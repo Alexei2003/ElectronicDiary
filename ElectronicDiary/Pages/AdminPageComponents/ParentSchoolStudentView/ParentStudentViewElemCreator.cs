@@ -2,7 +2,6 @@
 using System.Text.Json;
 
 using ElectronicDiary.Pages.AdminPageComponents.BaseView;
-using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
@@ -15,7 +14,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
     public class ParentStudentViewElemCreator<TController> : BaseViewElemCreator<StudentParentResponse, StudentParentRequest, TController, ParentStudentViewObjectCreator<TController>>
         where TController : IController, new()
     {
-        protected virtual async void GestureTapped(object? sender, EventArgs e)
+        protected override void GestureTapped(object? sender, EventArgs e)
         {
             Delete(_objetParentId);
         }

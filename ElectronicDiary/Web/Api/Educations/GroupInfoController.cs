@@ -12,7 +12,7 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> GetById(long id)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         public Task<string?> Add(object request)
@@ -23,7 +23,7 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> Edit(object request)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         public Task<string?> Delete(long id)
@@ -34,13 +34,13 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> AddImage(long id, FileResult image)
         {
-            return Task.Run(() => { return "empty method"; });
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         // Не интерфейсные методы
         public Task<string?> Add(long studentId, long groupId)
         {
-            string url = $"/addGroupMember?studentId={studentId}&groupid={groupId}";
+            string url = $"/addGroupMember?studentId={studentId}&groupId={groupId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url);
         }
 
