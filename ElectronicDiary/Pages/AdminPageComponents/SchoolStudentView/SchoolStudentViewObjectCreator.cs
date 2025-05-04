@@ -54,7 +54,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             Task.Run(async () =>
             {
                 ClassResponse[]? arr = null;
-                var response = await _controller.GetAll(_objetParentId);
+                var response = await _controller.GetAll(_objectParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<ClassResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])

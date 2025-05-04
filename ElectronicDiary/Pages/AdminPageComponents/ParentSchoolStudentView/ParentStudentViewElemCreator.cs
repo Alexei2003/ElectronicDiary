@@ -16,7 +16,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
     {
         protected override void GestureTapped(object? sender, EventArgs e)
         {
-            Delete(_objetParentId);
+            Delete(_objectParentId);
         }
 
 
@@ -42,7 +42,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
             return list;
         }
 
-        private static List<TypeResponse> GetSchoolStudents(long _objetParentId)
+        private static List<TypeResponse> GetSchoolStudents(long _objectParentId)
         {
             var list = new List<TypeResponse>();
 
@@ -50,7 +50,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
             {
                 UserResponse[]? arr = null;
                 var controller = new SchoolStudentController();
-                var response = await controller.GetAll(_objetParentId);
+                var response = await controller.GetAll(_objectParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])
@@ -69,7 +69,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView
             Task.Run(async () =>
             {
                 UserResponse[]? arr = null;
-                var response = await _controller.GetById(_objetParentId);
+                var response = await _controller.GetById(_objectParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])

@@ -71,15 +71,23 @@ namespace ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView
         // Получение списка объектов
         protected override void FilterList()
         {
-            bool regionFilter = string.IsNullOrEmpty(_regionFilter);
-            bool settlementFilter = string.IsNullOrEmpty(_settlementFilter);
-            bool nameFilter = string.IsNullOrEmpty(_nameFilter);
+            if (_objectParentId == -1)
+            {
+                bool regionFilter = string.IsNullOrEmpty(_regionFilter);
+                bool settlementFilter = string.IsNullOrEmpty(_settlementFilter);
+                bool nameFilter = string.IsNullOrEmpty(_nameFilter);
 
-            _objectsArr = [.. _objectsArr
+                _objectsArr = [.. _objectsArr
                 .Where(e =>
                     (!regionFilter || (e.Settlement?.Region?.Name ?? string.Empty).Contains(_regionFilter!, StringComparison.OrdinalIgnoreCase)) &&
                     (!settlementFilter || (e.Settlement?.Name ?? string.Empty).Contains(_settlementFilter!, StringComparison.OrdinalIgnoreCase)) &&
                     (!nameFilter || (e.Name ?? string.Empty).Contains(_nameFilter!, StringComparison.OrdinalIgnoreCase)))];
+            }
+            else
+            {
+                _objectsArr = [.. _objectsArr.Where(e => e.Id == _objectParentId)];
+            }
+
         }
     }
 }

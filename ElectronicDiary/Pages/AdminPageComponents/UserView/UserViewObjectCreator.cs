@@ -176,7 +176,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
                     ]
                 );
 
-                _baseRequest.UniversityId = _objetParentId;
+                _baseRequest.UniversityId = _objectParentId;
             }
         }
 

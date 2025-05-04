@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
+using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.NewsView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
@@ -36,19 +37,9 @@ namespace ElectronicDiary.Pages.OtherPages
             SizeChanged += WindowSizeChanged;
             grid.Add(_mainStack, 0, 0);
 
-            var countColumns = 6;
-            switch (UserData.UserInfo.Role)
-            {
-                case UserInfo.RoleType.LocalAdmin:
-                    countColumns = 4;
-                    break;
-                case UserInfo.RoleType.Parent:
-                    countColumns = 5;
-                    break;
-            }
-            var gridButtons = BaseElemsCreator.CreateGrid(countColumns, false);
+            var gridButtons = BaseElemsCreator.CreateGrid(5, false);
             grid.Add(gridButtons, 0, 1);
-            CreateNavigationButtons(gridButtons, countColumns, pageName);
+            CreateNavigationButtons(gridButtons, 5, pageName);
         }
 
         private void WindowSizeChanged(object? sender, EventArgs e)
@@ -78,107 +69,73 @@ namespace ElectronicDiary.Pages.OtherPages
             var colorButtonSelected = !UserData.Settings.Theme.TextIsBlack ? "black_" : "white_";
 
             var indexColumn = 0;
-            string path = "profile_icon.png";
-            if (pageName == PageType.Profile)
+            foreach (var type in Enum.GetValues<PageType>()) 
             {
-                IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
-                gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
-                path = colorButtonSelected + path;
-            }
-            else
-            {
-                path = colorButton + path;
-            }
-            elemArr[indexColumn++] = new LineElemsCreator.Data
-            {
-                Elem = BaseElemsCreator.CreateImageFromFile(path, ProfileTapped)
-            };
-
-            path = "chats_icon.png";
-            if (pageName == PageType.Chats)
-            {
-                IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
-                gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
-                path = colorButtonSelected + path;
-            }
-            else
-            {
-                path = colorButton + path;
-            }
-            elemArr[indexColumn++] = new LineElemsCreator.Data
-            {
-                Elem = BaseElemsCreator.CreateImageFromFile(path, ChatsTapped)
-            };
-
-            path = "news_icon.png";
-            if (pageName == PageType.News)
-            {
-                IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
-                gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
-                path = colorButtonSelected + path;
-            }
-            else
-            {
-                path = colorButton + path;
-            }
-            elemArr[indexColumn++] = new LineElemsCreator.Data
-            {
-                Elem = BaseElemsCreator.CreateImageFromFile(path, NewsTapped)
-            };
-
-            if (countColumns == 6)
-            {
-                path = "shedule_icon.png";
-                if (pageName == PageType.Shedule)
+                var path = colorButton;
+                if(type == pageName)
                 {
                     IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
                     gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
-                    path = colorButtonSelected + path;
+                    path = colorButtonSelected;
                 }
-                else
-                {
-                    path = colorButton + path;
-                }
-                elemArr[indexColumn++] = new LineElemsCreator.Data
-                {
-                    Elem = BaseElemsCreator.CreateImageFromFile(path, SheduleTapped)
-                };
-            }
 
-            if (countColumns > 4)
-            {
-                path = "diary_icon.png";
-                if (pageName == PageType.Diary)
+                EventHandler<TappedEventArgs> handler = ProfileTapped;
+                switch (type)
                 {
-                    IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
-                    gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
-                    path = colorButtonSelected + path;
-                }
-                else
-                {
-                    path = colorButton + path;
-                }
-                elemArr[indexColumn++] = new LineElemsCreator.Data
-                {
-                    Elem = BaseElemsCreator.CreateImageFromFile(path, DiaryTapped)
-                };
-            }
+                    case PageType.Profile:
+                        handler = ProfileTapped;
+                        path += "profile_icon.png";
+                        break;
 
-            path = "search_icon.png";
-            if (pageName == PageType.Search)
-            {
-                IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
-                gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
-                path = colorButtonSelected + path;
+                    case PageType.Chats:
+                        handler = ChatsTapped;
+                        path += "chats_icon.png";
+                        break;
+
+                    case PageType.News:
+                        handler = NewsTapped;
+                        path += "news_icon.png";
+                        break;
+
+                    case PageType.Shedule:
+                        handler = SheduleTapped;
+                        path += "shedule_icon.png";
+                        break;
+
+                    case PageType.Diary:
+                        handler = DiaryTapped;
+                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
+                        {
+                            path += "diary_icon.png";
+                        }
+                        else
+                        {
+                            path = string.Empty;
+                        }
+                        break;
+
+                    case PageType.Search:
+                        handler = SearchTapped;
+                        if (UserData.UserInfo.Role == UserInfo.RoleType.LocalAdmin)
+                        {
+                            path += "search_icon.png";
+                        }
+                        else
+                        {
+                            path = string.Empty;
+                        }
+                        break;
+
+                }
+
+                if(path?.Length != 0)
+                {
+                    elemArr[indexColumn++] = new LineElemsCreator.Data
+                    {
+                        Elem = BaseElemsCreator.CreateImageFromFile(path, handler)
+                    };
+                }
             }
-            else
-            {
-                path = colorButton + path;
-            }
-            elemArr[indexColumn++] = new LineElemsCreator.Data
-            {
-                Elem = BaseElemsCreator.CreateImageFromFile(path, SearchTapped)
-            };
 
             LineElemsCreator.AddLineElems(
                 gridButtons,
@@ -236,7 +193,12 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Search)
             {
-                //Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Search));
+                var viewCreator = new EducationalInstitutionViewListCreator();
+                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+                var viewList = new List<ScrollView>();
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.EducationId, true);
+                viewList.Add(scrollView);
+                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Search));
             }
         }
     }

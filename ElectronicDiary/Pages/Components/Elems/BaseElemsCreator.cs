@@ -64,6 +64,11 @@ namespace ElectronicDiary.Pages.Components.Elems
 
             var tapGesture = new TapGestureRecognizer();
             tapGesture.Tapped += handler;
+            tapGesture.Tapped += (sender, e) =>
+            {
+                image.ScaleTo(0.97, 50, Easing.SinInOut);
+                image.FadeTo(0.5, 50);
+            };
             image.GestureRecognizers.Add(tapGesture);
 
             return image;

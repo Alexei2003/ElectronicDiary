@@ -48,10 +48,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
         private long _classId = -1;
         protected override async Task GetList()
         {
-            _classId = _objetPreParentId;
-            if (_objetParentId != -1)
+            _classId = _objectPreParentId;
+            if (_objectParentId != -1)
             {
-                var response = await _controller.GetAll(_objetParentId);
+                var response = await _controller.GetAll(_objectParentId);
                 if (!string.IsNullOrEmpty(response))
                 {
                     var tmp = JsonSerializer.Deserialize<GroupInfoResponse>(response, PageConstants.JsonSerializerOptions);
@@ -88,7 +88,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
                 {
                     Task.Run(async () =>
                     {
-                        await _controller.Add(id, _objetParentId);
+                        await _controller.Add(id, _objectParentId);
                         ChangeList();
                     });
                 }

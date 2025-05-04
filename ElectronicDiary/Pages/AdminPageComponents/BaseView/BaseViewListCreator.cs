@@ -37,8 +37,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         {
             Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES
         };
-        protected long _objetParentId;
-        protected long _objetPreParentId;
+        protected long _objectParentId;
+        protected long _objectPreParentId;
 
         public BaseViewListCreator() : base()
         {
@@ -56,9 +56,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         {
             _mainStack = mainStack;
             _viewList = viewList;
-            _objetParentId = objetParentId;
+            _objectParentId = objetParentId;
             _readOnly = readOnly;
-            _objetPreParentId = objetPreParentId;
+            _objectPreParentId = objetPreParentId;
 
             _ = CreateListUI();
 
@@ -140,7 +140,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void AddButtonClicked(object? sender, EventArgs e)
         {
             var viewObjectCreator = new TViewObjectCreator();
-            var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _objetParentId);
+            var scrollView = viewObjectCreator.Create(_mainStack, _viewList, ChageListAction, null, _objectParentId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
@@ -159,7 +159,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 for (var i = 0; i < _objectsArr.Length; i++)
                 {
                     var baseViewElemCreator = new TViewElemCreator();
-                    var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _objetParentId, _readOnly);
+                    var grid = baseViewElemCreator.Create(_mainStack, _viewList, ChageListAction, _objectsArr[i], _maxCountViews, _objectParentId, _readOnly);
                     _listVerticalStack.Add(grid);
                 }
             });
@@ -172,7 +172,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         protected virtual async Task GetList()
         {
-            var response = await _controller.GetAll(_objetParentId);
+            var response = await _controller.GetAll(_objectParentId);
             if (!string.IsNullOrEmpty(response)) _objectsArr = JsonSerializer.Deserialize<TResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
             FilterList();
         }

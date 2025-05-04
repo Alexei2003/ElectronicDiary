@@ -20,7 +20,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected List<ScrollView> _viewList = [];
         protected event Action ChageListAction = delegate { };
 
-        protected long _objetParentId;
+        protected long _objectParentId;
 
 
         protected AdminPageStatic.ComponentState _componentState;
@@ -43,7 +43,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _viewList = viewList ?? [];
             ChageListAction = chageListAction ?? delegate { };
             _baseResponse = (baseResponse as TResponse) ?? new();
-            _objetParentId = objetParentId;
+            _objectParentId = objetParentId;
 
             if (edit)
             {

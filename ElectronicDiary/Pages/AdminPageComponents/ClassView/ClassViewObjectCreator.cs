@@ -76,7 +76,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ClassView
             {
                 UserResponse[]? arr = null;
                 var controller = new TeacherController();
-                var response = await controller.GetAll(_objetParentId);
+                var response = await controller.GetAll(_objectParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<UserResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])

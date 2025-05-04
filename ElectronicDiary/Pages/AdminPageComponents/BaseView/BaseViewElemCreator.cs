@@ -29,7 +29,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected event Action ChageListAction = delegate { };
 
         protected int _maxCountViews;
-        protected long _objetParentId;
+        protected long _objectParentId;
         protected bool _readOnly = false;
 
         protected Grid _grid = [];
@@ -45,7 +45,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             _viewList = viewList;
             ChageListAction = chageListAction;
             _baseResponse = baseResponse as TResponse ?? new();
-            _objetParentId = objetParentId;
+            _objectParentId = objetParentId;
             _maxCountViews = maxCountViews;
             _readOnly = readOnly;
 
@@ -123,7 +123,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void ShowInfo(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _objetParentId);
+            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _objectParentId);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);
@@ -192,7 +192,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         protected virtual void Edit(long id)
         {
             var baseViewObjectCreator = new TViewObjectCreator();
-            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _objetParentId, true);
+            var scrollView = baseViewObjectCreator.Create(_mainStack, _viewList, ChageListAction, _baseResponse, _objectParentId, true);
             AdminPageStatic.DeleteLastView(_mainStack, _viewList, _maxCountViews);
             _viewList.Add(scrollView);
             AdminPageStatic.RepaintPage(_mainStack, _viewList);

@@ -42,7 +42,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
 
                 if (accept && _controller != null)
                 {
-                    await _controller.Delete(id, _objetParentId);
+                    await _controller.Delete(id, _objectParentId);
                     ChangeList();
                 }
             }
