@@ -69,6 +69,11 @@ namespace ElectronicDiary.Pages.Components.Elems
                 image.ScaleTo(0.97, 50, Easing.SinInOut);
                 image.FadeTo(0.5, 50);
             };
+            image.Unfocused += (sender, e) =>
+            {
+                image.ScaleTo(1.0, 50, Easing.SinInOut);
+                image.FadeTo(1.0, 50);
+            };
             image.GestureRecognizers.Add(tapGesture);
 
             return image;
@@ -261,6 +266,14 @@ namespace ElectronicDiary.Pages.Components.Elems
             }
 
             return grid;
+        }
+
+        public static void GridAddColumn(Grid grid, int countColumns)
+        {
+            for (int i = 0; i < countColumns; i++)
+            {
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+            }
         }
 
         public static VerticalStackLayout CreateVerticalStackLayout()

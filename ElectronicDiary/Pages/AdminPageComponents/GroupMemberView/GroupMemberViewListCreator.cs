@@ -8,7 +8,7 @@ using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.Api.Users;
-using ElectronicDiary.Web.DTO.Requests.Other;
+using ElectronicDiary.Web.DTO.Requests.Educations.Other;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;
@@ -45,10 +45,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
             );
         }
 
-        private long _classId = -1;
         protected override async Task GetList()
         {
-            _classId = _objectPreParentId;
             if (_objectParentId != -1)
             {
                 var response = await _controller.GetAll(_objectParentId);
@@ -100,7 +98,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.GroupMemberView
         {
             var list = new List<TypeResponse>();
 
-            var response = await SchoolStudentController.GetStudentsOfClass(_classId);
+            var response = await SchoolStudentController.GetStudentsOfClass(_objectPreParentId);
             if (!string.IsNullOrEmpty(response))
             {
                 var studentArr = JsonSerializer.Deserialize<SchoolStudentResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];

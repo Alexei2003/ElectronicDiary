@@ -1,4 +1,4 @@
-﻿namespace ElectronicDiary.Web.DTO.Requests.Other
+﻿namespace ElectronicDiary.Web.DTO.Requests.Educations.Other
 {
     public class BaseRequest
     {

@@ -7,7 +7,7 @@ using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
-using ElectronicDiary.Web.DTO.Requests.Other;
+using ElectronicDiary.Web.DTO.Requests.Educations.Other;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;

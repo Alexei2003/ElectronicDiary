@@ -5,6 +5,7 @@ using ElectronicDiary.Pages.AdminPageComponents.ParentSchoolStudentView.StudentW
 using ElectronicDiary.Pages.AdminPageComponents.UserView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
+using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.Api.Users;
 using ElectronicDiary.Web.DTO.Requests.Users;
 using ElectronicDiary.Web.DTO.Responses.Educations;
@@ -30,21 +31,24 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
                     _componentState == AdminPageStatic.ComponentState.Read ?
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateLabel( _baseResponse.Class?.Name)
+                            Elem = BaseElemsCreator.CreateLabel( _baseResponse.ClassRoom?.Name)
                         }
                     :
                         new LineElemsCreator.Data
                         {
                             Elem = BaseElemsCreator.CreateSearchPopupAsLabel(GetClasses(),
-                                                    selectedIndex => _baseRequest.ClassId = selectedIndex)
+                                                    selectedIndex => _baseRequest.ClassRoomId = selectedIndex)
                         }
                 ]
             );
 
-            var view = new StudenWithtParentsViewListCreator();
-            var flag = _componentState != AdminPageStatic.ComponentState.Edit;
-            var scrollView = view.Create([], [], _baseResponse.Id, flag);
-            _infoStack.Add(scrollView);
+            if (_componentState != AdminPageStatic.ComponentState.New)
+            {
+                var view = new StudenWithtParentsViewListCreator();
+                var flag = _componentState != AdminPageStatic.ComponentState.Edit;
+                var scrollView = view.Create([], [], _baseResponse.Id, flag);
+                _infoStack.Add(scrollView);
+            }
         }
 
         private List<TypeResponse> GetClasses()
@@ -54,7 +58,8 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView
             Task.Run(async () =>
             {
                 ClassResponse[]? arr = null;
-                var response = await _controller.GetAll(_objectParentId);
+                var controller = new ClassController();
+                var response = await controller.GetAll(_objectParentId);
                 if (!string.IsNullOrEmpty(response)) arr = JsonSerializer.Deserialize<ClassResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 foreach (var elem in arr ?? [])

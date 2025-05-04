@@ -1,6 +1,7 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.NewsView;
+using ElectronicDiary.Pages.AdminPageComponents.SheduleView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Navigation;
 using ElectronicDiary.SaveData.Other;
@@ -11,7 +12,7 @@ namespace ElectronicDiary.Pages.OtherPages
 {
     public partial class BaseUserUIPage : ContentPage
     {
-        private PageType _pageName;
+        private readonly PageType _pageName;
         private readonly HorizontalStackLayout _mainStack = [];
         private readonly List<ScrollView> _viewList = [];
         public BaseUserUIPage(HorizontalStackLayout mainStack, List<ScrollView> viewList, PageType pageName)
@@ -37,7 +38,7 @@ namespace ElectronicDiary.Pages.OtherPages
             SizeChanged += WindowSizeChanged;
             grid.Add(_mainStack, 0, 0);
 
-            var gridButtons = BaseElemsCreator.CreateGrid(5, false);
+            var gridButtons = BaseElemsCreator.CreateGrid(0, false);
             grid.Add(gridButtons, 0, 1);
             CreateNavigationButtons(gridButtons, 5, pageName);
         }
@@ -64,18 +65,18 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private void CreateNavigationButtons(Grid gridButtons, int countColumns, PageType pageName)
         {
-            var elemArr = new LineElemsCreator.Data[countColumns];
+            var elemList = new List<LineElemsCreator.Data>();
             var colorButton = UserData.Settings.Theme.TextIsBlack ? "black_" : "white_";
             var colorButtonSelected = !UserData.Settings.Theme.TextIsBlack ? "black_" : "white_";
 
-            var indexColumn = 0;
-            foreach (var type in Enum.GetValues<PageType>()) 
+            var selectedIndex = 0;
+            foreach (var type in Enum.GetValues<PageType>())
             {
                 var path = colorButton;
-                if(type == pageName)
+                if (type == pageName)
                 {
-                    IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
-                    gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, indexColumn, 0);
+                    selectedIndex = elemList.Count
+                        ;
                     path = colorButtonSelected;
                 }
 
@@ -98,8 +99,15 @@ namespace ElectronicDiary.Pages.OtherPages
                         break;
 
                     case PageType.Shedule:
-                        handler = SheduleTapped;
-                        path += "shedule_icon.png";
+                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
+                        {
+                            handler = SheduleTapped;
+                            path += "shedule_icon.png";
+                        }
+                        else
+                        {
+                            path = string.Empty;
+                        }
                         break;
 
                     case PageType.Diary:
@@ -128,19 +136,24 @@ namespace ElectronicDiary.Pages.OtherPages
 
                 }
 
-                if(path?.Length != 0)
+                if (path?.Length != 0)
                 {
-                    elemArr[indexColumn++] = new LineElemsCreator.Data
+                    elemList.Add(new LineElemsCreator.Data
                     {
                         Elem = BaseElemsCreator.CreateImageFromFile(path, handler)
-                    };
+                    });
                 }
             }
+
+            BaseElemsCreator.GridAddColumn(gridButtons, elemList.Count);
+
+            IAppTheme theme = UserData.Settings.Theme.TextIsBlack ? new DarkTheme() : new LightTheme();
+            gridButtons.Add(new BoxView { Color = theme.BackgroundFillColor }, selectedIndex, 0);
 
             LineElemsCreator.AddLineElems(
                 gridButtons,
                 0,
-                elemArr
+                [.. elemList]
             );
         }
 
@@ -177,7 +190,12 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Shedule)
             {
-                //Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Shedule));
+                var viewCreator = new SheduleViewListCreator();
+                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+                var viewList = new List<ScrollView>();
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id);
+                viewList.Add(scrollView);
+                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Shedule));
             }
         }
 
@@ -196,7 +214,7 @@ namespace ElectronicDiary.Pages.OtherPages
                 var viewCreator = new EducationalInstitutionViewListCreator();
                 var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
                 var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.EducationId, true);
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.EducationId);
                 viewList.Add(scrollView);
                 Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Search));
             }

@@ -62,7 +62,7 @@ namespace ElectronicDiary.Pages.Others
                 // Положение
                 WidthRequest = (Application.Current?.Windows[0].Width ?? 0) / 1 * 0.90,
 #if WINDOWS
-                HeightRequest = 100,
+                MinimumHeightRequest = 100,
 #endif
                 Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
                 Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,

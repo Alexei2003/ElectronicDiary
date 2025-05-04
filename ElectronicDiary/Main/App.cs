@@ -19,23 +19,26 @@ namespace ElectronicDiary.Main
 
             Task.Run(async () =>
             {
-                await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
-                var response = await AuthorizationСontroller.GetUserInfo();
+                var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
                 if (!string.IsNullOrEmpty(response))
                 {
-                    var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
-                    if (obj != null)
+                    response = await AuthorizationСontroller.GetUserInfo();
+                    if (!string.IsNullOrEmpty(response))
                     {
-                        if (obj.Id == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
+                        var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
+                        if (obj != null)
                         {
-                            await Task.Delay(3000);
-                            Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
-                            return;
+                            if (obj.Id == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
+                            {
+                                await Task.Delay(3000);
+                                Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                                return;
+                            }
                         }
                     }
+                    await Task.Delay(3000);
+                    Navigator.SetAsRoot(new LogPage());
                 }
-                await Task.Delay(3000);
-                Navigator.SetAsRoot(new LogPage());
             });
 
             return new Window(new EmptyPage())

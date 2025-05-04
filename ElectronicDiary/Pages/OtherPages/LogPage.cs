@@ -39,22 +39,25 @@ namespace ElectronicDiary.Pages
 
         private async void ToProfilePageButtonClicked(object? sender, EventArgs e)
         {
-            await AuthorizationСontroller.LogIn(_login.Trim(), _password.Trim());
-            var response = await AuthorizationСontroller.GetUserInfo();
-            if (!string.IsNullOrEmpty(response))
+            var response = await AuthorizationСontroller.LogIn(_login.Trim(), _password.Trim());
+            if (response != null)
             {
-                var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
-                if (obj != null)
+                response = await AuthorizationСontroller.GetUserInfo();
+                if (!string.IsNullOrEmpty(response))
                 {
-                    UserData.UserInfo = new UserInfo()
+                    var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
+                    if (obj != null)
                     {
-                        Id = obj.Id,
-                        Role = UserInfo.ConverStringRoleToEnum(obj.Role),
-                        Login = _login,
-                        Password = _password
-                    };
-                    UserData.SaveUserInfo();
-                    Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                        UserData.UserInfo = new UserInfo()
+                        {
+                            Id = obj.Id,
+                            Role = UserInfo.ConverStringRoleToEnum(obj.Role),
+                            Login = _login,
+                            Password = _password
+                        };
+                        UserData.SaveUserInfo();
+                        Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                    }
                 }
             }
         }

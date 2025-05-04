@@ -2,7 +2,7 @@
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Other;
-using ElectronicDiary.Web.DTO.Requests.Other;
+using ElectronicDiary.Web.DTO.Requests.Educations.Other;
 using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.BaseView

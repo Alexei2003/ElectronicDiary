@@ -4,6 +4,6 @@ namespace ElectronicDiary.Web.DTO.Responses.Users
 {
     public record SchoolStudentResponse : UserResponse
     {
-        public ClassResponse? Class { get; init; } = null;
+        public ClassResponse? ClassRoom { get; init; } = null;
     }
 }

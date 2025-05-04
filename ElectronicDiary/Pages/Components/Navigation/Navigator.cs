@@ -85,7 +85,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
                     break;
 
                 case UserInfo.RoleType.SchoolStudent:
-                    controller = new TeacherController();
+                    controller = new SchoolStudentController();
                     response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
                     {

@@ -2,6 +2,6 @@
 {
     public class SchoolStudentRequest : UserRequest
     {
-        public long ClassId { get; set; } = -1;
+        public long ClassRoomId { get; set; } = -1;
     }
 }
