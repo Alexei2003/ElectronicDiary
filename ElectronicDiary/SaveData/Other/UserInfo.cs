@@ -12,7 +12,7 @@
 
         public enum RoleType
         {
-            None, MainAdmin, LocalAdmin, Teacher, SchoolStudent, Parent
+            None, MainAdmin, LocalAdmin, Teacher, SchoolStudent, Parent, Administration, Ministry
         }
 
         public static RoleType ConverStringRoleToEnum(string? role)
@@ -24,6 +24,8 @@
                 "Teacher" => RoleType.Teacher,
                 "School student" => RoleType.SchoolStudent,
                 "Parent" => RoleType.Parent,
+                "Administration" => RoleType.Administration,
+                "Ministry" => RoleType.Ministry,
                 _ => RoleType.None,
             };
         }
@@ -37,6 +39,8 @@
                 RoleType.Teacher => "Teacher",
                 RoleType.SchoolStudent => "School student",
                 RoleType.Parent => "Parent",
+                RoleType.Administration => "Administration",
+                RoleType.Ministry => "Ministry",
                 _ => "None"
             };
         }
@@ -50,6 +54,8 @@
                 RoleType.Teacher => "Учитель",
                 RoleType.SchoolStudent => "Ученик школы",
                 RoleType.Parent => "Родитель",
+                RoleType.Administration => "Администрация школьная",
+                RoleType.Ministry => "Администрация министерства",
                 _ => "Нет"
             };
         }
