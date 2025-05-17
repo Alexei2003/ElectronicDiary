@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.BaseViewElemCreator&lt;TResponse, TRequest, TController, TViewObjectCreator&gt;">
+    <Position X="11" Y="3.25" Width="8" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAEBAAAAAQBIAAAACCAAEIIEECAoAAAEIAAAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\BaseView\BaseViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.BaseViewListCreator&lt;TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator&gt;">
+    <Position X="1" Y="3.25" Width="9.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAEAAAAgAAIAAEACSQAAAIEEAQoAAAFYAAAM=</HashCode>
+      <FileName>Pages\AdminPageComponents\BaseView\BaseViewListCreator.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.BaseViewObjectCreator&lt;TResponse, TRequest, TController&gt;">
+    <Position X="19.5" Y="3.25" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAgAAAABAAAAEAACAAAACCAAAAIECAAgAAAEIgBAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\BaseView\BaseViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView.SchoolStudentViewObjectCreator">
+    <Position X="18.5" Y="12.75" Width="8.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\SchoolStudentView\SchoolStudentViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.UserView.UserViewElemCreator&lt;TResponse, TRequest, TController, TViewObjectCreator&gt;">
+    <Position X="11" Y="11" Width="8" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\UserView\UserViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.UserView.UserViewListCreator&lt;TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator&gt;">
+    <Position X="1" Y="12.5" Width="9.75" />
+    <TypeIdentifier>
+      <HashCode>AAAQAEAAAAAAAAAAAIAQAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\UserView\UserViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.UserView.UserViewObjectCreator&lt;TResponse, TRequest, TController&gt;">
+    <Position X="19.5" Y="9.25" Width="6.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAABAAABAAACACAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\UserView\UserViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.IBaseViewListCreator">
+    <Position X="1.25" Y="1.5" Width="9.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Pages\AdminPageComponents\BaseView\BaseViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="14" />
+</ClassDiagram>
