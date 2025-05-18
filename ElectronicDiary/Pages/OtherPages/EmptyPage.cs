@@ -13,8 +13,14 @@ namespace ElectronicDiary.Pages.OtherPages
             {
                 Source = ImageSource.FromFile("dotnet_bot.png")
             };
-            var vStack = BaseElemsCreator.CreateVerticalStackLayout();
-            vStack.VerticalOptions = LayoutOptions.Center;
+            var vStack = new VerticalStackLayout
+            {
+                // Положение
+                HorizontalOptions = LayoutOptions.Fill,
+                VerticalOptions = LayoutOptions.Center,
+                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+            };
             vStack.Add(image);
             Content = vStack;
         }

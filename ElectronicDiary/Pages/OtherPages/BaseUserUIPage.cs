@@ -193,7 +193,7 @@ namespace ElectronicDiary.Pages.OtherPages
                 var viewCreator = new SheduleViewListCreator();
                 var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
                 var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id);
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id, true);
                 viewList.Add(scrollView);
                 Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Shedule));
             }

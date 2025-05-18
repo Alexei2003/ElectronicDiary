@@ -9,5 +9,7 @@ namespace ElectronicDiary.Web.DTO.Responses.Educations
         public QuarterInfoResponse? QuarterInfo { get; set; } = null;
         public long DayNumber { get; set; } = -1;
         public long LessonNumber { get; set; } = -1;
+        public string? Room { get; set; } = null;
+
     }
 }

@@ -3,6 +3,7 @@
     public class UserInfo
     {
         public long Id { get; set; } = -1;
+        public long UserId { get; set; } = -1;
         public RoleType Role { get; set; } = RoleType.None;
         public long EducationId { get; set; } = -1;
 

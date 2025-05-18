@@ -19,20 +19,23 @@ namespace ElectronicDiary.Main
 
             Task.Run(async () =>
             {
-                var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login ?? string.Empty, UserData.UserInfo.Password ?? string.Empty);
-                if (!string.IsNullOrEmpty(response))
+                if (!string.IsNullOrEmpty(UserData.UserInfo.Login) && !string.IsNullOrEmpty(UserData.UserInfo.Password))
                 {
-                    response = await AuthorizationСontroller.GetUserInfo();
+                    var response = await AuthorizationСontroller.LogIn(UserData.UserInfo.Login, UserData.UserInfo.Password);
                     if (!string.IsNullOrEmpty(response))
                     {
-                        var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
-                        if (obj != null)
+                        response = await AuthorizationСontroller.GetUserInfo();
+                        if (!string.IsNullOrEmpty(response))
                         {
-                            if (obj.Id == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
+                            var obj = JsonSerializer.Deserialize<AuthorizationUserResponse>(response, PageConstants.JsonSerializerOptions);
+                            if (obj != null)
                             {
-                                await Task.Delay(3000);
-                                Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
-                                return;
+                                if ((obj.Id ?? 1) == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
+                                {
+                                    await Task.Delay(3000);
+                                    Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
+                                    return;
+                                }
                             }
                         }
                     }

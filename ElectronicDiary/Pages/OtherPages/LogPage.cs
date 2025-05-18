@@ -29,8 +29,11 @@ namespace ElectronicDiary.Pages
             var toProfilePageButton = BaseElemsCreator.CreateButton("Вход", ToProfilePageButtonClicked);
 
             var vStack = BaseElemsCreator.CreateVerticalStackLayout();
-            AdminPageStatic.CalcViewWidth(out double width, out _);
-            vStack.MaximumWidthRequest = width;
+            Application.Current?.Dispatcher.Dispatch(() =>
+            {
+                AdminPageStatic.CalcViewWidth(out double width, out _);
+                vStack.MaximumWidthRequest = width;
+            });
             vStack.Add(loginEntry);
             vStack.Add(passwordEntry);
             vStack.Add(toProfilePageButton);
@@ -50,7 +53,8 @@ namespace ElectronicDiary.Pages
                     {
                         UserData.UserInfo = new UserInfo()
                         {
-                            Id = obj.Id,
+                            Id = obj.Id ?? 1,
+                            UserId = obj.UserId,
                             Role = UserInfo.ConverStringRoleToEnum(obj.Role),
                             Login = _login,
                             Password = _password

@@ -1,8 +1,14 @@
-﻿using ElectronicDiary.Web.Api.Other;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using ElectronicDiary.Web.Api.Other;
 
 namespace ElectronicDiary.Web.Api.Social
 {
-    public class NewsController : IController
+    public class MessageController : IController
     {
         public Task<string?> GetAll(long id)
         {
@@ -12,25 +18,25 @@ namespace ElectronicDiary.Web.Api.Social
 
         public Task<string?> GetById(long id)
         {
-            string url = $"/findNewsById?id={id}";
+            string url = $"/getMessageById?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
         public Task<string?> Add(object request)
         {
-            const string url = "/addNews";
+            const string url = "/addMessage";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         public Task<string?> Edit(object request)
         {
-            const string url = "/changeNews";
+            const string url = "/changeMessage";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.POST, url, request);
         }
 
         public Task<string?> Delete(long id)
         {
-            string url = $"/deleteNewsById?id={id}";
+            string url = $"/deleteMessageById?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
 
@@ -40,10 +46,10 @@ namespace ElectronicDiary.Web.Api.Social
         }
 
         // Не интерфейсные методы
-        public Task<string?> DeleteComment(long commentId)
+        public Task<string?> FindLastMessagesToUser(long id)
         {
-            string url = $"/deleteNewsCommentById?id={commentId}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
+            string url = $"/findLatestMessageByGetterUserId?id={id}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
     }
 }

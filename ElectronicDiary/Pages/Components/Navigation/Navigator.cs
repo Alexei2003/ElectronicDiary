@@ -71,7 +71,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
 
                 case UserInfo.RoleType.Teacher:
                     controller = new TeacherController();
-                    response = await controller.GetById(142);
+                    response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
                     {
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
