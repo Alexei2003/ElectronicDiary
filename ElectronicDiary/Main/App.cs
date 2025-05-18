@@ -30,15 +30,16 @@ namespace ElectronicDiary.Main
                         {
                             if (obj.Id == UserData.UserInfo.Id && UserInfo.ConverStringRoleToEnum(obj.Role) == UserData.UserInfo.Role)
                             {
-                                await Task.Delay(1000);
+                                await Task.Delay(3000);
                                 Navigator.ChooseRootPageByRole(UserData.UserInfo.Role, UserData.UserInfo.Id);
                                 return;
                             }
                         }
                     }
-                    await Task.Delay(1000);
-                    Navigator.SetAsRoot(new LogPage());
                 }
+
+                await Task.Delay(3000);
+                Navigator.SetAsRoot(new LogPage());
             });
 
             return new Window(new EmptyPage())

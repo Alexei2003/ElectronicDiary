@@ -14,6 +14,7 @@ namespace ElectronicDiary.Pages.OtherPages
                 Source = ImageSource.FromFile("dotnet_bot.png")
             };
             var vStack = BaseElemsCreator.CreateVerticalStackLayout();
+            vStack.VerticalOptions = LayoutOptions.Center;
             vStack.Add(image);
             Content = vStack;
         }

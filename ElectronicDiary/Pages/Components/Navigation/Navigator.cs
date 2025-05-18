@@ -56,7 +56,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
             {
                 case UserInfo.RoleType.LocalAdmin:
                     controller = new AdministratorController();
-                    response = await controller.GetById(id);
+                    response = await controller.GetAll(id);
                     if (!string.IsNullOrEmpty(response))
                     {
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
@@ -71,7 +71,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
 
                 case UserInfo.RoleType.Teacher:
                     controller = new TeacherController();
-                    response = await controller.GetById(id);
+                    response = await controller.GetById(142);
                     if (!string.IsNullOrEmpty(response))
                     {
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
@@ -132,7 +132,7 @@ namespace ElectronicDiary.Pages.Components.Navigation
             }
             else
             {
-                page = new EmptyPage();
+                page = new LogPage();
             }
 
             return page;
