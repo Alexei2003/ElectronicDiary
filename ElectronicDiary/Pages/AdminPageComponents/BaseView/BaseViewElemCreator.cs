@@ -66,7 +66,9 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
 
         }
 
+        protected bool _description = true;
         protected bool _moveTo = false;
+        protected bool _edit = true;
         protected string _moveToName = "Перейти к ";
         protected virtual async void GestureTapped(object? sender, EventArgs e)
         {
@@ -75,24 +77,14 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
                 if (_baseResponse.Id > -1)
                 {
                     var action = string.Empty;
-                    if (_moveTo)
-                    {
-                        action = await BaseElemsCreator.CreateActionSheet(
-                           [
-                            "Описание",
-                            _moveToName,
-                            "Редактирование",
-                            "Удаление"]);
 
-                    }
-                    else
-                    {
-                        action = await BaseElemsCreator.CreateActionSheet(
-                            [
-                            "Описание",
-                            "Редактирование",
-                            "Удаление"]);
-                    }
+                    var strList = new List<string>();
+                    if (_description) strList.Add("Описание");
+                    if (_moveTo) strList.Add(_moveToName);
+                    if (_edit) strList.Add("Редактирование");
+                    strList.Add("Удаление");
+
+                    action = await BaseElemsCreator.CreateActionSheet([.. strList]);
 
                     switch (action)
                     {

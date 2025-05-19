@@ -40,7 +40,7 @@ namespace ElectronicDiary.Web.Api.Social
         }
 
         // Не интерфейсные методы
-        public Task<string?> DeleteComment(long commentId)
+        public static Task<string?> DeleteComment(long commentId)
         {
             string url = $"/deleteNewsCommentById?id={commentId}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);

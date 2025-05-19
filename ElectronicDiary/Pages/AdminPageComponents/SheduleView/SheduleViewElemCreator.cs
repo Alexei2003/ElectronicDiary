@@ -59,7 +59,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
             {
                 LineElemsCreator.AddLineElems(
                     grid: _grid,
-                    rowIndex: (int)lesson.Number+1,
+                    rowIndex: (int)lesson.Number + 1,
                     objectList: [
                         new LineElemsCreator.Data
                         {

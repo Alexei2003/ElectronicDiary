@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
+﻿using ElectronicDiary.Pages.AdminPageComponents.ChatView;
+using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.NewsView;
 using ElectronicDiary.Pages.AdminPageComponents.SheduleView;
@@ -169,7 +170,12 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Chats)
             {
-                // Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Chats));
+                var viewCreator = new ChatViewListCreator();
+                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+                var viewList = new List<ScrollView>();
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.UserId);
+                viewList.Add(scrollView);
+                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Chats));
             }
         }
 

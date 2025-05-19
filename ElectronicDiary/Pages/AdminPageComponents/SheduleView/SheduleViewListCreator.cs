@@ -39,7 +39,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
                         Elem = BaseElemsCreator.CreatePicker(item, newIndex => {_quarterId = newIndex; CreateListUI(); }, 1)
                     },
                 ]
-            ); 
+            );
         }
 
         protected override async Task GetList()
@@ -76,7 +76,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
                 }
 
                 var objectsList = new List<SheduleLessonCustomResponse>();
-                foreach(var obj in _objectsArr)
+                foreach (var obj in _objectsArr)
                 {
                     if (obj?.Lessons?.Count > 0)
                     {

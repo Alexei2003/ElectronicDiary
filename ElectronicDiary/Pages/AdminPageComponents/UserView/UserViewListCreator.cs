@@ -74,7 +74,6 @@ namespace ElectronicDiary.Pages.AdminPageComponents.UserView
             );
         }
 
-        // Получение списка объектов
         protected override void FilterList()
         {
             bool lastNameFilter = string.IsNullOrEmpty(_lastNameFilter);

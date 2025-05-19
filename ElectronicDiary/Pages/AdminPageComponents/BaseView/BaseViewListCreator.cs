@@ -121,9 +121,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
             vStack.Add(getButton);
         }
 
+        protected string _addButtonName = "Добавить";
         protected virtual void CreateAddButton(VerticalStackLayout vStack)
         {
-            var addButton = BaseElemsCreator.CreateButton("Добавить", AddButtonClicked);
+            var addButton = BaseElemsCreator.CreateButton(_addButtonName, AddButtonClicked);
             vStack.Add(addButton);
         }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ElectronicDiary.Web.Api.Other;
+﻿using ElectronicDiary.Web.Api.Other;
 
 namespace ElectronicDiary.Web.Api.Social
 {
@@ -12,8 +6,7 @@ namespace ElectronicDiary.Web.Api.Social
     {
         public Task<string?> GetAll(long id)
         {
-            string url = $"/findNewsByEducationId?id={id}";
-            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+            return Task.Run(() => { return (string?)"empty method"; });
         }
 
         public Task<string?> GetById(long id)
@@ -46,9 +39,21 @@ namespace ElectronicDiary.Web.Api.Social
         }
 
         // Не интерфейсные методы
-        public Task<string?> FindLastMessagesToUser(long id)
+        public static Task<string?> FindLastMessagesToUser(long id)
         {
             string url = $"/findLatestMessageByGetterUserId?id={id}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
+
+        public static Task<string?> GetAllByGetterId(long id)
+        {
+            string url = $"/findMessageByGetterUserId?id={id}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
+
+        public static Task<string?> GetAllBySenderId(long id)
+        {
+            string url = $"/findMessageBySenderUserId?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
     }

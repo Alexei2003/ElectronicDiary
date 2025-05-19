@@ -13,6 +13,6 @@ namespace ElectronicDiary.Web.DTO.Responses.Users
         public string? Email { get; init; } = null;
         public string? PhoneNumber { get; init; } = null;
 
-        public long UserId { get; init; } = -1;
+        public long Userid { get; init; } = -1;
     }
 }
