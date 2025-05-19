@@ -11,7 +11,9 @@ using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
 {
-    public class SheduleViewListCreator : BaseViewListCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController, SheduleViewElemCreator, SheduleViewObjectCreator>
+    public class SheduleViewListCreator<TViewElemCreator, TViewObjectCreator> : BaseViewListCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController, TViewElemCreator, TViewObjectCreator>
+        where TViewElemCreator : BaseViewElemCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController, TViewObjectCreator>, new()
+        where TViewObjectCreator : BaseViewObjectCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController>, new()
     {
         private long _quarterId = 1;
 

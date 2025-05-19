@@ -1,4 +1,5 @@
 ﻿using ElectronicDiary.Pages.AdminPageComponents.ChatView;
+using ElectronicDiary.Pages.AdminPageComponents.DiaryView;
 using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.NewsView;
@@ -196,7 +197,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Shedule)
             {
-                var viewCreator = new SheduleViewListCreator();
+                var viewCreator = new SheduleViewListCreator<SheduleViewElemCreator<SheduleViewObjectCreator>, SheduleViewObjectCreator>();
                 var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
                 var viewList = new List<ScrollView>();
                 var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id, true);
@@ -209,7 +210,12 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageName != PageType.Diary)
             {
-                //Navigation.PushAsync(new BaseUserUIPage([BaseElemsCreator.CreateVerticalStackLayout()], PageType.Diary));
+                var viewCreator = new DiaryViewListCreator();
+                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+                var viewList = new List<ScrollView>();
+                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id, true);
+                viewList.Add(scrollView);
+                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Diary));
             }
         }
 

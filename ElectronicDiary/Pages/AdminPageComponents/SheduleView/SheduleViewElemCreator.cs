@@ -6,7 +6,8 @@ using ElectronicDiary.Web.DTO.Responses.Educations;
 
 namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
 {
-    public class SheduleViewElemCreator : BaseViewElemCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController, SheduleViewObjectCreator>
+    public class SheduleViewElemCreator<TViewObjectCreator> : BaseViewElemCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController, TViewObjectCreator>
+        where TViewObjectCreator : BaseViewObjectCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController>, new()
     {
         protected override void CreateUI(ref int rowIndex)
         {
@@ -33,6 +34,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
                     }
                 ]
             );
+
+            CreateDataUI();
+        }
+
+        protected virtual void CreateDataUI()
+        {
             LineElemsCreator.AddLineElems(
                 grid: _grid,
                 rowIndex: 1,

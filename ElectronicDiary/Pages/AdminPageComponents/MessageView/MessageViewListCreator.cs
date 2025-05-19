@@ -34,7 +34,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.MessageView
                 grid: _grid,
                 rowIndex: rowIndex++,
                 objectList: [
-                    
+
                     new LineElemsCreator.Data
                     {
                         Elem = _messageEditor,

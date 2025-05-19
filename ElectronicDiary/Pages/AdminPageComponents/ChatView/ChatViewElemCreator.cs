@@ -2,7 +2,6 @@
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.MessageView;
 using ElectronicDiary.Pages.Components.Elems;
-using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.Api.Social;
 using ElectronicDiary.Web.DTO.Requests.Social;
 using ElectronicDiary.Web.DTO.Responses.Social;
@@ -57,7 +56,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.ChatView
 
         protected override async void Delete(long id)
         {
-            foreach(var message in _baseResponse.Messages)
+            foreach (var message in _baseResponse.Messages)
             {
                 await _controller.Delete(message.Id);
             }
