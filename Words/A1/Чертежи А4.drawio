@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 YaBrowser/25.4.0.0 Safari/537.36" version="27.0.6">
   <diagram name="ПЛ1" id="BCYGwPUCeBlzCpxAiffp">
-    <mxGraphModel dx="1426" dy="810" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="983" dy="772" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="rkmQWpvUdDk4PN7RSiFf-0" />
         <mxCell id="rkmQWpvUdDk4PN7RSiFf-1" parent="rkmQWpvUdDk4PN7RSiFf-0" />
@@ -226,7 +226,7 @@
         <mxCell id="iraQruz9PAexpKHS_PoP-40" value="&lt;span style=&quot;&quot;&gt;ГУИР.151004-03 ПЛ&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Гост тип А;fontStyle=2;fontSize=19;strokeWidth=2.7558999999999996;" parent="iraQruz9PAexpKHS_PoP-0" vertex="1">
           <mxGeometry x="255.905" width="472.44" height="59.055" as="geometry" />
         </mxCell>
-        <mxCell id="iraQruz9PAexpKHS_PoP-41" value="&lt;span style=&quot;&quot;&gt;Диаграмма использования.&lt;/span&gt;&lt;br style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Плакат&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Гост тип А;fontStyle=2;fontSize=16;strokeWidth=2.7558999999999996;" parent="iraQruz9PAexpKHS_PoP-0" vertex="1">
+        <mxCell id="iraQruz9PAexpKHS_PoP-41" value="&lt;span style=&quot;&quot;&gt;Диаграмма развёртывания.&lt;/span&gt;&lt;br style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Плакат&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Гост тип А;fontStyle=2;fontSize=16;strokeWidth=2.7558999999999996;" parent="iraQruz9PAexpKHS_PoP-0" vertex="1">
           <mxGeometry x="255.905" y="59.055" width="275.59" height="98.425" as="geometry" />
         </mxCell>
         <mxCell id="iraQruz9PAexpKHS_PoP-42" value="&lt;p style=&quot;margin-left: 0 ; margin-right: 0 ; margin-top: 0px ; margin-bottom: 0px ; text-indent: 0 ; direction: ltr&quot;&gt;&lt;span&gt;Лист 1&lt;/span&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=middle;align=center;vsdxID=45;fillColor=none;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=none;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;strokeWidth=2.7558999999999996;fontFamily=Гост тип А;fontStyle=2;fontSize=13;" parent="iraQruz9PAexpKHS_PoP-0" vertex="1">
@@ -482,7 +482,7 @@
         <mxCell id="nGhQGRf1pHK7pBZiy5Re-40" value="&lt;span style=&quot;&quot;&gt;ГУИР.151004-02 ПЛ&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Гост тип А;fontStyle=2;fontSize=19;strokeWidth=2.7558999999999996;" parent="nGhQGRf1pHK7pBZiy5Re-0" vertex="1">
           <mxGeometry x="255.905" width="472.44" height="59.055" as="geometry" />
         </mxCell>
-        <mxCell id="nGhQGRf1pHK7pBZiy5Re-41" value="&lt;span style=&quot;&quot;&gt;Графическая представления базы данных.&lt;/span&gt;&lt;br style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Плакат&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Гост тип А;fontStyle=2;fontSize=16;strokeWidth=2.7558999999999996;" parent="nGhQGRf1pHK7pBZiy5Re-0" vertex="1">
+        <mxCell id="nGhQGRf1pHK7pBZiy5Re-41" value="&lt;span style=&quot;&quot;&gt;Графическое представление базы данных.&lt;/span&gt;&lt;br style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;Плакат&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontFamily=Гост тип А;fontStyle=2;fontSize=16;strokeWidth=2.7558999999999996;" parent="nGhQGRf1pHK7pBZiy5Re-0" vertex="1">
           <mxGeometry x="255.905" y="59.055" width="275.59" height="98.425" as="geometry" />
         </mxCell>
         <mxCell id="nGhQGRf1pHK7pBZiy5Re-42" value="&lt;p style=&quot;margin-left: 0 ; margin-right: 0 ; margin-top: 0px ; margin-bottom: 0px ; text-indent: 0 ; direction: ltr&quot;&gt;&lt;span&gt;Лист 1&lt;/span&gt;&lt;br&gt;&lt;/p&gt;" style="verticalAlign=middle;align=center;vsdxID=45;fillColor=none;gradientColor=none;shape=stencil(nZBLDoAgDERP0z3SIyjew0SURgSD+Lu9kMZoXLhwN9O+tukAlrNpJg1SzDH4QW/URgNYgZTkjA4UkwJUgGXng+6DX1zLfmoymdXo17xh5zmRJ6Q42BWCfc2oJfdAr+Yv+AP9Cb7OJ3H/2JG1HNGz/84klThPVCc=);strokeColor=none;labelBackgroundColor=none;rounded=0;html=1;whiteSpace=wrap;strokeWidth=2.7558999999999996;fontFamily=Гост тип А;fontStyle=2;fontSize=13;" parent="nGhQGRf1pHK7pBZiy5Re-0" vertex="1">
