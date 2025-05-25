@@ -1,4 +1,7 @@
-﻿using ElectronicDiary.Pages.OtherPages;
+﻿using ElectronicDiary.Pages.AdminPageComponents.General;
+using ElectronicDiary.Pages.AdminPageComponents.NotificationView;
+using ElectronicDiary.Pages.Components.Elems;
+using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
@@ -21,7 +24,31 @@ namespace ElectronicDiary.Pages.Components.Navigation
             toolbarItems.Add(item);
         }
 
+        public static void AddNotifications(IList<ToolbarItem> toolbarItems)
+        {
+            AddElem(toolbarItems, "Уведомления", UserData.Settings.Theme.TextIsBlack ? "black_notifications_icon.png" : "white_settings_icon.png", NotificationsClicked);
+        }
+        private static void NotificationsClicked(object? sender, EventArgs e)
+        {
+            var viewCreator = new NotificationViewListCreator();
+            var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+            var viewList = new List<ScrollView>();
+            var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.UserId, true);
+            viewList.Add(scrollView);
 
+            Application.Current?.Dispatcher.Dispatch(() =>
+            {
+                AdminPageStatic.CalcViewWidth(out var width, out _);
+                scrollView.MaximumWidthRequest = width;
+            });
+            var page = Application.Current?.Windows[0].Page;
+            var contentPage = new ContentPage();
+            contentPage.Content = scrollView;
+            contentPage.Title = UserInfo.ConvertEnumRoleToStringRus(UserData.UserInfo.Role); ;
+            contentPage.BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
+
+            page?.Navigation.PushAsync(contentPage);
+        }
 
         public static void AddSettings(IList<ToolbarItem> toolbarItems)
         {
@@ -32,8 +59,6 @@ namespace ElectronicDiary.Pages.Components.Navigation
             var page = Application.Current?.Windows[0].Page;
             page?.Navigation.PushAsync(new SettignsPage());
         }
-
-
 
         public static void AddLogOut(IList<ToolbarItem> toolbarItems)
         {

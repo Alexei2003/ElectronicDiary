@@ -1,7 +1,5 @@
 ﻿using System.Text.Json;
 
-using CommunityToolkit.Maui.Converters;
-
 using ElectronicDiary.Pages.AdminPageComponents.SheduleView;
 using ElectronicDiary.Pages.Components.Elems;
 using ElectronicDiary.Pages.Components.Other;
@@ -57,7 +55,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
 
         protected virtual void PrevButtonClicked(object? sender, EventArgs e)
         {
-            ChangeDate(- 7);
+            ChangeDate(-7);
         }
 
         protected virtual void ChangeDate(int changeDay)
@@ -86,12 +84,12 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
             {
                 var lessonsArr = JsonSerializer.Deserialize<DiaryResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
-                foreach (var lesson in lessonsArr) 
+                foreach (var lesson in lessonsArr)
                 {
-                    if(lesson.DateTime != null)
+                    if (lesson.DateTime != null)
                     {
                         var dayWeek = (int)lesson.DateTime.Value.DayOfWeek;
-                        var lessonsInSubject = _objectsArr[dayWeek - 1].Lessons.Where(l=> (l.TeacherAssignment?.SchoolSubject?.Id ?? -1) == (lesson?.SchoolSubject?.Id ?? -1));
+                        var lessonsInSubject = _objectsArr[dayWeek - 1].Lessons.Where(l => (l.TeacherAssignment?.SchoolSubject?.Id ?? -1) == (lesson?.SchoolSubject?.Id ?? -1));
                         if (lessonsInSubject?.Any() ?? false)
                         {
                             var obj = lessonsInSubject.First();
@@ -114,7 +112,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
             }
 
             var dayIndex = ((int)date.DayOfWeek - 1);
-            _begin = date.AddDays(- dayIndex);
+            _begin = date.AddDays(-dayIndex);
             _end = date.AddDays(6 - dayIndex);
 
             FilterList();
@@ -137,7 +135,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
                         Number = _objectsArrSave[i].Lessons[n].Number,
                         TeacherAssignment = _objectsArrSave[i].Lessons[n].TeacherAssignment,
                         Room = _objectsArrSave[i].Lessons[n].Room,
-                        
+
                         DiaryList = [.. _objectsArrSave[i].Lessons[n].DiaryList?.Where(l => _begin <= l.DateTime && l.DateTime <= _end) ?? []],
                     });
                 }

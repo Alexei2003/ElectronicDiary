@@ -50,7 +50,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
             if (!string.IsNullOrEmpty(response))
             {
                 var lessonsDict = JsonSerializer.Deserialize<Dictionary<int, SheduleLessonResponse[]>>(response, PageConstants.JsonSerializerOptions) ?? [];
-                if(lessonsDict.First().Value.Length > 0)
+                if (lessonsDict.First().Value.Length > 0)
                 {
                     _quarterInfoResponse = lessonsDict.First().Value[0].QuarterInfo ?? new();
                 }

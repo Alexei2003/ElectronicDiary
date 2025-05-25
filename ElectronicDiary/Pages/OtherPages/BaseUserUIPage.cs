@@ -23,6 +23,7 @@ namespace ElectronicDiary.Pages.OtherPages
             _pageName = pageName;
 
             Title = UserInfo.ConvertEnumRoleToStringRus(UserData.UserInfo.Role);
+            ToolbarItemsAdder.AddNotifications(ToolbarItems);
             ToolbarItemsAdder.AddSettings(ToolbarItems);
             ToolbarItemsAdder.AddLogOut(ToolbarItems);
             BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
