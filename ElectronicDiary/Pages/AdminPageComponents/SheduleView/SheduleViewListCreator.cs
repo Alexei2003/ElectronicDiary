@@ -15,8 +15,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
         where TViewElemCreator : BaseViewElemCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController, TViewObjectCreator>, new()
         where TViewObjectCreator : BaseViewObjectCreator<SheduleLessonCustomResponse, SheduleLessonRequest, SheduleLessonController>, new()
     {
-        private long _quarterId = 1;
-
+        protected long _quarterId = 1;
         protected override void CreateFilterUI(ref int rowIndex)
         {
             base.CreateFilterUI(ref rowIndex);
@@ -44,12 +43,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
             );
         }
 
+        protected QuarterInfoResponse _quarterInfoResponse = new();
         protected override async Task GetList()
         {
             var response = await _controller.GetAll(_objectParentId, _quarterId);
             if (!string.IsNullOrEmpty(response))
             {
                 var lessonsDict = JsonSerializer.Deserialize<Dictionary<int, SheduleLessonResponse[]>>(response, PageConstants.JsonSerializerOptions) ?? [];
+                if(lessonsDict.First().Value.Length > 0)
+                {
+                    _quarterInfoResponse = lessonsDict.First().Value[0].QuarterInfo ?? new();
+                }
 
                 _objectsArr = new SheduleLessonCustomResponse[5];
                 foreach (var lessonArr in lessonsDict.Values)
@@ -63,7 +67,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
                         else
                         {
                             var flag = _objectsArr[lesson.DayNumber - 1].Lessons.Where(l => l.Number == lesson.LessonNumber);
-                            if (!flag.Any())
+                            if (!(flag.Any()))
                             {
                                 _objectsArr[lesson.DayNumber - 1].Lessons.Add(new SheduleLessonElemCustomResponse()
                                 {
@@ -86,7 +90,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
                     }
                 }
 
-                _objectsArr = objectsList.ToArray();
+                _objectsArr = [.. objectsList];
             }
         }
     }

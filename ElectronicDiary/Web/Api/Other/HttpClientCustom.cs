@@ -15,7 +15,8 @@ namespace ElectronicDiary.Web.Api.Other
         private static readonly HttpClientHandler _handler = new()
         {
             UseCookies = true,
-            CookieContainer = new CookieContainer()
+            CookieContainer = new CookieContainer(),
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
         };
 
         private static readonly HttpClient _httpClient = new(_handler)
@@ -108,17 +109,5 @@ namespace ElectronicDiary.Web.Api.Other
 
             return await response.Content.ReadAsStringAsync();
         }
-
-        //public static string SerializeCookies()
-        //{
-        //    var cookiesList = _handler.CookieContainer.GetAllCookies();
-        //    return JsonSerializer.Serialize(cookiesList);
-        //}
-
-        //public static void DeserializeCookies(object request)
-        //{
-        //    var cookiesList = JsonSerializer.Deserialize<CookieCollection>(json);
-        //    _handler.CookieContainer.Add(cookiesList);
-        //}
     }
 }

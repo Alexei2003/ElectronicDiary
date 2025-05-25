@@ -1,5 +1,4 @@
-﻿using ElectronicDiary.Pages.AdminPageComponents.ChatView;
-using ElectronicDiary.Pages.AdminPageComponents.DiaryView;
+﻿using ElectronicDiary.Pages.AdminPageComponents.DiaryView;
 using ElectronicDiary.Pages.AdminPageComponents.EducationalInstitutionView;
 using ElectronicDiary.Pages.AdminPageComponents.General;
 using ElectronicDiary.Pages.AdminPageComponents.NewsView;
@@ -42,7 +41,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
             var gridButtons = BaseElemsCreator.CreateGrid(0, false);
             grid.Add(gridButtons, 0, 1);
-            CreateNavigationButtons(gridButtons, 5, pageName);
+            CreateNavigationButtons(gridButtons, 4, pageName);
         }
 
         private void WindowSizeChanged(object? sender, EventArgs e)
@@ -62,7 +61,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         public enum PageType
         {
-            Profile, Chats, News, Shedule, Diary, Search
+            Profile, News, Shedule, Diary, Search
         }
 
         private void CreateNavigationButtons(Grid gridButtons, int countColumns, PageType pageName)
@@ -88,11 +87,6 @@ namespace ElectronicDiary.Pages.OtherPages
                     case PageType.Profile:
                         handler = ProfileTapped;
                         path += "profile_icon.png";
-                        break;
-
-                    case PageType.Chats:
-                        handler = ChatsTapped;
-                        path += "chats_icon.png";
                         break;
 
                     case PageType.News:
@@ -164,19 +158,6 @@ namespace ElectronicDiary.Pages.OtherPages
             if (_pageName != PageType.Profile)
             {
                 await Navigation.PushAsync(await Navigator.GetProfileByRole(UserData.UserInfo.Role, UserData.UserInfo.Id));
-            }
-        }
-
-        private void ChatsTapped(object? sender, EventArgs e)
-        {
-            if (_pageName != PageType.Chats)
-            {
-                var viewCreator = new ChatViewListCreator();
-                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
-                var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.UserId);
-                viewList.Add(scrollView);
-                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Chats));
             }
         }
 

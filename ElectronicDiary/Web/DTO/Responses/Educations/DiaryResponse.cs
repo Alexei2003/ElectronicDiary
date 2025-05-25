@@ -7,6 +7,8 @@ namespace ElectronicDiary.Web.DTO.Responses.Educations
         public SchoolSubjectResponse? SchoolSubject { get; init; } = null;
         public DateTime? DateTime { get; init; } = null;
         public bool Attendance { get; init; } = false;
-        public long Score { get; init; } = -1;
+        public long? Score { get; init; } = -1;
+        public string Homework { get; init; } = string.Empty;
+        public string Topic { get; init; } = string.Empty;
     }
 }

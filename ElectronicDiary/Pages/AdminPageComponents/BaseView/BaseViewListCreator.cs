@@ -153,6 +153,11 @@ namespace ElectronicDiary.Pages.AdminPageComponents.BaseView
         {
             await GetList();
 
+            CreateListUIWithoutUpdate();
+        }
+
+        protected virtual void CreateListUIWithoutUpdate()
+        {
             Application.Current?.Dispatcher.Dispatch(() =>
             {
                 _listVerticalStack.Clear();

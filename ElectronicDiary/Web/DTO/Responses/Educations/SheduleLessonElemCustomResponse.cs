@@ -6,6 +6,6 @@
         public long Number { get; set; } = -1;
         public string? Room { get; set; } = null;
 
-        public DiaryResponse? Diary { get; set; } = null;
+        public List<DiaryResponse>? DiaryList { get; set; } = null;
     }
 }

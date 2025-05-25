@@ -262,7 +262,7 @@ namespace ElectronicDiary.Pages.Components.Elems
 
             for (int i = 0; i < countColumns; i++)
             {
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             }
 
             return grid;
@@ -272,7 +272,7 @@ namespace ElectronicDiary.Pages.Components.Elems
         {
             for (int i = 0; i < countColumns; i++)
             {
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             }
         }
 

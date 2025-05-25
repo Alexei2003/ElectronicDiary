@@ -7,13 +7,16 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
     {
         protected override void CreateDataUI()
         {
+            _grid.ColumnDefinitions[0] = new ColumnDefinition { Width = new GridLength(0.2, GridUnitType.Star) };
+            _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
+            _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.3, GridUnitType.Star) };
             LineElemsCreator.AddLineElems(
                 grid: _grid,
                 rowIndex: 1,
                 objectList: [
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel($"Номер урока")
+                        Elem = BaseElemsCreator.CreateLabel($"№")
                     },
                     new LineElemsCreator.Data
                     {
@@ -21,16 +24,17 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel($"Оценка")
+                        Elem = BaseElemsCreator.CreateLabel($"Информация")
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel($"Информация")
+                        Elem = BaseElemsCreator.CreateLabel($"Оценка")
                     },
                 ]
             );
             foreach (var lesson in _baseResponse.Lessons)
             {
+                var diary = lesson?.DiaryList?.FirstOrDefault();
                 LineElemsCreator.AddLineElems(
                     grid: _grid,
                     rowIndex: (int)lesson.Number + 1,
@@ -45,13 +49,13 @@ namespace ElectronicDiary.Pages.AdminPageComponents.DiaryView
                         },
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateLabel(lesson?.Diary !=null ?
-                                                                        lesson.Diary.Attendance ? "Н" :
-                                                                                lesson.Diary.Score > 0 ? lesson.Diary.Score.ToString() : "" : "")
+                            Elem = BaseElemsCreator.CreateLabel(diary != null ? $"{diary.Topic}\n{diary.Homework}" : $"")
                         },
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateLabel($"")
+                            Elem = BaseElemsCreator.CreateLabel(diary != null ?
+                                                                     diary.Attendance ? "Н" :
+                                                                     diary.Score > 0 ? diary.Score.ToString() : "" : "")
                         },
                     ]
                 );

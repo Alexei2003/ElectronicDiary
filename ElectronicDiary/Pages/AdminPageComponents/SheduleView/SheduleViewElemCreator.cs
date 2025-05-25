@@ -12,6 +12,10 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
         protected override void CreateUI(ref int rowIndex)
         {
             _grid = BaseElemsCreator.CreateGrid(4);
+            _grid.ColumnDefinitions[0] = new ColumnDefinition { Width = new GridLength(0.2, GridUnitType.Star) };
+            _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
+            _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.5, GridUnitType.Star) };
+
             LineElemsCreator.AddLineElems(
                 grid: _grid,
                 rowIndex: 0,
@@ -46,7 +50,7 @@ namespace ElectronicDiary.Pages.AdminPageComponents.SheduleView
                 objectList: [
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel($"Номер урока")
+                        Elem = BaseElemsCreator.CreateLabel($"№")
                     },
                     new LineElemsCreator.Data
                     {
