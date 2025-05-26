@@ -12,21 +12,21 @@ namespace ElectronicDiary.Web.Api.Social
 
         public Task<string?> GetById(long id)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
         public Task<string?> Edit(object request)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
 
         public Task<string?> Add(object request)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
 
         public Task<string?> AddImage(long id, FileResult image)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
 
         public Task<string?> Delete(long id)

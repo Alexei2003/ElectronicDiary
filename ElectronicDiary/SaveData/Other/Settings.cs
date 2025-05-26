@@ -27,10 +27,10 @@ namespace ElectronicDiary.SaveData.Other
         public class SizesClass
         {
             // Размеры
-            public Thickness PADDING_ALL_PAGES = 10;
-            public int SPACING_ALL_PAGES = 10;
-            public int IMAGE_SIZE = 100;
-            public int IMAGE_BUTTON_SIZE = 50;
+            public Thickness PADDING_ALL_PAGES { get; set; } = 10;
+            public int SPACING_ALL_PAGES { get; set; } = 10;
+            public int IMAGE_SIZE { get; set; } = 100;
+            public int IMAGE_BUTTON_SIZE { get; set; } = 50;
 
             public SizesClass(float scaleFactor)
             {

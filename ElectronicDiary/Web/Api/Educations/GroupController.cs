@@ -12,7 +12,7 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> GetById(long id)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
         public Task<string?> Edit(object request)
         {
@@ -28,7 +28,7 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> AddImage(long id, FileResult image)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
 
         public Task<string?> Delete(long id)

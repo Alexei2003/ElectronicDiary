@@ -5,8 +5,8 @@ using System.Text;
 using System.Text.Json;
 
 using ElectronicDiary.Pages;
-using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.Others;
+using ElectronicDiary.UI.Components.Other;
 
 namespace ElectronicDiary.Web.Api.Other
 {

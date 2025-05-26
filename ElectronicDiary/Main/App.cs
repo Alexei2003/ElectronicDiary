@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 
 using ElectronicDiary.Pages;
-using ElectronicDiary.Pages.Components.Navigation;
-using ElectronicDiary.Pages.Components.Other;
 using ElectronicDiary.Pages.OtherPages;
 using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.UI.Components.Navigation;
+using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.DTO.Responses.Other;
 

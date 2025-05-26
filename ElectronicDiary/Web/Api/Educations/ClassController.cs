@@ -36,7 +36,7 @@ namespace ElectronicDiary.Web.Api.Educations
 
         public Task<string?> AddImage(long id, FileResult image)
         {
-            return Task.Run(() => { return (string?)"empty method"; });
+            throw new NotImplementedException();
         }
 
         // Не интерфейсные методы
