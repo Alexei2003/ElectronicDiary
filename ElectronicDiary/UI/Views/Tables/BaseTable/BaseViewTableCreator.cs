@@ -63,9 +63,14 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         {
             BaseElemsCreator.GridAddColumn(_grid, _headerStrRowArr.Length + 1, GridLength.Auto);
 
+            var elemEmpty = BaseElemsCreator.CreateLabel($"");
+            elemEmpty.Background = UserData.Settings.Theme.BackgroundPageColor;
+            _grid.Add(elemEmpty, 0, 0);
+
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; )
             {
                 var elem = BaseElemsCreator.CreateLabel($"{_headerStrRowArr[rowIndex]}");
+                elem.VerticalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundPageColor;
                 _grid.Add(elem, 0, ++rowIndex);
             }
@@ -89,6 +94,8 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                 for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; )
                 {
                     var elem = BaseElemsCreator.CreateLabel($"{_dataTableArr[rowIndex, columnIndex]}");
+                    elem.HorizontalTextAlignment = TextAlignment.Center;
+                    elem.VerticalTextAlignment = TextAlignment.Center;
                     elem.Background = UserData.Settings.Theme.BackgroundFillColor;
 
                     _grid.Add(elem, ++columnIndex, tpmRowIndex);

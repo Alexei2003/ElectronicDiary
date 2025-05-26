@@ -17,19 +17,23 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
             {
                 var arr = JsonSerializer.Deserialize<DiaryResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
-                _headerColumnArr = [.. arr
-                    .Where(d => d.DateTime.HasValue)
-                    .Select(d => d.DateTime.Value.Date) 
-                    .Distinct()];
-
                 _headerRowArr = [.. arr
                     .Where(d => d.SchoolSubject != null)
                     .Select(d => d.SchoolSubject!)
                     .DistinctBy(s => s.Id)
                     .Select(s => s.Id)];
 
+                _headerColumnArr = [.. arr
+                    .Where(d => d.DateTime.HasValue)
+                    .Select(d => d.DateTime.Value.Date)
+                    .Distinct()];
+
                 _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString())];
-                _headerStrRowArr = [.. _headerRowArr.Select(s => s.ToString())];
+                _headerStrRowArr = [.. arr
+                    .Where(d => d.SchoolSubject != null)
+                    .Select(d => d.SchoolSubject!)
+                    .DistinctBy(s => s.Id)
+                    .Select(s => s.Name)];
 
                 _dataTableArr = new string[_headerRowArr.Count(), _headerColumnArr.Count()];
                 for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
@@ -37,6 +41,40 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                     for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; columnIndex++)
                     {
                         _dataTableArr[rowIndex, columnIndex] = "";
+                    }
+                }
+
+                foreach(var diary in arr)
+                {
+                    var row = -1;
+                    var column = -1;
+
+                    for(var i = 0; i < _headerRowArr.Length; i++)
+                    {
+                        if (_headerRowArr[i] == (diary.SchoolSubject?.Id ?? 0))
+                        {
+                            row = i;
+                        }
+                    }
+
+                    for (var i = 0; i < _headerColumnArr.Length; i++)
+                    {
+                        if (diary.DateTime != null && _headerColumnArr[i] == diary.DateTime.Value.AddHours(- diary.DateTime.Value.Hour))
+                        {
+                            column = i;
+                        }
+                    }
+
+                    if (row != -1 && column != -1)
+                    {
+                        if (diary.Score != null)
+                        {
+                            _dataTableArr[row, column] = diary.Score.ToString();
+                        }
+                        if (diary.Attendance)
+                        {
+                            _dataTableArr[row, column] = "Н";
+                        }
                     }
                 }
             }
