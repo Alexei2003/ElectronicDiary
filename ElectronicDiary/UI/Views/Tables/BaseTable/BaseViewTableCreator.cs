@@ -11,10 +11,10 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
         protected THeaderRow[] _headerRowArr = [];
         protected THeaderColumn[] _headerColumnArr = [];
-        protected string[,] _dataTableArr = new string[0, 0];
 
         protected string[] _headerStrRowArr = [];
         protected string[] _headerStrColumnArr = [];
+        protected string[,] _dataTableArr = new string[0, 0];
 
         protected long _id1;
         protected long _id2;
@@ -27,6 +27,8 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             _id1 = id1;
             _id2 = id2;
             _readOnly = readOnly;
+
+            CreateHeaderUI();
 
             _grid = BaseElemsCreator.CreateGrid(0);
             var size = UserData.Settings.Sizes.SPACING_ALL_PAGES / 10;
@@ -53,10 +55,16 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
         protected virtual async void CreateUI()
         {
+            LineElemsCreator.ClearGridRows(_grid);
             await GetData();
 
             CrateTableHeader();
             CrateTable();
+        }
+
+        protected virtual View CreateHeaderUI()
+        {
+            return new Label();
         }
 
         protected virtual void CrateTableHeader()
@@ -66,6 +74,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             var elemEmpty = BaseElemsCreator.CreateLabel($"");
             elemEmpty.Background = UserData.Settings.Theme.BackgroundPageColor;
             _grid.Add(elemEmpty, 0, 0);
+            _grid.Add(CreateHeaderUI(), 0, 0);
 
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; )
             {
@@ -75,14 +84,18 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                 _grid.Add(elem, 0, ++rowIndex);
             }
 
-
             for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; )
             {
+                var elemBack = BaseElemsCreator.CreateLabel($"");
+                elemBack.Background = UserData.Settings.Theme.BackgroundPageColor;
+
                 var elem = BaseElemsCreator.CreateLabel($"{_headerStrColumnArr[columnIndex]}");
                 elem.Rotation = - 90;
                 elem.VerticalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundPageColor;
-                _grid.Add(elem, ++columnIndex, 0);
+
+                _grid.Add(elemBack, ++columnIndex, 0);
+                _grid.Add(elem, columnIndex, 0);
             }
         }
 
@@ -90,7 +103,6 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         {
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
             {
-                var tpmRowIndex = rowIndex + 1;
                 for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; )
                 {
                     var elem = BaseElemsCreator.CreateLabel($"{_dataTableArr[rowIndex, columnIndex]}");
@@ -98,8 +110,39 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                     elem.VerticalTextAlignment = TextAlignment.Center;
                     elem.Background = UserData.Settings.Theme.BackgroundFillColor;
 
-                    _grid.Add(elem, ++columnIndex, tpmRowIndex);
+                    _grid.Add(elem, ++columnIndex, rowIndex + 1);
                 }
+            }
+
+            var elemName = BaseElemsCreator.CreateLabel($"Средняя оценка");
+            elemName.HorizontalTextAlignment = TextAlignment.Center;
+            elemName.VerticalTextAlignment = TextAlignment.Center;
+            elemName.Background = UserData.Settings.Theme.BackgroundFillColor;
+            _grid.Add(elemName, _headerStrColumnArr.Length + 2, 0);
+
+            CalcAverange();
+        }
+
+        protected virtual async void CalcAverange()
+        {
+            for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
+            {
+                var sum = 0;
+                var count = 0;
+                for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; columnIndex++)
+                {
+                    if (_dataTableArr[rowIndex, columnIndex] != "" && _dataTableArr[rowIndex, columnIndex] != "Н")
+                    {
+                        sum += int.Parse(_dataTableArr[rowIndex, columnIndex]);
+                        count++;
+                    }
+                }
+                var averange = count != 0 ? (1.0 * sum) / count : 0;
+                var elem = BaseElemsCreator.CreateLabel($"{averange:F2}");
+                elem.HorizontalTextAlignment = TextAlignment.Center;
+                elem.VerticalTextAlignment = TextAlignment.Center;
+                elem.Background = UserData.Settings.Theme.BackgroundFillColor;
+                _grid.Add(elem, _headerStrColumnArr.Length + 2, rowIndex + 1);
             }
         }
     }

@@ -247,8 +247,6 @@ namespace ElectronicDiary.UI.Components.Elems
             return picker;
         }
 
-
-
         public static Grid CreateGrid(int countColumns = 2, bool padding = true)
         {
             var grid = new Grid

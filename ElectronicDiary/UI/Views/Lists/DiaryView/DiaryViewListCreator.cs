@@ -79,7 +79,7 @@ namespace ElectronicDiary.UI.Views.Lists.DiaryView
         {
             await base.GetList();
 
-            var response = await DiaryController.GetAll(UserData.UserInfo.Id, _quarterId);
+            var response = await DiaryController.GetAll(_objectParentId, _quarterId);
             if (!string.IsNullOrEmpty(response))
             {
                 var lessonsArr = JsonSerializer.Deserialize<DiaryResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];

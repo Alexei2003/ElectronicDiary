@@ -1,18 +1,35 @@
-﻿using System.Text.Json;
+﻿using System.Collections.ObjectModel;
+using System.Text.Json;
 
+using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.UI.Views.Tables.BaseTable;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
+using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.UI.Views.Tables.JournalTable
 {
     public class GradebookViewTableCreator : BaseViewTableCreator<long, DateTime>
     {
-        protected long quarterId = 1;
+        protected long _quarterId = 1;
+
+        protected override View CreateHeaderUI()
+        {
+            var item = new ObservableCollection<TypeResponse>()
+            {
+                new TypeResponse(1, "1"),
+                new TypeResponse(2, "2"),
+                new TypeResponse(3, "3"),
+                new TypeResponse(4, "4")
+            };
+
+            return BaseElemsCreator.CreatePicker(item, newIndex => {_quarterId = newIndex; CreateUI(); }, _quarterId);
+        }
+
         protected override async Task GetData()
         {
-            var response = await DiaryController.GetAll(_id1, quarterId);
+            var response = await DiaryController.GetAll(_id1, _quarterId);
             if (!string.IsNullOrEmpty(response))
             {
                 var arr = JsonSerializer.Deserialize<DiaryResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];

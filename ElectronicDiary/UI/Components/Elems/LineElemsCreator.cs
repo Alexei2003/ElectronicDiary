@@ -66,5 +66,12 @@
 
             ClearGridRows(grid, elementsToRemove);
         }
+
+        public static void ClearGridRows(Grid grid)
+        {
+            var elementsToRemove = grid.Children.ToArray();
+
+            ClearGridRows(grid, elementsToRemove);
+        }
     }
 }

@@ -1,8 +1,17 @@
-﻿using ElectronicDiary.SaveData.Other;
+﻿using System.Diagnostics.Eventing.Reader;
+using System.Security.Cryptography;
+using System.Text.Json;
+
+using CommunityToolkit.Maui.Converters;
+using CommunityToolkit.Maui.Views;
+
+using ElectronicDiary.Pages.Others;
+using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.SaveData.Themes;
 using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Components.Navigation;
+using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.UI.Views.Lists.DiaryView;
 using ElectronicDiary.UI.Views.Lists.EducationalInstitutionView;
 using ElectronicDiary.UI.Views.Lists.General;
@@ -10,7 +19,10 @@ using ElectronicDiary.UI.Views.Lists.NewView;
 using ElectronicDiary.UI.Views.Lists.SheduleView;
 using ElectronicDiary.UI.Views.Tables.BaseTable;
 using ElectronicDiary.UI.Views.Tables.JournalTable;
-using ElectronicDiary.UI.Views.Tables.QuarterTable.cs;
+using ElectronicDiary.UI.Views.Tables.QuarterTable;
+using ElectronicDiary.Web.Api.Users;
+using ElectronicDiary.Web.DTO.Responses.Other;
+using ElectronicDiary.Web.DTO.Responses.Users;
 
 namespace ElectronicDiary.Pages.OtherPages
 {
@@ -150,7 +162,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
 
                     case PageType.AdminPanel:
-                        handler = SearchTapped;
+                        handler = AdminPanelTapped;
                         if (UserData.UserInfo.Role == UserInfo.RoleType.LocalAdmin)
                         {
                             path += "search_icon.png";
@@ -205,60 +217,112 @@ namespace ElectronicDiary.Pages.OtherPages
             }
         }
 
-        private void SheduleTapped(object? sender, EventArgs e)
+        private long _id = UserData.UserInfo.Id;
+        private async void GetId(EventHandler handler)
+        {
+            if (UserData.UserInfo.Role == UserInfo.RoleType.Parent)
+            {
+                var controller = new ParentWithStudentsController();
+                var response = await controller.GetAll(UserData.UserInfo.Id);
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var arr = JsonSerializer.Deserialize<StudentParentResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                    var studentList = new List<TypeResponse>();
+                    foreach (var studentParent in arr)
+                    {
+                        studentList.Add(new TypeResponse(studentParent.SchoolStudent.Id, $"{studentParent.SchoolStudent?.LastName} {studentParent.SchoolStudent?.FirstName} {studentParent.SchoolStudent?.Patronymic}"));
+                    }
+
+                    long id = -1;
+                    var popup = new SearchPopup(studentList, newText => id = newText);
+                    var page = Application.Current?.Windows[0].Page;
+                    page?.ShowPopup(popup);
+
+                    popup.Closed += (sender, e) =>
+                    {
+                        if (popup.AllItems.Count > 0 && id > -1)
+                        {
+                            _id = id;
+                            handler?.Invoke(this, EventArgs.Empty);
+                        }
+                        Focus();
+                    };
+                }
+            }
+        }
+
+        private async void SheduleTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Shedule)
             {
-                var viewCreator = new SheduleViewListCreator<SheduleViewElemCreator<SheduleViewObjectCreator>, SheduleViewObjectCreator>();
-                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
-                var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id, true);
-                viewList.Add(scrollView);
-                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Shedule));
+                GetId(MoveShedule);
             }
         }
 
-        private void DiaryTapped(object? sender, EventArgs e)
+        private void MoveShedule(object? sender, EventArgs e)
+        {
+            var viewCreator = new SheduleViewListCreator<SheduleViewElemCreator<SheduleViewObjectCreator>, SheduleViewObjectCreator>();
+            var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+            var viewList = new List<ScrollView>();
+            var scrollView = viewCreator.Create(mainStack, viewList, _id, true);
+            viewList.Add(scrollView);
+            Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Shedule));
+        }
+
+
+        private async void DiaryTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Diary)
             {
-                var viewCreator = new DiaryViewListCreator();
-                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
-                var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.Id, true);
-                viewList.Add(scrollView);
-                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Diary));
+                GetId(MoveDiary);
+
             }
         }
+        private void MoveDiary(object? sender, EventArgs e)
+        {
+            var viewCreator = new DiaryViewListCreator();
+            var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+            var viewList = new List<ScrollView>();
+            var scrollView = viewCreator.Create(mainStack, viewList, _id, true);
+            viewList.Add(scrollView);
+            Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Diary));
+        }
 
-        private void JournalTapped(object? sender, EventArgs e)
+        private async void JournalTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Gradebook)
             {
-                var viewCreator = new GradebookViewTableCreator();
-                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
-                var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(UserData.UserInfo.Id, -1);
-                viewList.Add(scrollView);
-                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Gradebook, true));
-
+                GetId(MoveJournal);
             }
         }
+        private void MoveJournal(object? sender, EventArgs e)
+        {
+            var viewCreator = new GradebookViewTableCreator();
+            var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+            var viewList = new List<ScrollView>();
+            var scrollView = viewCreator.Create(_id, -1);
+            viewList.Add(scrollView);
+            Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Gradebook, true));
+        }
 
-        private void QuarterTapped(object? sender, EventArgs e)
+        private async void QuarterTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Quarter)
             {
-                var viewCreator = new QuarterScoreStudentViewTableCreator();
-                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
-                var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(UserData.UserInfo.Id, -1);
-                viewList.Add(scrollView);
-                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Quarter, true));
+                GetId(MoveQuarter);
             }
         }
+        private void MoveQuarter(object? sender, EventArgs e)
+        {
+            var viewCreator = new QuarterScoreStudentViewTableCreator();
+            var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
+            var viewList = new List<ScrollView>();
+            var scrollView = viewCreator.Create(_id, -1);
+            viewList.Add(scrollView);
+            Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Quarter, true));
+        }
 
-        private void SearchTapped(object? sender, EventArgs e)
+        private void AdminPanelTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.AdminPanel)
             {

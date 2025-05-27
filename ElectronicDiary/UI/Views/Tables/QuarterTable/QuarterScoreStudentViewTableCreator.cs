@@ -5,7 +5,7 @@ using ElectronicDiary.UI.Views.Tables.BaseTable;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Responses.Educations;
 
-namespace ElectronicDiary.UI.Views.Tables.QuarterTable.cs
+namespace ElectronicDiary.UI.Views.Tables.QuarterTable
 {
     public class QuarterScoreStudentViewTableCreator : BaseViewTableCreator<int, int>
     {
@@ -15,8 +15,6 @@ namespace ElectronicDiary.UI.Views.Tables.QuarterTable.cs
             if (!string.IsNullOrEmpty(response))
             {
                 var arr = JsonSerializer.Deserialize<QuarterScoreResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
-
-
             }
         }
     }

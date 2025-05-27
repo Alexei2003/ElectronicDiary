@@ -28,7 +28,7 @@
 
                         if (Application.Current?.Windows.Count > 0)
                         {
-                            var widthFix = coeffFixAndroidWidth * Application.Current?.Windows[0].Width ?? 0d;
+                            var widthFix = 0.98 * coeffFixAndroidWidth * Application.Current?.Windows[0].Width ?? 0d;
                             viewList[index: i].MinimumWidthRequest = widthFix;
                             viewList[i].MaximumWidthRequest = widthFix;
                         }
