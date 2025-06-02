@@ -126,7 +126,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
                     case PageType.Diary:
                         handler = DiaryTapped;
-                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
+                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin && UserData.UserInfo.Role != UserInfo.RoleType.Teacher)
                         {
                             path += "diary_icon.png";
                         }
@@ -150,7 +150,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
                     case PageType.Quarter:
                         handler = QuarterTapped;
-                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
+                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin && UserData.UserInfo.Role != UserInfo.RoleType.Teacher)
                         {
                             path += "quarter_icon.png";
                         }
@@ -249,6 +249,10 @@ namespace ElectronicDiary.Pages.OtherPages
                     };
                 }
             }
+            else
+            {
+                handler?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         private async void SheduleTapped(object? sender, EventArgs e)
@@ -297,7 +301,7 @@ namespace ElectronicDiary.Pages.OtherPages
         }
         private void MoveJournal(object? sender, EventArgs e)
         {
-            var viewCreator = new GradebookViewTableCreator();
+            var viewCreator = new GradebookStudentViewTableCreator();
             var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
             var viewList = new List<ScrollView>();
             var scrollView = viewCreator.Create(_id, -1);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json;
 
+using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.UI.Views.Lists.BaseView;
@@ -46,7 +47,15 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
         protected QuarterInfoResponse _quarterInfoResponse = new();
         protected override async Task GetList()
         {
-            var response = await _controller.GetAll(_objectParentId, _quarterId);
+            string? response;
+            if (UserData.UserInfo.Role == SaveData.Other.UserInfo.RoleType.Teacher)
+            {
+                response = await _controller.GetAllTeacher(_objectParentId, _quarterId);
+            }
+            else
+            {
+                response = await _controller.GetAllStudent(_objectParentId, _quarterId);
+            }
             if (!string.IsNullOrEmpty(response))
             {
                 var lessonsDict = JsonSerializer.Deserialize<Dictionary<int, SheduleLessonResponse[]>>(response, PageConstants.JsonSerializerOptions) ?? [];

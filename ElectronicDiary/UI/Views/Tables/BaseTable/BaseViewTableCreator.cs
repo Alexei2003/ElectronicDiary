@@ -90,7 +90,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                 elemBack.Background = UserData.Settings.Theme.BackgroundPageColor;
 
                 var elem = BaseElemsCreator.CreateLabel($"{_headerStrColumnArr[columnIndex]}");
-                elem.Rotation = - 90;
+                //elem.Rotation = - 90;
                 elem.VerticalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundPageColor;
 

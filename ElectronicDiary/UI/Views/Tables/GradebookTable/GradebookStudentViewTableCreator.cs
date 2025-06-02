@@ -10,7 +10,7 @@ using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.UI.Views.Tables.JournalTable
 {
-    public class GradebookViewTableCreator : BaseViewTableCreator<long, DateTime>
+    public class GradebookStudentViewTableCreator : BaseViewTableCreator<long, DateTime>
     {
         protected long _quarterId = 1;
 

@@ -1,4 +1,5 @@
-﻿using ElectronicDiary.UI.Components.Elems;
+﻿using ElectronicDiary.SaveData.Static;
+using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Views.Lists.BaseView;
 using ElectronicDiary.Web.Api.Educations;
 using ElectronicDiary.Web.DTO.Requests.Educations;
@@ -13,8 +14,17 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
         {
             BaseElemsCreator.GridAddColumn(_grid, 2);
             _grid.ColumnDefinitions[0] = new ColumnDefinition { Width = new GridLength(0.2, GridUnitType.Star) };
-            _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
-            _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.5, GridUnitType.Star) };
+            if (UserData.UserInfo.Role == SaveData.Other.UserInfo.RoleType.Teacher)
+            {
+                _grid.ColumnDefinitions[1] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
+                _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(1.0, GridUnitType.Star) };
+                _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(1.0, GridUnitType.Star) };
+            }
+            else
+            {
+                _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
+                _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.5, GridUnitType.Star) };
+            }
 
             LineElemsCreator.AddLineElems(
                 grid: _grid,
@@ -58,7 +68,9 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
                     },
                     new LineElemsCreator.Data
                     {
-                        Elem = BaseElemsCreator.CreateLabel($"ФИО Учителя")
+                        Elem = UserData.UserInfo.Role == SaveData.Other.UserInfo.RoleType.Teacher ?
+                        BaseElemsCreator.CreateLabel($"Класс"):
+                        BaseElemsCreator.CreateLabel($"ФИО Учителя")
                     },
                     new LineElemsCreator.Data
                     {
@@ -68,6 +80,7 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
             );
             foreach (var lesson in _baseResponse.Lessons)
             {
+                ;
                 LineElemsCreator.AddLineElems(
                     grid: _grid,
                     rowIndex: (int)lesson.Number + 1,
@@ -82,7 +95,10 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
                         },
                         new LineElemsCreator.Data
                         {
-                            Elem = BaseElemsCreator.CreateLabel($"{lesson?.TeacherAssignment?.Teacher?.LastName} {lesson?.TeacherAssignment?.Teacher?.FirstName} {lesson?.TeacherAssignment?.Teacher?.Patronymic}")
+
+                            Elem = UserData.UserInfo.Role == SaveData.Other.UserInfo.RoleType.Teacher ?
+                            BaseElemsCreator.CreateLabel($"{lesson?.TeacherAssignment?.Group?.ClassRoom?.Name}"):
+                            BaseElemsCreator.CreateLabel($"{lesson?.TeacherAssignment?.Teacher?.LastName} {lesson?.TeacherAssignment?.Teacher?.FirstName} {lesson?.TeacherAssignment?.Teacher?.Patronymic}")
                         },
                         new LineElemsCreator.Data
                         {
