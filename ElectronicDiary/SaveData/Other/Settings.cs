@@ -20,36 +20,40 @@ namespace ElectronicDiary.SaveData.Other
 
         public class UserSettingsClass
         {
-            public float ScaleFactor { get; set; } = 1f;
-            public long ThemeIndex { get; set; } = 0;
+            public float ScaleFactor { get; set; }
+            public long ThemeIndex { get; set; }
         }
 
         public class SizesClass
         {
             // Размеры
-            public Thickness PADDING_ALL_PAGES { get; set; } = 10;
-            public int SPACING_ALL_PAGES { get; set; } = 10;
-            public int IMAGE_SIZE { get; set; } = 100;
-            public int IMAGE_BUTTON_SIZE { get; set; } = 50;
-
+            public Thickness Padding { get; set; }
+            public int Spacing { get; set; }
+            public int Image { get; set; } 
+            public int ImageButton { get; set; }
+            public int CellWidthText { get; set; }
+            public int CellWidthScore { get; set; }
+            public int CellHeightScore { get; set; }
             public SizesClass(float scaleFactor)
             {
-                PADDING_ALL_PAGES = (int)(scaleFactor * UserSettingConstants.SizesClass.PADDING_ALL_PAGES);
-                SPACING_ALL_PAGES = (int)(scaleFactor * UserSettingConstants.SizesClass.SPACING_ALL_PAGES);
-                IMAGE_SIZE = (int)(scaleFactor * UserSettingConstants.SizesClass.IMAGE_SIZE);
-                IMAGE_BUTTON_SIZE = (int)(scaleFactor * UserSettingConstants.SizesClass.IMAGE_BUTTON_SIZE);
+                Padding = (int)(scaleFactor * UserSettingConstants.SizesClass.Padding);
+                Spacing = (int)(scaleFactor * UserSettingConstants.SizesClass.Spacing);
+                Image = (int)(scaleFactor * UserSettingConstants.SizesClass.Image);
+                ImageButton = (int)(scaleFactor * UserSettingConstants.SizesClass.ImageButton);
+                CellWidthText = (int)(scaleFactor * UserSettingConstants.SizesClass.CellWidthText);
+                CellWidthScore = (int)(scaleFactor * UserSettingConstants.SizesClass.CellWidthScore);
             }
         }
 
         public class FontsClass
         {
-            public int TITLE_FONT_SIZE { get; set; } = 16;
-            public int BASE_FONT_SIZE { get; set; } = 12;
+            public int TitleFontSize { get; set; }
+            public int BaseFontSize { get; set; }
 
             public FontsClass(float scaleFactor)
             {
-                TITLE_FONT_SIZE = (int)(scaleFactor * UserSettingConstants.FontsClass.TITLE_FONT_SIZE);
-                BASE_FONT_SIZE = (int)(scaleFactor * UserSettingConstants.FontsClass.BASE_FONT_SIZE);
+                TitleFontSize = (int)(scaleFactor * UserSettingConstants.FontsClass.TitleFontSize);
+                BaseFontSize = (int)(scaleFactor * UserSettingConstants.FontsClass.BaseFontSize);
             }
         }
     }

@@ -19,7 +19,7 @@ namespace ElectronicDiary.UI.Components.Elems
                 BackgroundColor = navigation ? UserData.Settings.Theme.NavigationPageColor : UserData.Settings.Theme.AccentColor,
                 TextColor = UserData.Settings.Theme.TextColor,
 
-                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BaseFontSize,
                 Text = text,
             };
 
@@ -57,8 +57,8 @@ namespace ElectronicDiary.UI.Components.Elems
         {
             var image = new Image
             {
-                MaximumWidthRequest = UserData.Settings.Sizes.IMAGE_BUTTON_SIZE,
-                MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_BUTTON_SIZE,
+                MaximumWidthRequest = UserData.Settings.Sizes.ImageButton,
+                MaximumHeightRequest = UserData.Settings.Sizes.ImageButton,
                 Source = ImageSource.FromFile(imagePath)
             };
 
@@ -85,8 +85,8 @@ namespace ElectronicDiary.UI.Components.Elems
 
             var loadImage = new Image
             {
-                MaximumWidthRequest = UserData.Settings.Sizes.IMAGE_SIZE,
-                MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
+                MaximumWidthRequest = UserData.Settings.Sizes.Image,
+                MaximumHeightRequest = UserData.Settings.Sizes.Image,
                 Source = ImageSource.FromFile(url == null ? "no_image.png" : "loading_image.png")
             };
             if (handler != null)
@@ -102,8 +102,8 @@ namespace ElectronicDiary.UI.Components.Elems
             {
                 var mainImage = new Image
                 {
-                    MaximumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
-                    MinimumHeightRequest = UserData.Settings.Sizes.IMAGE_SIZE,
+                    MaximumHeightRequest = UserData.Settings.Sizes.Image,
+                    MinimumHeightRequest = UserData.Settings.Sizes.Image,
                     Source = ImageSource.FromUri(new Uri(url + $"?t={DateTime.Now.Ticks}")),
                 };
                 if (handler != null)
@@ -142,7 +142,7 @@ namespace ElectronicDiary.UI.Components.Elems
                 TextColor = UserData.Settings.Theme.TextColor,
                 PlaceholderColor = UserData.Settings.Theme.PlaceholderColor,
 
-                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BaseFontSize,
                 Placeholder = placeholder ?? string.Empty,
                 Text = text ?? string.Empty,
 
@@ -167,7 +167,7 @@ namespace ElectronicDiary.UI.Components.Elems
             {
                 TextColor = UserData.Settings.Theme.TextColor,
 
-                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BaseFontSize,
                 Text = text ?? string.Empty,
             };
 
@@ -177,7 +177,7 @@ namespace ElectronicDiary.UI.Components.Elems
         public static Label CreateTitleLabel(string? text, int maxLength = -1)
         {
             var label = CreateLabel(text, maxLength);
-            label.FontSize = 2 * UserData.Settings.Fonts.BASE_FONT_SIZE;
+            label.FontSize = 2 * UserData.Settings.Fonts.BaseFontSize;
             label.HorizontalTextAlignment = TextAlignment.Center;
             return label;
         }
@@ -217,7 +217,7 @@ namespace ElectronicDiary.UI.Components.Elems
                 BackgroundColor = UserData.Settings.Theme.AccentColorFields,
                 TextColor = UserData.Settings.Theme.TextColor,
 
-                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BaseFontSize,
 
                 ItemsSource = itemList,
                 ItemDisplayBinding = new Binding("Name"),
@@ -251,12 +251,12 @@ namespace ElectronicDiary.UI.Components.Elems
         {
             var grid = new Grid
             {
-                ColumnSpacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
-                RowSpacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                ColumnSpacing = UserData.Settings.Sizes.Spacing,
+                RowSpacing = UserData.Settings.Sizes.Spacing,
 
                 BackgroundColor = UserData.Settings.Theme.BackgroundFillColor,
             };
-            if (padding) { grid.Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES; }
+            if (padding) { grid.Padding = UserData.Settings.Sizes.Padding; }
 
             GridAddColumn(grid, countColumns);
 
@@ -275,14 +275,26 @@ namespace ElectronicDiary.UI.Components.Elems
             }
         }
 
+        public static void GridRemoveColumn(Grid grid, int countColumns, GridLength? width = null)
+        {
+            if (width == null)
+            {
+                width = GridLength.Star;
+            }
+            for (int i = 0; i < countColumns; i++)
+            {
+                grid.ColumnDefinitions.Remove(grid.ColumnDefinitions.Last());
+            }
+        }
+
         public static VerticalStackLayout CreateVerticalStackLayout()
         {
             var verticalStackLayout = new VerticalStackLayout
             {
                 // Положение
                 HorizontalOptions = LayoutOptions.Fill,
-                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.Padding,
+                Spacing = UserData.Settings.Sizes.Spacing,
             };
 
             return verticalStackLayout;

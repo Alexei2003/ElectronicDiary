@@ -64,8 +64,8 @@ namespace ElectronicDiary.UI.Views.Lists.BaseView
             _vStack = new VerticalStackLayout
             {
                 // Положение
-                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.Padding,
+                Spacing = UserData.Settings.Sizes.Spacing,
             };
 
             var scrollView = new ScrollView()
@@ -76,7 +76,7 @@ namespace ElectronicDiary.UI.Views.Lists.BaseView
             _infoStack = new VerticalStackLayout
             {
                 // Положение
-                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                Spacing = UserData.Settings.Sizes.Spacing,
             };
             _vStack.Add(_infoStack);
 

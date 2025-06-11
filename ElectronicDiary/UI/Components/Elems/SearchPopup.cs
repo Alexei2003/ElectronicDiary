@@ -24,7 +24,7 @@ namespace ElectronicDiary.Pages.Others
                 PlaceholderColor = UserData.Settings.Theme.PlaceholderColor,
 
                 // Текст
-                FontSize = UserData.Settings.Fonts.BASE_FONT_SIZE,
+                FontSize = UserData.Settings.Fonts.BaseFontSize,
                 Placeholder = "Введите для поиска...",
             };
 
@@ -64,8 +64,8 @@ namespace ElectronicDiary.Pages.Others
 #if WINDOWS
                 MinimumHeightRequest = 100,
 #endif
-                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.Padding,
+                Spacing = UserData.Settings.Sizes.Spacing,
 
                 // Цвета
                 BackgroundColor = UserData.Settings.Theme.BackgroundPageColor,

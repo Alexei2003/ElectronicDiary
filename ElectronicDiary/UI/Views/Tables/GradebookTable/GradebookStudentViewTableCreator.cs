@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Text.Json;
 
+using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.UI.Views.Tables.BaseTable;
@@ -23,8 +24,10 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                 new TypeResponse(3, "3"),
                 new TypeResponse(4, "4")
             };
-
-            return BaseElemsCreator.CreatePicker(item, newIndex => {_quarterId = newIndex; CreateUI(); }, _quarterId);
+            var elem = BaseElemsCreator.CreatePicker(item, newIndex => { _quarterId = newIndex; CreateUI(); }, _quarterId);
+            elem.WidthRequest = UserData.Settings.Sizes.CellWidthText;
+            elem.Background = UserData.Settings.Theme.BackgroundPageColor;
+            return elem;
         }
 
         protected override async Task GetData()
@@ -45,7 +48,7 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                     .Select(d => d.DateTime.Value.Date)
                     .Distinct()];
 
-                _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString())];
+                _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString("dd.MM"))];
                 _headerStrRowArr = [.. arr
                     .Where(d => d.SchoolSubject != null)
                     .Select(d => d.SchoolSubject!)

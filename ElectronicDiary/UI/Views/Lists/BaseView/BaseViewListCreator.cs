@@ -35,7 +35,7 @@ namespace ElectronicDiary.UI.Views.Lists.BaseView
         protected int _maxCountViews;
         protected VerticalStackLayout _listVerticalStack = new()
         {
-            Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES
+            Spacing = UserData.Settings.Sizes.Spacing
         };
         protected long _objectParentId;
         protected long _objectPreParentId;

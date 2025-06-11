@@ -10,7 +10,6 @@ namespace ElectronicDiary.UI.Components.Other
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Converters = { new DateTimeConverter() }
-
         };
 
         public class DateTimeConverter : JsonConverter<DateTime>

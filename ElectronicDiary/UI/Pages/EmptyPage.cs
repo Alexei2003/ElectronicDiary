@@ -17,8 +17,8 @@ namespace ElectronicDiary.Pages.OtherPages
                 // Положение
                 HorizontalOptions = LayoutOptions.Fill,
                 VerticalOptions = LayoutOptions.Center,
-                Padding = UserData.Settings.Sizes.PADDING_ALL_PAGES,
-                Spacing = UserData.Settings.Sizes.SPACING_ALL_PAGES,
+                Padding = UserData.Settings.Sizes.Padding,
+                Spacing = UserData.Settings.Sizes.Spacing,
             };
             vStack.Add(image);
             Content = vStack;

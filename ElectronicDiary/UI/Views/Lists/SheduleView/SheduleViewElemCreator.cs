@@ -80,7 +80,6 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
             );
             foreach (var lesson in _baseResponse.Lessons)
             {
-                ;
                 LineElemsCreator.AddLineElems(
                     grid: _grid,
                     rowIndex: (int)lesson.Number + 1,

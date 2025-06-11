@@ -1,8 +1,6 @@
 ﻿using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.UI.Components.Elems;
 
-using Microsoft.Maui.Controls;
-
 namespace ElectronicDiary.UI.Views.Tables.BaseTable
 {
     public class BaseViewTableCreator<THeaderRow, THeaderColumn>
@@ -31,7 +29,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             CreateHeaderUI();
 
             _grid = BaseElemsCreator.CreateGrid(0);
-            var size = UserData.Settings.Sizes.SPACING_ALL_PAGES / 10;
+            var size = UserData.Settings.Sizes.Spacing / 10;
             _grid.ColumnSpacing = size;
             _grid.RowSpacing = size;
             _grid.Padding = size;
@@ -55,9 +53,17 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
         protected virtual async void CreateUI()
         {
-            LineElemsCreator.ClearGridRows(_grid);
             await GetData();
-
+            LineElemsCreator.ClearGridRows(_grid);
+            var delta = (_headerStrColumnArr.Length - 1) - _grid.ColumnDefinitions.Count;
+            if (delta >= 0)
+            {
+                BaseElemsCreator.GridAddColumn(_grid, delta, GridLength.Auto);
+            }
+            else
+            {
+                BaseElemsCreator.GridRemoveColumn(_grid, -delta);
+            }
             CrateTableHeader();
             CrateTable();
         }
@@ -72,30 +78,31 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             BaseElemsCreator.GridAddColumn(_grid, _headerStrRowArr.Length + 1, GridLength.Auto);
 
             var elemEmpty = BaseElemsCreator.CreateLabel($"");
+            elemEmpty.Padding = UserData.Settings.Sizes.Padding;
+            elemEmpty.WidthRequest = UserData.Settings.Sizes.CellWidthText;
             elemEmpty.Background = UserData.Settings.Theme.BackgroundPageColor;
             _grid.Add(elemEmpty, 0, 0);
             _grid.Add(CreateHeaderUI(), 0, 0);
 
-            for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; )
+            for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length;)
             {
                 var elem = BaseElemsCreator.CreateLabel($"{_headerStrRowArr[rowIndex]}");
+                elem.Padding = UserData.Settings.Sizes.Padding;
+                elem.WidthRequest = UserData.Settings.Sizes.CellWidthText;
                 elem.VerticalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundPageColor;
                 _grid.Add(elem, 0, ++rowIndex);
             }
 
-            for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; )
+            for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length;)
             {
-                var elemBack = BaseElemsCreator.CreateLabel($"");
-                elemBack.Background = UserData.Settings.Theme.BackgroundPageColor;
-
                 var elem = BaseElemsCreator.CreateLabel($"{_headerStrColumnArr[columnIndex]}");
-                //elem.Rotation = - 90;
+                elem.Padding = UserData.Settings.Sizes.Padding;
+                elem.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
                 elem.VerticalTextAlignment = TextAlignment.Center;
+                elem.HorizontalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundPageColor;
-
-                _grid.Add(elemBack, ++columnIndex, 0);
-                _grid.Add(elem, columnIndex, 0);
+                _grid.Add(elem, ++columnIndex, 0);
             }
         }
 
@@ -103,9 +110,11 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         {
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
             {
-                for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; )
+                for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length;)
                 {
                     var elem = BaseElemsCreator.CreateLabel($"{_dataTableArr[rowIndex, columnIndex]}");
+                    elem.Padding = UserData.Settings.Sizes.Padding;
+                    elem.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
                     elem.HorizontalTextAlignment = TextAlignment.Center;
                     elem.VerticalTextAlignment = TextAlignment.Center;
                     elem.Background = UserData.Settings.Theme.BackgroundFillColor;
@@ -114,17 +123,18 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                 }
             }
 
-            var elemName = BaseElemsCreator.CreateLabel($"Средняя оценка");
-            elemName.HorizontalTextAlignment = TextAlignment.Center;
-            elemName.VerticalTextAlignment = TextAlignment.Center;
-            elemName.Background = UserData.Settings.Theme.BackgroundFillColor;
-            _grid.Add(elemName, _headerStrColumnArr.Length + 2, 0);
-
             CalcAverange();
         }
 
         protected virtual async void CalcAverange()
         {
+            var elemName = BaseElemsCreator.CreateLabel($"Средняя оценка");
+            elemName.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
+            elemName.HorizontalTextAlignment = TextAlignment.Center;
+            elemName.VerticalTextAlignment = TextAlignment.Center;
+            elemName.Background = UserData.Settings.Theme.BackgroundPageColor;
+            _grid.Add(elemName, _headerStrColumnArr.Length + 1, 0);
+
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
             {
                 var sum = 0;
@@ -139,10 +149,12 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                 }
                 var averange = count != 0 ? (1.0 * sum) / count : 0;
                 var elem = BaseElemsCreator.CreateLabel($"{averange:F2}");
+                elem.Padding = UserData.Settings.Sizes.Padding;
+                elem.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
                 elem.HorizontalTextAlignment = TextAlignment.Center;
                 elem.VerticalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundFillColor;
-                _grid.Add(elem, _headerStrColumnArr.Length + 2, rowIndex + 1);
+                _grid.Add(elem, _headerStrColumnArr.Length + 1, rowIndex + 1);
             }
         }
     }

@@ -31,14 +31,14 @@
             {
                 foreach (var element in elementsToRemove)
                 {
-                    grid.Children.Remove(element);
+                    grid.Remove(element);
                 }
             });
         }
 
         public static void ClearGridRows(Grid grid, int index)
         {
-            var elementsToRemove = grid.Children
+            var elementsToRemove = grid
                 .Where(e => index == grid.GetRow(e))
                 .ToArray();
 
@@ -47,7 +47,7 @@
 
         public static void ClearGridRows(Grid grid, int[] indexes)
         {
-            var elementsToRemove = grid.Children
+            var elementsToRemove = grid
                 .Where(e => indexes.Contains(grid.GetRow(e)))
                 .ToArray();
 
@@ -56,7 +56,7 @@
 
         public static void ClearGridRows(Grid grid, int firstIndex, int lastIndex)
         {
-            var elementsToRemove = grid.Children
+            var elementsToRemove = grid
                 .Where(e =>
                 {
                     int row = grid.GetRow(e);
@@ -69,7 +69,7 @@
 
         public static void ClearGridRows(Grid grid)
         {
-            var elementsToRemove = grid.Children.ToArray();
+            var elementsToRemove = grid.ToArray();
 
             ClearGridRows(grid, elementsToRemove);
         }
