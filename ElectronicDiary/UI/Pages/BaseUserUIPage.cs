@@ -196,6 +196,7 @@ namespace ElectronicDiary.Pages.OtherPages
             );
         }
 
+        private const int LoadTime = 300;
         private async void ProfileTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Profile)
@@ -213,6 +214,7 @@ namespace ElectronicDiary.Pages.OtherPages
                 var viewList = new List<ScrollView>();
                 var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.EducationId, true);
                 viewList.Add(scrollView);
+                Thread.Sleep(LoadTime);
                 Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.News));
             }
         }
@@ -270,6 +272,7 @@ namespace ElectronicDiary.Pages.OtherPages
             var viewList = new List<ScrollView>();
             var scrollView = viewCreator.Create(mainStack, viewList, _id, true);
             viewList.Add(scrollView);
+            Thread.Sleep(LoadTime);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Shedule));
         }
 
@@ -289,6 +292,7 @@ namespace ElectronicDiary.Pages.OtherPages
             var viewList = new List<ScrollView>();
             var scrollView = viewCreator.Create(mainStack, viewList, _id, true);
             viewList.Add(scrollView);
+            Thread.Sleep(LoadTime * 2);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Diary));
         }
 
@@ -306,6 +310,7 @@ namespace ElectronicDiary.Pages.OtherPages
             var viewList = new List<ScrollView>();
             var scrollView = viewCreator.Create(_id, -1);
             viewList.Add(scrollView);
+            Thread.Sleep(LoadTime * 2);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Gradebook, true));
         }
 
@@ -323,6 +328,7 @@ namespace ElectronicDiary.Pages.OtherPages
             var viewList = new List<ScrollView>();
             var scrollView = viewCreator.Create(_id, -1);
             viewList.Add(scrollView);
+            Thread.Sleep(LoadTime);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Quarter, true));
         }
 

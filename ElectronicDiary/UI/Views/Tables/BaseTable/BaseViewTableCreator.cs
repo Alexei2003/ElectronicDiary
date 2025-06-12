@@ -18,6 +18,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         protected long _id2;
         protected bool _readOnly = false;
 
+        private int _size = 0;
         public ScrollView Create(long id1,
                                  long id2,
                                  bool readOnly = false)
@@ -29,10 +30,11 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             CreateHeaderUI();
 
             _grid = BaseElemsCreator.CreateGrid(0);
-            var size = UserData.Settings.Sizes.Spacing / 10;
-            _grid.ColumnSpacing = size;
-            _grid.RowSpacing = size;
-            _grid.Padding = size;
+            _size = UserData.Settings.Sizes.Spacing / 10;
+            _grid.ColumnSpacing = _size;
+            _grid.RowSpacing = _size;
+            _grid.Padding = _size;
+            _grid.Margin = UserData.Settings.Sizes.Padding;
             _grid.BackgroundColor = UserData.Settings.Theme.TextColor;
 
             var scrollView = new ScrollView()
@@ -55,7 +57,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         {
             await GetData();
             LineElemsCreator.ClearGridRows(_grid);
-            var delta = (_headerStrColumnArr.Length - 1) - _grid.ColumnDefinitions.Count;
+            var delta = (_headerStrColumnArr.Length + 3) - _grid.ColumnDefinitions.Count;
             if (delta >= 0)
             {
                 BaseElemsCreator.GridAddColumn(_grid, delta, GridLength.Auto);
@@ -75,14 +77,17 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
         protected virtual void CrateTableHeader()
         {
-            BaseElemsCreator.GridAddColumn(_grid, _headerStrRowArr.Length + 1, GridLength.Auto);
-
             var elemEmpty = BaseElemsCreator.CreateLabel($"");
             elemEmpty.Padding = UserData.Settings.Sizes.Padding;
             elemEmpty.WidthRequest = UserData.Settings.Sizes.CellWidthText;
             elemEmpty.Background = UserData.Settings.Theme.BackgroundPageColor;
             _grid.Add(elemEmpty, 0, 0);
             _grid.Add(CreateHeaderUI(), 0, 0);
+
+            var elemColor = BaseElemsCreator.CreateLabel("");
+            elemColor.Margin = new Thickness(0, -_size, -_size, -_size);
+            elemColor.Background = UserData.Settings.Theme.BackgroundPageColor;
+            _grid.Add(elemColor, _headerStrColumnArr.Length + 3, 0);
 
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length;)
             {
@@ -92,6 +97,11 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                 elem.VerticalTextAlignment = TextAlignment.Center;
                 elem.Background = UserData.Settings.Theme.BackgroundPageColor;
                 _grid.Add(elem, 0, ++rowIndex);
+
+                elemColor = BaseElemsCreator.CreateLabel("");
+                elemColor.Background = UserData.Settings.Theme.BackgroundPageColor;
+                elemColor.Margin = new Thickness(0, -_size, -_size, -_size);
+                _grid.Add(elemColor, _headerStrColumnArr.Length + 3, rowIndex);
             }
 
             for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length;)
@@ -126,35 +136,66 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             CalcAverange();
         }
 
+        protected bool _attendance = true;
+
         protected virtual async void CalcAverange()
         {
-            var elemName = BaseElemsCreator.CreateLabel($"Средняя оценка");
-            elemName.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
-            elemName.HorizontalTextAlignment = TextAlignment.Center;
-            elemName.VerticalTextAlignment = TextAlignment.Center;
-            elemName.Background = UserData.Settings.Theme.BackgroundPageColor;
-            _grid.Add(elemName, _headerStrColumnArr.Length + 1, 0);
+            var elemScoreName = BaseElemsCreator.CreateLabel($"Средняя оценка");
+            elemScoreName.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
+            elemScoreName.HorizontalTextAlignment = TextAlignment.Center;
+            elemScoreName.VerticalTextAlignment = TextAlignment.Center;
+            elemScoreName.Background = UserData.Settings.Theme.BackgroundPageColor;
+            _grid.Add(elemScoreName, _headerStrColumnArr.Length + 1, 0);
+
+            if (_attendance)
+            {
+                var elemAttendanceName = BaseElemsCreator.CreateLabel($"Пропуски");
+                elemAttendanceName.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
+                elemAttendanceName.HorizontalTextAlignment = TextAlignment.Center;
+                elemAttendanceName.VerticalTextAlignment = TextAlignment.Center;
+                elemAttendanceName.Background = UserData.Settings.Theme.BackgroundPageColor;
+                _grid.Add(elemAttendanceName, _headerStrColumnArr.Length + 2, 0);
+            }
 
             for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
             {
                 var sum = 0;
-                var count = 0;
+                var countScore = 0;
+                var countAttendance = 0;
                 for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; columnIndex++)
                 {
-                    if (_dataTableArr[rowIndex, columnIndex] != "" && _dataTableArr[rowIndex, columnIndex] != "Н")
+                    if (_dataTableArr[rowIndex, columnIndex] == "Н")
                     {
-                        sum += int.Parse(_dataTableArr[rowIndex, columnIndex]);
-                        count++;
+                        countAttendance++;
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(_dataTableArr[rowIndex, columnIndex]))
+                        {
+                            sum += int.Parse(_dataTableArr[rowIndex, columnIndex]);
+                            countScore++;
+                        }
                     }
                 }
-                var averange = count != 0 ? (1.0 * sum) / count : 0;
-                var elem = BaseElemsCreator.CreateLabel($"{averange:F2}");
-                elem.Padding = UserData.Settings.Sizes.Padding;
-                elem.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
-                elem.HorizontalTextAlignment = TextAlignment.Center;
-                elem.VerticalTextAlignment = TextAlignment.Center;
-                elem.Background = UserData.Settings.Theme.BackgroundFillColor;
-                _grid.Add(elem, _headerStrColumnArr.Length + 1, rowIndex + 1);
+                var averange = countScore != 0 ? (1.0 * sum) / countScore : 0;
+                var elemScore = BaseElemsCreator.CreateLabel($"{averange:F2}");
+                elemScore.Padding = UserData.Settings.Sizes.Padding;
+                elemScore.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
+                elemScore.HorizontalTextAlignment = TextAlignment.Center;
+                elemScore.VerticalTextAlignment = TextAlignment.Center;
+                elemScore.Background = UserData.Settings.Theme.BackgroundPageColor;
+                _grid.Add(elemScore, _headerStrColumnArr.Length + 1, rowIndex + 1);
+
+                if (_attendance)
+                {
+                    var elemAttendance = BaseElemsCreator.CreateLabel($"{countAttendance}");
+                    elemAttendance.Padding = UserData.Settings.Sizes.Padding;
+                    elemAttendance.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
+                    elemAttendance.HorizontalTextAlignment = TextAlignment.Center;
+                    elemAttendance.VerticalTextAlignment = TextAlignment.Center;
+                    elemAttendance.Background = UserData.Settings.Theme.BackgroundPageColor;
+                    _grid.Add(elemAttendance, _headerStrColumnArr.Length + 2, rowIndex + 1);
+                }
             }
         }
     }

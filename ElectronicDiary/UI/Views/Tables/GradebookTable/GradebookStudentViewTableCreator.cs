@@ -48,12 +48,13 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                     .Select(d => d.DateTime.Value.Date)
                     .Distinct()];
 
-                _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString("dd.MM"))];
                 _headerStrRowArr = [.. arr
                     .Where(d => d.SchoolSubject != null)
                     .Select(d => d.SchoolSubject!)
                     .DistinctBy(s => s.Id)
                     .Select(s => s.Name)];
+                _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString("dd.MM"))];
+
 
                 _dataTableArr = new string[_headerRowArr.Count(), _headerColumnArr.Count()];
                 for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
