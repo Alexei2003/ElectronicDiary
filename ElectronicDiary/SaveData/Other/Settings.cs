@@ -20,8 +20,8 @@ namespace ElectronicDiary.SaveData.Other
 
         public class UserSettingsClass
         {
-            public float ScaleFactor { get; set; }
-            public long ThemeIndex { get; set; }
+            public float ScaleFactor { get; set; } = 1f;
+            public long ThemeIndex { get; set; } = 0;
         }
 
         public class SizesClass

@@ -28,7 +28,7 @@
 
                         if (Application.Current?.Windows.Count > 0)
                         {
-                            var widthFix = 0.98 * coeffFixAndroidWidth * Application.Current?.Windows[0].Width ?? 0d;
+                            var widthFix = 0.95 * coeffFixAndroidWidth * Application.Current?.Windows[0].Width ?? 0d;
                             viewList[index: i].MinimumWidthRequest = widthFix;
                             viewList[i].MaximumWidthRequest = widthFix;
                         }
@@ -50,7 +50,7 @@
 #if WINDOWS
             const double coeffFixAndroidWidth = 1;
 #else
-            const double coeffFixAndroidWidth = 3.3;
+            const double coeffFixAndroidWidth = 3.7;
 #endif
             countColumn = int.Max((int)(widthWindow * coeffFixAndroidWidth / dpi), 1);
 

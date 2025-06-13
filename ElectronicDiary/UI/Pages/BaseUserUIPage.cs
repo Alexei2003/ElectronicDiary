@@ -137,10 +137,10 @@ namespace ElectronicDiary.Pages.OtherPages
                         break;
 
                     case PageType.Gradebook:
-                        handler = JournalTapped;
+                        handler = GradebookTapped;
                         if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
                         {
-                            path += "journal_icon.png";
+                            path += "gradebook_icon.png";
                         }
                         else
                         {
@@ -296,14 +296,14 @@ namespace ElectronicDiary.Pages.OtherPages
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Diary));
         }
 
-        private async void JournalTapped(object? sender, EventArgs e)
+        private async void GradebookTapped(object? sender, EventArgs e)
         {
             if (_pageName != PageType.Gradebook)
             {
-                GetId(MoveJournal);
+                GetId(MoveGradebook);
             }
         }
-        private void MoveJournal(object? sender, EventArgs e)
+        private void MoveGradebook(object? sender, EventArgs e)
         {
             var viewCreator = new GradebookStudentViewTableCreator();
             var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();

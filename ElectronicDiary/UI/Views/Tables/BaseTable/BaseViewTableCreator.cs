@@ -19,6 +19,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         protected bool _readOnly = false;
 
         private int _size = 0;
+        private ScrollView _scrollView = new();
         public ScrollView Create(long id1,
                                  long id2,
                                  bool readOnly = false)
@@ -37,7 +38,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             _grid.Margin = UserData.Settings.Sizes.Padding;
             _grid.BackgroundColor = UserData.Settings.Theme.TextColor;
 
-            var scrollView = new ScrollView()
+            _scrollView = new ScrollView()
             {
                 Content = _grid,
                 Orientation = ScrollOrientation.Both
@@ -45,7 +46,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
             CreateUI();
 
-            return scrollView;
+            return _scrollView;
         }
 
         protected virtual async Task GetData()
@@ -68,6 +69,8 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             }
             CrateTableHeader();
             CrateTable();
+
+            _grid.WidthRequest = 1.6 * (UserData.Settings.Sizes.CellWidthText + UserData.Settings.Sizes.CellWidthScore * (_headerStrColumnArr.Length + 2)); 
         }
 
         protected virtual View CreateHeaderUI()

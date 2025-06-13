@@ -27,7 +27,7 @@ namespace ElectronicDiary.UI.Components.Navigation
 
         public static void AddNotifications(IList<ToolbarItem> toolbarItems)
         {
-            AddElem(toolbarItems, "Уведомления", UserData.Settings.Theme.TextIsBlack ? "black_notifications_icon.png" : "white_settings_icon.png", NotificationsClicked);
+            AddElem(toolbarItems, "Уведомления", UserData.Settings.Theme.TextIsBlack ? "black_notifications_icon.png" : "white_notifications_icon.png", NotificationsClicked);
         }
         private static void NotificationsClicked(object? sender, EventArgs e)
         {
