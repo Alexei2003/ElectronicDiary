@@ -53,10 +53,10 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                     .Select(d => d.SchoolSubject!)
                     .DistinctBy(s => s.Id)
                     .Select(s => s.Name)];
-                _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString("dd.MM"))];
+                _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString("dd.MM")), "Итог"];
 
 
-                _dataTableArr = new string[_headerRowArr.Count(), _headerColumnArr.Count()];
+                _dataTableArr = new string[_headerRowArr.Count(), _headerColumnArr.Count() + 1];
                 for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
                 {
                     for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; columnIndex++)
@@ -65,12 +65,12 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                     }
                 }
 
-                foreach(var diary in arr)
+                foreach (var diary in arr)
                 {
                     var row = -1;
                     var column = -1;
 
-                    for(var i = 0; i < _headerRowArr.Length; i++)
+                    for (var i = 0; i < _headerRowArr.Length; i++)
                     {
                         if (_headerRowArr[i] == (diary.SchoolSubject?.Id ?? 0))
                         {
@@ -80,7 +80,7 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
 
                     for (var i = 0; i < _headerColumnArr.Length; i++)
                     {
-                        if (diary.DateTime != null && _headerColumnArr[i] == diary.DateTime.Value.AddHours(- diary.DateTime.Value.Hour))
+                        if (diary.DateTime != null && _headerColumnArr[i] == diary.DateTime.Value.AddHours(-diary.DateTime.Value.Hour))
                         {
                             column = i;
                         }
@@ -95,6 +95,28 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
                         if (diary.Attendance)
                         {
                             _dataTableArr[row, column] = "Н";
+                        }
+                    }
+                }
+
+                response = await QuarterScoreController.FindByStudent(_id1);
+                if (!string.IsNullOrEmpty(response))
+                {
+                    var QuarterArr = JsonSerializer.Deserialize<QuarterScoreResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+
+                    foreach (var score in QuarterArr)
+                    {
+                        if(score.QuarterNumber == _quarterId)
+                        {
+                            var row = 0;
+                            for (var i = 0; i < _headerRowArr.Length; i++)
+                            {
+                                if (_headerRowArr[i] == (score.SchoolSubject?.Id ?? 0))
+                                {
+                                    row = i;
+                                }
+                            }
+                            _dataTableArr[row, _headerColumnArr.Length] = score.Score.ToString();
                         }
                     }
                 }

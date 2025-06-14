@@ -1,8 +1,5 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using System.Security.Cryptography;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-using CommunityToolkit.Maui.Converters;
 using CommunityToolkit.Maui.Views;
 
 using ElectronicDiary.Pages.Others;
@@ -13,11 +10,9 @@ using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Components.Navigation;
 using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.UI.Views.Lists.DiaryView;
-using ElectronicDiary.UI.Views.Lists.EducationalInstitutionView;
 using ElectronicDiary.UI.Views.Lists.General;
 using ElectronicDiary.UI.Views.Lists.NewView;
 using ElectronicDiary.UI.Views.Lists.SheduleView;
-using ElectronicDiary.UI.Views.Tables.BaseTable;
 using ElectronicDiary.UI.Views.Tables.JournalTable;
 using ElectronicDiary.UI.Views.Tables.QuarterTable;
 using ElectronicDiary.Web.Api.Users;
@@ -28,18 +23,48 @@ namespace ElectronicDiary.Pages.OtherPages
 {
     public partial class BaseUserUIPage : ContentPage
     {
-        private readonly PageType _pageName;
+        private readonly PageType _pageType;
         private readonly HorizontalStackLayout _mainStack = [];
         private readonly List<ScrollView> _viewList = [];
         private readonly bool _fullScreen = false;
-        public BaseUserUIPage(HorizontalStackLayout mainStack, List<ScrollView> viewList, PageType pageName, bool fullScreen = false)
+        public BaseUserUIPage(HorizontalStackLayout mainStack, List<ScrollView> viewList, PageType pageType, bool fullScreen = false)
         {
             _mainStack = mainStack;
             _viewList = viewList;
-            _pageName = pageName;
+            _pageType = pageType;
             _fullScreen = fullScreen;
 
-            Title = UserInfo.ConvertEnumRoleToStringRus(UserData.UserInfo.Role);
+            switch (_pageType)
+            {
+                case PageType.Profile:
+                    Title = UserInfo.ConvertEnumRoleToStringRus(UserData.UserInfo.Role);
+                    break;
+
+                case PageType.News:
+                    Title = "Новости";
+                    break;
+
+                case PageType.Shedule:
+                    Title = "Расписание";
+                    break;
+
+                case PageType.Diary:
+                    Title = "Дневник";
+                    break;
+
+                case PageType.Gradebook:
+                    Title = "Журнал";
+                    break;
+
+                case PageType.Quarter:
+                    Title = "Четвертные";
+                    break;
+
+                default:
+                    Title = "Неизвестная";
+                    break;
+            }
+
             ToolbarItemsAdder.AddNotifications(ToolbarItems);
             ToolbarItemsAdder.AddSettings(ToolbarItems);
             ToolbarItemsAdder.AddLogOut(ToolbarItems);
@@ -60,7 +85,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
             var gridButtons = BaseElemsCreator.CreateGrid(0, false);
             grid.Add(gridButtons, 0, 1);
-            CreateNavigationButtons(gridButtons, 6, pageName);
+            CreateNavigationButtons(gridButtons, 6, pageType);
         }
 
         private void WindowSizeChanged(object? sender, EventArgs e)
@@ -71,7 +96,7 @@ namespace ElectronicDiary.Pages.OtherPages
         protected override bool OnBackButtonPressed()
         {
             AdminPageStatic.OnBackButtonPressed(_mainStack, _viewList);
-            if (_mainStack.Count == 1)
+            if (_mainStack.Count == 0)
             {
                 return base.OnBackButtonPressed();
             }
@@ -80,20 +105,63 @@ namespace ElectronicDiary.Pages.OtherPages
 
         public enum PageType
         {
-            Profile, News, Shedule, Diary, Gradebook, Quarter, AdminPanel
+            Profile, News, Shedule, Diary, Gradebook, Quarter
         }
 
-        private void CreateNavigationButtons(Grid gridButtons, int countColumns, PageType pageName)
+        private PageType[] GetButtonsByRole() 
+        { 
+            var list = new List<PageType>();
+            switch (UserData.UserInfo.Role)
+            {
+                case UserInfo.RoleType.Teacher:
+                    list.Add(PageType.Profile);
+                    list.Add(PageType.News);
+                    list.Add(PageType.Shedule);
+                    list.Add(PageType.Gradebook);
+                    list.Add(PageType.Quarter);
+                    break;
+
+                case UserInfo.RoleType.SchoolStudent:
+                    list.Add(PageType.Profile);
+                    list.Add(PageType.News);
+                    list.Add(PageType.Shedule);
+                    list.Add(PageType.Diary);
+                    list.Add(PageType.Gradebook);
+                    list.Add(PageType.Quarter);
+                    break;
+
+                case UserInfo.RoleType.Parent:
+                    list.Add(PageType.Profile);
+                    list.Add(PageType.News);
+                    list.Add(PageType.Shedule);
+                    list.Add(PageType.Diary);
+                    list.Add(PageType.Gradebook);
+                    list.Add(PageType.Quarter);
+                    break;
+
+                case UserInfo.RoleType.Administration:
+                    list.Add(PageType.Profile);
+                    list.Add(PageType.News);
+                    break;
+
+                default:
+                    break;
+            }
+
+            return [.. list];
+        }
+
+        private void CreateNavigationButtons(Grid gridButtons, int countColumns, PageType pageType)
         {
             var elemList = new List<LineElemsCreator.Data>();
             var colorButton = UserData.Settings.Theme.TextIsBlack ? "black_" : "white_";
             var colorButtonSelected = !UserData.Settings.Theme.TextIsBlack ? "black_" : "white_";
 
             var selectedIndex = 0;
-            foreach (var type in Enum.GetValues<PageType>())
+            foreach (var type in GetButtonsByRole())
             {
                 var path = colorButton;
-                if (type == pageName)
+                if (type == pageType)
                 {
                     selectedIndex = elemList.Count;
                     path = colorButtonSelected;
@@ -113,66 +181,24 @@ namespace ElectronicDiary.Pages.OtherPages
                         break;
 
                     case PageType.Shedule:
-                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
-                        {
-                            handler = SheduleTapped;
-                            path += "shedule_icon.png";
-                        }
-                        else
-                        {
-                            path = string.Empty;
-                        }
+                        handler = SheduleTapped;
+                        path += "shedule_icon.png";
                         break;
 
                     case PageType.Diary:
                         handler = DiaryTapped;
-                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin && UserData.UserInfo.Role != UserInfo.RoleType.Teacher)
-                        {
-                            path += "diary_icon.png";
-                        }
-                        else
-                        {
-                            path = string.Empty;
-                        }
+                        path += "diary_icon.png";
                         break;
 
                     case PageType.Gradebook:
                         handler = GradebookTapped;
-                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin)
-                        {
-                            path += "gradebook_icon.png";
-                        }
-                        else
-                        {
-                            path = string.Empty;
-                        }
+                        path += "gradebook_icon.png";
                         break;
 
                     case PageType.Quarter:
                         handler = QuarterTapped;
-                        if (UserData.UserInfo.Role != UserInfo.RoleType.LocalAdmin && UserData.UserInfo.Role != UserInfo.RoleType.Teacher)
-                        {
-                            path += "quarter_icon.png";
-                        }
-                        else
-                        {
-                            path = string.Empty;
-                        }
+                        path += "quarter_icon.png";
                         break;
-
-
-                    case PageType.AdminPanel:
-                        handler = AdminPanelTapped;
-                        if (UserData.UserInfo.Role == UserInfo.RoleType.LocalAdmin)
-                        {
-                            path += "search_icon.png";
-                        }
-                        else
-                        {
-                            path = string.Empty;
-                        }
-                        break;
-
                 }
 
                 if (path?.Length != 0)
@@ -199,7 +225,7 @@ namespace ElectronicDiary.Pages.OtherPages
         private const int LoadTime = 300;
         private async void ProfileTapped(object? sender, EventArgs e)
         {
-            if (_pageName != PageType.Profile)
+            if (_pageType != PageType.Profile)
             {
                 await Navigation.PushAsync(await Navigator.GetProfileByRole(UserData.UserInfo.Role, UserData.UserInfo.Id));
             }
@@ -207,7 +233,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private void NewsTapped(object? sender, EventArgs e)
         {
-            if (_pageName != PageType.News)
+            if (_pageType != PageType.News)
             {
                 var viewCreator = new NewsViewListCreator(2);
                 var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
@@ -259,7 +285,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private async void SheduleTapped(object? sender, EventArgs e)
         {
-            if (_pageName != PageType.Shedule)
+            if (_pageType != PageType.Shedule)
             {
                 GetId(MoveShedule);
             }
@@ -279,7 +305,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private async void DiaryTapped(object? sender, EventArgs e)
         {
-            if (_pageName != PageType.Diary)
+            if (_pageType != PageType.Diary)
             {
                 GetId(MoveDiary);
 
@@ -298,7 +324,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private async void GradebookTapped(object? sender, EventArgs e)
         {
-            if (_pageName != PageType.Gradebook)
+            if (_pageType != PageType.Gradebook)
             {
                 GetId(MoveGradebook);
             }
@@ -316,7 +342,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private async void QuarterTapped(object? sender, EventArgs e)
         {
-            if (_pageName != PageType.Quarter)
+            if (_pageType != PageType.Quarter)
             {
                 GetId(MoveQuarter);
             }
@@ -330,19 +356,6 @@ namespace ElectronicDiary.Pages.OtherPages
             viewList.Add(scrollView);
             Thread.Sleep(LoadTime);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Quarter, true));
-        }
-
-        private void AdminPanelTapped(object? sender, EventArgs e)
-        {
-            if (_pageName != PageType.AdminPanel)
-            {
-                var viewCreator = new EducationalInstitutionViewListCreator();
-                var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
-                var viewList = new List<ScrollView>();
-                var scrollView = viewCreator.Create(mainStack, viewList, UserData.UserInfo.EducationId);
-                viewList.Add(scrollView);
-                Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.AdminPanel));
-            }
         }
     }
 }

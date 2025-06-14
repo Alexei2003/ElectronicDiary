@@ -17,6 +17,11 @@ namespace ElectronicDiary.Main
         {
             UserData.LoadAll();
 
+            var window = new Window(new EmptyPage())
+            {
+                Title = "Электронный дневник"
+            };
+
             Task.Run(async () =>
             {
                 if (!string.IsNullOrEmpty(UserData.UserInfo.Login) && !string.IsNullOrEmpty(UserData.UserInfo.Password))
@@ -45,10 +50,7 @@ namespace ElectronicDiary.Main
                 Navigator.SetAsRoot(new LogPage());
             });
 
-            return new Window(new EmptyPage())
-            {
-                Title = "Электронный дневник"
-            };
+            return window;
         }
     }
 }

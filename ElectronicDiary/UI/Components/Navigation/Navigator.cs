@@ -37,7 +37,11 @@ namespace ElectronicDiary.UI.Components.Navigation
             ContentPage? page = null;
             switch (role)
             {
-                case UserInfo.RoleType.MainAdmin:
+                case UserInfo.RoleType.MainOperator:
+                    page = new PreAdminPage();
+                    break;
+
+                case UserInfo.RoleType.LocalOperator:
                     page = new PreAdminPage();
                     break;
 
@@ -56,7 +60,7 @@ namespace ElectronicDiary.UI.Components.Navigation
             string? response = null;
             switch (role)
             {
-                case UserInfo.RoleType.LocalAdmin:
+                case UserInfo.RoleType.Administration:
                     controller = new AdministratorController();
                     response = await controller.GetAll(id);
                     if (!string.IsNullOrEmpty(response))

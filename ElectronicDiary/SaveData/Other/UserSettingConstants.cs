@@ -13,8 +13,8 @@
             public const int Spacing = 10;
             public const int Image = 100;
             public const int ImageButton = 50;
-            public const int CellWidthText = 200;
-            public const int CellWidthScore = 50;
+            public const int CellWidthText = 140;
+            public const int CellWidthScore = 40;
         }
 
         public class FontsClass

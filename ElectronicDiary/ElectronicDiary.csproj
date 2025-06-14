@@ -81,6 +81,7 @@
 	  <None Remove="Resources\Images\White\white_diary_icon.png" />
 	  <None Remove="Resources\Images\White\white_log_out_icon.png" />
 	  <None Remove="Resources\Images\White\white_news_icon.png" />
+	  <None Remove="Resources\Images\White\white_notifications_icon.png" />
 	  <None Remove="Resources\Images\White\white_profile_icon.png" />
 	  <None Remove="Resources\Images\White\white_settings_icon.png" />
 	  <None Remove="Resources\Images\White\white_shedule_icon.png" />
@@ -117,6 +118,7 @@
 	  <MauiImage Include="Resources\Images\White\white_gradebook_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_log_out_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_news_icon.png" />
+	  <MauiImage Include="Resources\Images\White\white_notifications_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_profile_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_quarter_icon.png" />
 	  <MauiImage Include="Resources\Images\White\white_settings_icon.png" />

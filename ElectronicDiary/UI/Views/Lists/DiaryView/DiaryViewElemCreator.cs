@@ -9,7 +9,7 @@ namespace ElectronicDiary.UI.Views.Lists.DiaryView
         {
             _grid.ColumnDefinitions[0] = new ColumnDefinition { Width = new GridLength(0.2, GridUnitType.Star) };
             _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
-            _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.3, GridUnitType.Star) };
+            _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.45, GridUnitType.Star) };
             LineElemsCreator.AddLineElems(
                 grid: _grid,
                 rowIndex: 1,

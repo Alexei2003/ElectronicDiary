@@ -10,5 +10,6 @@ namespace ElectronicDiary.UI.Views.Tables.GradebookTable
 {
     public class GradebookTeacherViewTableCreator : BaseViewTableCreator<long, DateTime>
     {
+
     }
 }

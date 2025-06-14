@@ -15,8 +15,7 @@
                 {
                     if (!fullscreen)
                     {
-                        viewList[i].MinimumWidthRequest = width;
-                        viewList[i].MaximumWidthRequest = width;
+                        viewList[i].WidthRequest = width;
                     }
                     else
                     {
@@ -28,9 +27,8 @@
 
                         if (Application.Current?.Windows.Count > 0)
                         {
-                            var widthFix = 0.95 * coeffFixAndroidWidth * Application.Current?.Windows[0].Width ?? 0d;
-                            viewList[index: i].MinimumWidthRequest = widthFix;
-                            viewList[i].MaximumWidthRequest = widthFix;
+                            var widthFix = coeffFixAndroidWidth * Application.Current?.Windows[0].Width ?? 0d;
+                            viewList[index: i].WidthRequest = widthFix;
                         }
                     }
                     mainStack.Add(viewList[i]);
@@ -50,7 +48,7 @@
 #if WINDOWS
             const double coeffFixAndroidWidth = 1;
 #else
-            const double coeffFixAndroidWidth = 3.7;
+            const double coeffFixAndroidWidth = 5;
 #endif
             countColumn = int.Max((int)(widthWindow * coeffFixAndroidWidth / dpi), 1);
 

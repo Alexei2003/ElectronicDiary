@@ -13,15 +13,15 @@
 
         public enum RoleType
         {
-            None, MainAdmin, LocalAdmin, Teacher, SchoolStudent, Parent, Administration
+            None, MainOperator, LocalOperator, Teacher, SchoolStudent, Parent, Administration
         }
 
         public static RoleType ConverStringRoleToEnum(string? role)
         {
             return role switch
             {
-                "Main admin" => RoleType.MainAdmin,
-                "Local admin" => RoleType.LocalAdmin,
+                "Main admin" => RoleType.MainOperator,
+                "Local admin" => RoleType.LocalOperator,
                 "Teacher" => RoleType.Teacher,
                 "School student" => RoleType.SchoolStudent,
                 "Parent" => RoleType.Parent,
@@ -30,26 +30,12 @@
             };
         }
 
-        public static string ConvertEnumRoleToString(RoleType role)
-        {
-            return role switch
-            {
-                RoleType.MainAdmin => "Main admin",
-                RoleType.LocalAdmin => "Local admin",
-                RoleType.Teacher => "Teacher",
-                RoleType.SchoolStudent => "School student",
-                RoleType.Parent => "Parent",
-                RoleType.Administration => "Administration",
-                _ => "None"
-            };
-        }
-
         public static string ConvertEnumRoleToStringRus(RoleType role)
         {
             return role switch
             {
-                RoleType.MainAdmin => "Главный администратор",
-                RoleType.LocalAdmin => "Локальный администратор",
+                RoleType.MainOperator => "Главный оператор",
+                RoleType.LocalOperator => "Школьный оператор",
                 RoleType.Teacher => "Учитель",
                 RoleType.SchoolStudent => "Ученик школы",
                 RoleType.Parent => "Родитель",

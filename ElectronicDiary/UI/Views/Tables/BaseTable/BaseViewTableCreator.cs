@@ -41,7 +41,9 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             _scrollView = new ScrollView()
             {
                 Content = _grid,
-                Orientation = ScrollOrientation.Both
+                Orientation = ScrollOrientation.Both,
+                HorizontalOptions = LayoutOptions.Start,
+                Background = UserData.Settings.Theme.BackgroundPageColor
             };
 
             CreateUI();
@@ -57,8 +59,9 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         protected virtual async void CreateUI()
         {
             await GetData();
+            var add = _attendance ? 2 : 1;
+            var delta = (_headerStrColumnArr.Length + add) - _grid.ColumnDefinitions.Count;
             LineElemsCreator.ClearGridRows(_grid);
-            var delta = (_headerStrColumnArr.Length + 3) - _grid.ColumnDefinitions.Count;
             if (delta >= 0)
             {
                 BaseElemsCreator.GridAddColumn(_grid, delta, GridLength.Auto);
@@ -69,8 +72,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             }
             CrateTableHeader();
             CrateTable();
-
-            _grid.WidthRequest = 1.6 * (UserData.Settings.Sizes.CellWidthText + UserData.Settings.Sizes.CellWidthScore * (_headerStrColumnArr.Length + 2)); 
+            _scrollView.MinimumWidthRequest = 2 * ((UserData.Settings.Sizes.CellWidthText + _size) + (UserData.Settings.Sizes.CellWidthScore + _size) * (_grid.ColumnDefinitions.Count - 1));
         }
 
         protected virtual View CreateHeaderUI()
@@ -143,7 +145,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
         protected virtual async void CalcAverange()
         {
-            var elemScoreName = BaseElemsCreator.CreateLabel($"Средняя оценка");
+            var elemScoreName = BaseElemsCreator.CreateLabel($"Средняя");
             elemScoreName.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
             elemScoreName.HorizontalTextAlignment = TextAlignment.Center;
             elemScoreName.VerticalTextAlignment = TextAlignment.Center;
@@ -181,7 +183,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
                     }
                 }
                 var averange = countScore != 0 ? (1.0 * sum) / countScore : 0;
-                var elemScore = BaseElemsCreator.CreateLabel($"{averange:F2}");
+                var elemScore = BaseElemsCreator.CreateLabel($"{averange:F1}");
                 elemScore.Padding = UserData.Settings.Sizes.Padding;
                 elemScore.WidthRequest = UserData.Settings.Sizes.CellWidthScore;
                 elemScore.HorizontalTextAlignment = TextAlignment.Center;
