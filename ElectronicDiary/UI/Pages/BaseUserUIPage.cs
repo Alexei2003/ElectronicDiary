@@ -251,6 +251,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private long _id = UserData.UserInfo.Id;
         private int _quarterId = -1;
+        protected bool _fixFlag = true;
         private async void InvokeMove(EventHandler handler, bool idNoChange = false)
         {
             string? response = string.Empty;
@@ -288,7 +289,13 @@ namespace ElectronicDiary.Pages.OtherPages
                 case UserInfo.RoleType.Teacher:
                     if (!idNoChange)
                     {
-                        var action = await BaseElemsCreator.CreateActionSheet(["1", "2", "3", "4"]);
+                        BackgroundColor = UserData.Settings.Theme.BackgroundPageColor;
+                        string action = "1";
+                        if (_fixFlag)
+                        {
+                            action = await BaseElemsCreator.CreateActionSheet(["1", "2", "3", "4"]);
+
+                        }
                         if (int.TryParse(action, out _quarterId))
                         {
                             response = await SheduleLessonController.GetByTeacher(UserData.UserInfo.Id, _quarterId);
@@ -375,7 +382,7 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private async void GradebookTapped(object? sender, EventArgs e)
         {
-            if (_pageType != PageType.Gradebook)
+            if (_pageType != PageType.Gradebook || UserData.UserInfo.Role == UserInfo.RoleType.Teacher)
             {
                 InvokeMove(MoveGradebook);
             }
@@ -389,6 +396,7 @@ namespace ElectronicDiary.Pages.OtherPages
             {
                 var viewCreator = new GradebookTeacherViewTableCreator();
                 scrollView = viewCreator.Create(_id, _quarterId, false);
+                SizeChanged += (sender, e) => viewCreator.SetSize(this, EventArgs.Empty);
             }
             else
             {
@@ -403,17 +411,28 @@ namespace ElectronicDiary.Pages.OtherPages
 
         private async void QuarterTapped(object? sender, EventArgs e)
         {
-            if (_pageType != PageType.Quarter)
+            if (_pageType != PageType.Quarter || UserData.UserInfo.Role == UserInfo.RoleType.Teacher)
             {
+                _fixFlag = true;
                 InvokeMove(MoveQuarter);
+                _fixFlag = false;
             }
         }
         private void MoveQuarter(object? sender, EventArgs e)
         {
-            var viewCreator = new QuarterScoreStudentViewTableCreator();
+            ScrollView scrollView;
             var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
             var viewList = new List<ScrollView>();
-            var scrollView = viewCreator.Create(_id, -1);
+            if (UserData.UserInfo.Role == UserInfo.RoleType.Teacher)
+            {
+                var viewCreator = new QuarterScoreTeacherViewTableCreator();
+                scrollView = viewCreator.Create(_id, -1, false);
+            }
+            else
+            {
+                var viewCreator = new QuarterScoreStudentViewTableCreator();
+                scrollView = viewCreator.Create(_id, -1);
+            }
             viewList.Add(scrollView);
             Thread.Sleep(LoadTime);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Quarter, true));

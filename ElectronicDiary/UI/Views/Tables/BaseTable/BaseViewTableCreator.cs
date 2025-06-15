@@ -1,4 +1,6 @@
-﻿using ElectronicDiary.SaveData.Static;
+﻿using Android.Icu.Number;
+
+using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.UI.Components.Elems;
 
 namespace ElectronicDiary.UI.Views.Tables.BaseTable
@@ -66,7 +68,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             var elem = BaseElemsCreator.CreateLabel(text);
             elem.Padding = UserData.Settings.Sizes.Padding;
             elem.WidthRequest = UserData.Settings.Sizes.CellWidthText;
-            elem.HorizontalTextAlignment = TextAlignment.Center;
+            elem.HorizontalTextAlignment = TextAlignment.Start;
             elem.VerticalTextAlignment = TextAlignment.Center;
             elem.Background = UserData.Settings.Theme.BackgroundPageColor;
             return elem;
@@ -101,8 +103,13 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
             CrateTableHeader();
             CrateTable();
 
+            SetSize(this, EventArgs.Empty);
+        }
+
+        public void SetSize(object? sender, EventArgs e)
+        {
             var orientation = DeviceDisplay.MainDisplayInfo.Orientation;
-            double scale = orientation == DisplayOrientation.Portrait ? 1.35 : 1.95;
+            double scale = orientation == DisplayOrientation.Portrait ? 1.37 : 1.93;
             _grid.WidthRequest = scale * ((UserData.Settings.Sizes.CellWidthText + _size) + (UserData.Settings.Sizes.CellWidthScore + _size) * (_headerStrColumnArr.Length + 3));
         }
 

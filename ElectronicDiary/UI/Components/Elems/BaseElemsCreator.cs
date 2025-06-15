@@ -43,7 +43,7 @@ namespace ElectronicDiary.UI.Components.Elems
         public static async Task<string> CreateActionSheet(string[] actionList)
         {
             var page = Application.Current?.Windows[0].Page;
-            var action = string.Empty;
+            string? action = string.Empty;
             if (page != null) action = await page.DisplayActionSheet(
                 "Выберите действие",
                 "Отмена",

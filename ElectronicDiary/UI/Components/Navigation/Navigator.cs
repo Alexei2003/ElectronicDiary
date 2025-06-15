@@ -62,15 +62,13 @@ namespace ElectronicDiary.UI.Components.Navigation
             {
                 case UserInfo.RoleType.Administration:
                     controller = new AdministratorController();
-                    response = await controller.GetAll(id);
+                    response = await controller.GetById(id);
                     if (!string.IsNullOrEmpty(response))
                     {
                         var responseObject = JsonSerializer.Deserialize<UserResponse>(response, PageConstants.JsonSerializerOptions);
                         if (responseObject != null)
                         {
-                            UserData.UserInfo.EducationId = responseObject.EducationalInstitution?.Id ?? -1;
-                            var creator = new UserViewObjectCreator<UserResponse, UserRequest, AdministratorController>();
-                            scrollView = creator.Create(null, null, null, responseObject, responseObject.EducationalInstitution?.Id ?? -1);
+
                         }
                     }
                     break;

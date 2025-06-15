@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Views;
 
+using ElectronicDiary.SaveData.Other;
 using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.Web.DTO.Responses.Other;
 
@@ -43,6 +44,7 @@ namespace ElectronicDiary.Pages.Others
                     label.BackgroundColor = UserData.Settings.Theme.AccentColorFields;
                     label.TextColor = UserData.Settings.Theme.TextColor;
                     label.SetBinding(Label.TextProperty, "Name");
+                    label.Padding = UserData.Settings.Sizes.Padding;
                     return new ViewCell { View = label };
                 })
             };
@@ -58,10 +60,9 @@ namespace ElectronicDiary.Pages.Others
             var stackLayout = new StackLayout
             {
                 // Положение
-                WidthRequest = (Application.Current?.Windows[0].Width ?? 0) / 1 * 0.90,
-#if WINDOWS
-                MinimumHeightRequest = 100,
-#endif
+                MinimumWidthRequest = (Application.Current?.Windows[0].Width ?? 0),
+                MinimumHeightRequest = (Application.Current?.Windows[0].Height ?? 0) * 0.90,
+
                 Padding = UserData.Settings.Sizes.Padding,
                 Spacing = UserData.Settings.Sizes.Spacing,
 
