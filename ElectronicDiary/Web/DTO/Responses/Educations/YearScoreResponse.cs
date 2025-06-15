@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ElectronicDiary.Web.DTO.Responses.Other;
+﻿using ElectronicDiary.Web.DTO.Responses.Other;
 
 namespace ElectronicDiary.Web.DTO.Responses.Educations
 {
@@ -12,6 +6,6 @@ namespace ElectronicDiary.Web.DTO.Responses.Educations
     {
         public long SchoolStudentId { get; set; } = -1;
         public SchoolSubjectResponse? SchoolSubject { get; set; } = null;
-        public long Score { get; set;} = -1;
+        public long Score { get; set; } = -1;
     }
 }

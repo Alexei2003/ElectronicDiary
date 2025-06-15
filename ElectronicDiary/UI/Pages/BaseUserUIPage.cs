@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Extensions;
 
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Other;
@@ -13,9 +13,13 @@ using ElectronicDiary.UI.Views.Lists.DiaryView;
 using ElectronicDiary.UI.Views.Lists.General;
 using ElectronicDiary.UI.Views.Lists.NewView;
 using ElectronicDiary.UI.Views.Lists.SheduleView;
+using ElectronicDiary.UI.Views.Tables.GradebookTable;
 using ElectronicDiary.UI.Views.Tables.JournalTable;
 using ElectronicDiary.UI.Views.Tables.QuarterTable;
+using ElectronicDiary.Web.Api.Educations;
+using ElectronicDiary.Web.Api.Other;
 using ElectronicDiary.Web.Api.Users;
+using ElectronicDiary.Web.DTO.Responses.Educations;
 using ElectronicDiary.Web.DTO.Responses.Other;
 using ElectronicDiary.Web.DTO.Responses.Users;
 
@@ -108,8 +112,8 @@ namespace ElectronicDiary.Pages.OtherPages
             Profile, News, Shedule, Diary, Gradebook, Quarter
         }
 
-        private PageType[] GetButtonsByRole() 
-        { 
+        private PageType[] GetButtonsByRole()
+        {
             var list = new List<PageType>();
             switch (UserData.UserInfo.Role)
             {
@@ -246,40 +250,88 @@ namespace ElectronicDiary.Pages.OtherPages
         }
 
         private long _id = UserData.UserInfo.Id;
-        private async void GetId(EventHandler handler)
+        private int _quarterId = -1;
+        private async void InvokeMove(EventHandler handler, bool idNoChange = false)
         {
-            if (UserData.UserInfo.Role == UserInfo.RoleType.Parent)
+            string? response = string.Empty;
+            IController controller = null;
+            switch (UserData.UserInfo.Role)
             {
-                var controller = new ParentWithStudentsController();
-                var response = await controller.GetAll(UserData.UserInfo.Id);
-                if (!string.IsNullOrEmpty(response))
-                {
-                    var arr = JsonSerializer.Deserialize<StudentParentResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
-                    var studentList = new List<TypeResponse>();
-                    foreach (var studentParent in arr)
+                case UserInfo.RoleType.Parent:
+                    controller = new ParentWithStudentsController();
+                    response = await controller.GetAll(UserData.UserInfo.Id);
+                    if (!string.IsNullOrEmpty(response))
                     {
-                        studentList.Add(new TypeResponse(studentParent.SchoolStudent.Id, $"{studentParent.SchoolStudent?.LastName} {studentParent.SchoolStudent?.FirstName} {studentParent.SchoolStudent?.Patronymic}"));
-                    }
-
-                    long id = -1;
-                    var popup = new SearchPopup(studentList, newText => id = newText);
-                    var page = Application.Current?.Windows[0].Page;
-                    page?.ShowPopup(popup);
-
-                    popup.Closed += (sender, e) =>
-                    {
-                        if (popup.AllItems.Count > 0 && id > -1)
+                        var arr = JsonSerializer.Deserialize<StudentParentResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                        var studentList = new List<TypeResponse>();
+                        foreach (var studentParent in arr)
                         {
-                            _id = id;
-                            handler?.Invoke(this, EventArgs.Empty);
+                            studentList.Add(new TypeResponse(studentParent.SchoolStudent.Id, $"{studentParent.SchoolStudent?.LastName} {studentParent.SchoolStudent?.FirstName} {studentParent.SchoolStudent?.Patronymic}"));
                         }
-                        Focus();
-                    };
-                }
-            }
-            else
-            {
-                handler?.Invoke(this, EventArgs.Empty);
+
+                        long id = -1;
+                        var popup = new SearchPopup(studentList, newText => id = newText);
+                        var page = Application.Current?.Windows[0].Page;
+                        page?.ShowPopup(popup);
+
+                        popup.Closed += (sender, e) =>
+                        {
+                            if (popup.AllItems.Count > 0 && id > -1)
+                            {
+                                _id = id;
+                                handler?.Invoke(this, EventArgs.Empty);
+                            }
+                            Focus();
+                        };
+                    }
+                    break;
+                case UserInfo.RoleType.Teacher:
+                    if (!idNoChange)
+                    {
+                        var action = await BaseElemsCreator.CreateActionSheet(["1", "2", "3", "4"]);
+                        if (int.TryParse(action, out _quarterId))
+                        {
+                            response = await SheduleLessonController.GetByTeacher(UserData.UserInfo.Id, _quarterId);
+                            if (!string.IsNullOrEmpty(response))
+                            {
+                                var lessonsDict = JsonSerializer.Deserialize<Dictionary<int, SheduleLessonResponse[]>>(response, PageConstants.JsonSerializerOptions) ?? [];
+
+                                var teacherAssignmentList = new List<TypeResponse>();
+                                foreach (var sheduleLesson in lessonsDict.First().Value)
+                                {
+                                    if (teacherAssignmentList.Where(ta => ta.Id == sheduleLesson.TeacherAssignment.Id).Count() == 0 && sheduleLesson.TeacherAssignment.Teacher.Id == UserData.UserInfo.Id)
+                                    {
+                                        teacherAssignmentList.Add(new(sheduleLesson.TeacherAssignment.Id, $"{sheduleLesson.Group.ClassRoom.Name} - {sheduleLesson.Group.GroupName} - {sheduleLesson.TeacherAssignment.SchoolSubject.Name}"));
+                                    }
+                                }
+
+                                long id = -1;
+                                var popup = new SearchPopup(teacherAssignmentList, newText => id = newText);
+                                var page = Application.Current?.Windows[0].Page;
+                                page?.ShowPopup(popup);
+
+                                popup.Closed += (sender, e) =>
+                                {
+                                    if (popup.AllItems.Count > 0 && id > -1)
+                                    {
+                                        _id = id;
+                                        handler?.Invoke(this, EventArgs.Empty);
+                                    }
+                                    Focus();
+                                };
+                            }
+                        }
+                    }
+                    else
+                    {
+                        _id = UserData.UserInfo.Id;
+                        handler?.Invoke(this, EventArgs.Empty);
+                    }
+                    break;
+                default:
+                    _id = UserData.UserInfo.Id;
+                    handler?.Invoke(this, EventArgs.Empty);
+                    break;
             }
         }
 
@@ -287,7 +339,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageType != PageType.Shedule)
             {
-                GetId(MoveShedule);
+                InvokeMove(MoveShedule, true);
             }
         }
 
@@ -302,12 +354,11 @@ namespace ElectronicDiary.Pages.OtherPages
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Shedule));
         }
 
-
         private async void DiaryTapped(object? sender, EventArgs e)
         {
             if (_pageType != PageType.Diary)
             {
-                GetId(MoveDiary);
+                InvokeMove(MoveDiary);
 
             }
         }
@@ -326,15 +377,25 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageType != PageType.Gradebook)
             {
-                GetId(MoveGradebook);
+                InvokeMove(MoveGradebook);
             }
         }
         private void MoveGradebook(object? sender, EventArgs e)
         {
-            var viewCreator = new GradebookStudentViewTableCreator();
+            ScrollView scrollView;
             var mainStack = BaseElemsCreator.CreateHorizontalStackLayout();
             var viewList = new List<ScrollView>();
-            var scrollView = viewCreator.Create(_id, -1);
+            if (UserData.UserInfo.Role == UserInfo.RoleType.Teacher)
+            {
+                var viewCreator = new GradebookTeacherViewTableCreator();
+                scrollView = viewCreator.Create(_id, _quarterId, false);
+            }
+            else
+            {
+                var viewCreator = new GradebookStudentViewTableCreator();
+                scrollView = viewCreator.Create(_id, -1);
+            }
+
             viewList.Add(scrollView);
             Thread.Sleep(LoadTime * 2);
             Navigation.PushAsync(new BaseUserUIPage(mainStack, viewList, PageType.Gradebook, true));
@@ -344,7 +405,7 @@ namespace ElectronicDiary.Pages.OtherPages
         {
             if (_pageType != PageType.Quarter)
             {
-                GetId(MoveQuarter);
+                InvokeMove(MoveQuarter);
             }
         }
         private void MoveQuarter(object? sender, EventArgs e)

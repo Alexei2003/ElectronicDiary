@@ -36,5 +36,12 @@ namespace ElectronicDiary.Web.Api.Educations
             string url = $"/deleteGroupById?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.DELETE, url);
         }
+
+        // Не интерфейсные методы
+        public static Task<string?> GetGroupMembersByTeacherAssignment(long id)
+        {
+            string url = $"/findGroupMemberByTeacherAssignmentId?id={id}";
+            return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
+        }
     }
 }

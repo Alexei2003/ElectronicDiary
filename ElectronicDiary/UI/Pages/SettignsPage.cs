@@ -92,7 +92,6 @@ namespace ElectronicDiary.Pages.OtherPages
                 new(2, "Красная"),
                 new(3, "Зелённая"),
                 new(4, "Синяя"),
-                new(5, "Патриот"),
             };
 
             return list;

@@ -19,26 +19,28 @@ namespace ElectronicDiary.UI.Views.Tables.QuarterTable
             var response = await QuarterScoreController.FindByStudent(_id1);
             if (!string.IsNullOrEmpty(response))
             {
-                var QuarterArr = JsonSerializer.Deserialize<QuarterScoreResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                var quarterArr = JsonSerializer.Deserialize<QuarterScoreResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
                 response = await YearScoreController.FindByStudent(_id1);
                 if (!string.IsNullOrEmpty(response))
                 {
-                    var YearArr = JsonSerializer.Deserialize<YearScoreResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
+                    var yearArr = JsonSerializer.Deserialize<YearScoreResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
-                    _headerRowArr = [.. QuarterArr
-                    .Where(d => d.SchoolSubject != null)
-                    .Select(d => d.SchoolSubject!)
-                    .DistinctBy(s => s.Id)
-                    .Select(s => s.Id)];
+                    _headerRowArr = [.. quarterArr
+                        .Where(d => d.SchoolSubject != null)
+                        .Select(d => d.SchoolSubject!)
+                        .DistinctBy(s => s.Id)
+                        .OrderBy(s => s.Name)
+                        .Select(s => s.Id)];
 
                     _headerColumnArr = [1, 2, 3, 4, -1];
 
-                    _headerStrRowArr = [.. QuarterArr
-                    .Where(d => d.SchoolSubject != null)
-                    .Select(d => d.SchoolSubject!)
-                    .DistinctBy(s => s.Id)
-                    .Select(s => s.Name)];
+                    _headerStrRowArr = [.. quarterArr
+                        .Where(d => d.SchoolSubject != null)
+                        .Select(d => d.SchoolSubject!)
+                        .DistinctBy(s => s.Id)
+                        .OrderBy(s => s.Name)
+                        .Select(s => s.Name)];
 
                     _headerStrColumnArr = ["1", "2", "3", "4", "Годовая"];
 
@@ -52,7 +54,7 @@ namespace ElectronicDiary.UI.Views.Tables.QuarterTable
                         }
                     }
 
-                    foreach(var score in QuarterArr)
+                    foreach (var score in quarterArr)
                     {
                         var row = 0;
                         for (var i = 0; i < _headerRowArr.Length; i++)
@@ -65,7 +67,7 @@ namespace ElectronicDiary.UI.Views.Tables.QuarterTable
                         _dataTableArr[row, score.QuarterNumber - 1] = score.Score.ToString();
                     }
 
-                    foreach (var score in YearArr)
+                    foreach (var score in yearArr)
                     {
                         var row = 0;
                         for (var i = 0; i < _headerRowArr.Length; i++)

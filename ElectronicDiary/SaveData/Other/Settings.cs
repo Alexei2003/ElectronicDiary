@@ -29,7 +29,7 @@ namespace ElectronicDiary.SaveData.Other
             // Размеры
             public Thickness Padding { get; set; }
             public int Spacing { get; set; }
-            public int Image { get; set; } 
+            public int Image { get; set; }
             public int ImageButton { get; set; }
             public int CellWidthText { get; set; }
             public int CellWidthScore { get; set; }

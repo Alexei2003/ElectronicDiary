@@ -50,11 +50,11 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
             string? response;
             if (UserData.UserInfo.Role == SaveData.Other.UserInfo.RoleType.Teacher)
             {
-                response = await _controller.GetAllTeacher(_objectParentId, _quarterId);
+                response = await SheduleLessonController.GetByTeacher(_objectParentId, _quarterId);
             }
             else
             {
-                response = await _controller.GetAllStudent(_objectParentId, _quarterId);
+                response = await SheduleLessonController.GetByStudent(_objectParentId, _quarterId);
             }
             if (!string.IsNullOrEmpty(response))
             {

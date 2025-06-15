@@ -32,38 +32,28 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
 
         protected override async Task GetData()
         {
-            var response = await DiaryController.GetAll(_id1, _quarterId);
+            var response = await GradebookController.FindBySchoolStudent(_id1, _quarterId);
             if (!string.IsNullOrEmpty(response))
             {
                 var arr = JsonSerializer.Deserialize<DiaryResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];
 
-                _headerRowArr = [.. arr
+                var SchoolSubjectArr = arr
                     .Where(d => d.SchoolSubject != null)
                     .Select(d => d.SchoolSubject!)
                     .DistinctBy(s => s.Id)
-                    .Select(s => s.Id)];
+                    .OrderBy(s => s.Name);
+
+                _headerRowArr = [.. SchoolSubjectArr.Select(s => s.Id)];
+                _headerStrRowArr = [.. SchoolSubjectArr.Select(s => s.Name)];
 
                 _headerColumnArr = [.. arr
                     .Where(d => d.DateTime.HasValue)
                     .Select(d => d.DateTime.Value.Date)
-                    .Distinct()];
-
-                _headerStrRowArr = [.. arr
-                    .Where(d => d.SchoolSubject != null)
-                    .Select(d => d.SchoolSubject!)
-                    .DistinctBy(s => s.Id)
-                    .Select(s => s.Name)];
+                    .Distinct()
+                    .OrderBy(date => date)];
                 _headerStrColumnArr = [.. _headerColumnArr.Select(s => s.ToString("dd.MM")), "Итог"];
 
-
                 _dataTableArr = new string[_headerRowArr.Count(), _headerColumnArr.Count() + 1];
-                for (var rowIndex = 0; rowIndex < _headerStrRowArr.Length; rowIndex++)
-                {
-                    for (var columnIndex = 0; columnIndex < _headerStrColumnArr.Length; columnIndex++)
-                    {
-                        _dataTableArr[rowIndex, columnIndex] = "";
-                    }
-                }
 
                 foreach (var diary in arr)
                 {
@@ -106,7 +96,7 @@ namespace ElectronicDiary.UI.Views.Tables.JournalTable
 
                     foreach (var score in QuarterArr)
                     {
-                        if(score.QuarterNumber == _quarterId)
+                        if (score.QuarterNumber == _quarterId)
                         {
                             var row = 0;
                             for (var i = 0; i < _headerRowArr.Length; i++)

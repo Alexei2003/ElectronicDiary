@@ -1,6 +1,5 @@
 ﻿using System.Text.Json;
 
-using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.UI.Components.Elems;
 using ElectronicDiary.UI.Components.Other;
 using ElectronicDiary.UI.Views.Lists.SheduleView;
@@ -79,7 +78,7 @@ namespace ElectronicDiary.UI.Views.Lists.DiaryView
         {
             await base.GetList();
 
-            var response = await DiaryController.GetAll(_objectParentId, _quarterId);
+            var response = await GradebookController.FindBySchoolStudent(_objectParentId, _quarterId);
             if (!string.IsNullOrEmpty(response))
             {
                 var lessonsArr = JsonSerializer.Deserialize<DiaryResponse[]>(response, PageConstants.JsonSerializerOptions) ?? [];

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ElectronicDiary.Web.Api.Other;
+﻿using ElectronicDiary.Web.Api.Other;
 
 namespace ElectronicDiary.Web.Api.Educations
 {

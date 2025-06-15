@@ -16,8 +16,6 @@
                     return new GreenTheme();
                 case 4:
                     return new BlueTheme();
-                case 5:
-                    return new PatriotTheme();
             }
 
             return new LightTheme();

@@ -35,13 +35,13 @@ namespace ElectronicDiary.Web.Api.Educations
         }
 
         // Не интерфейсные методы
-        public Task<string?> GetAllStudent(long id, long quarter)
+        public static Task<string?> GetByStudent(long id, long quarter)
         {
             string url = $"/findLessonsBySchoolStudentId?id={id}&quarter={quarter}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);
         }
 
-        public Task<string?> GetAllTeacher(long id, long quarter)
+        public static Task<string?> GetByTeacher(long id, long quarter)
         {
             string url = $"/findLessonsByTeacherId?id={id}&quarter={quarter}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

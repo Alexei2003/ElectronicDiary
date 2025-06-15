@@ -14,8 +14,6 @@ namespace ElectronicDiary.Pages.Others
         {
             AllItems = items;
 
-            Color = UserData.Settings.Theme.BackgroundPageColor;
-
             var searchBar = new SearchBar
             {
                 // Цвета
@@ -95,7 +93,7 @@ namespace ElectronicDiary.Pages.Others
         private void HandleItemTapped(TypeResponse selectedItem, Action<long> IdChangedAction)
         {
             IdChangedAction(selectedItem.Id);
-            Close();
+            CloseAsync();
         }
     }
 }

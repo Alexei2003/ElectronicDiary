@@ -40,7 +40,7 @@ namespace ElectronicDiary.Web.Api.Educations
         }
 
         // Не интерфейсные методы
-        public Task<string?> GetClassByTeacher(long id)
+        public static Task<string?> GetClassByTeacher(long id)
         {
             string url = $"/findClassByTeacherId?id={id}";
             return HttpClientCustom.CheckResponse(HttpClientCustom.HttpTypes.GET, url);

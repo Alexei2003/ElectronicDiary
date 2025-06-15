@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Extensions;
 
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.UI.Components.Elems;

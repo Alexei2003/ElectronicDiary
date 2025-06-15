@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui.Extensions;
 
 using ElectronicDiary.Pages.Others;
 using ElectronicDiary.SaveData.Static;
