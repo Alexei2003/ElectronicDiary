@@ -89,6 +89,7 @@ namespace ElectronicDiary.UI.Components.Elems
                 MaximumHeightRequest = UserData.Settings.Sizes.Image,
                 Source = ImageSource.FromFile(url == null ? "no_image.png" : "loading_image.png")
             };
+
             if (handler != null)
             {
                 var tapGesture = new TapGestureRecognizer();
@@ -104,8 +105,9 @@ namespace ElectronicDiary.UI.Components.Elems
                 {
                     MaximumHeightRequest = UserData.Settings.Sizes.Image,
                     MinimumHeightRequest = UserData.Settings.Sizes.Image,
-                    Source = ImageSource.FromUri(new Uri(url + $"?t={DateTime.Now.Ticks}")),
+                    IsVisible = false 
                 };
+
                 if (handler != null)
                 {
                     var tapGesture = new TapGestureRecognizer();
@@ -115,17 +117,32 @@ namespace ElectronicDiary.UI.Components.Elems
 
                 vStack.Add(mainImage);
 
-                loadImage.IsVisible = true;
-                mainImage.IsVisible = false;
                 Task.Run(async () =>
                 {
-                    while (!mainImage.IsVisible)
+                    try
                     {
-                        await Task.Delay(1000);
+                        var handler = new HttpClientHandler
+                        {
+                            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                        };
+
+                        using var client = new HttpClient(handler);
+                        var bytes = await client.GetByteArrayAsync(url);
+
+                        var imageSource = ImageSource.FromStream(() => new MemoryStream(bytes));
+
                         Application.Current?.Dispatcher.Dispatch(() =>
                         {
-                            loadImage.IsVisible = mainImage.IsLoading;
-                            mainImage.IsVisible = !mainImage.IsLoading;
+                            mainImage.Source = imageSource;
+                            loadImage.IsVisible = false;
+                            mainImage.IsVisible = true;
+                        });
+                    }
+                    catch
+                    {
+                        Application.Current?.Dispatcher.Dispatch(() =>
+                        {
+                            loadImage.Source = ImageSource.FromFile("no_image.png");
                         });
                     }
                 });

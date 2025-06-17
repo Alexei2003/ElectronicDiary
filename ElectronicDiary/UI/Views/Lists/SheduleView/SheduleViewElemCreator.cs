@@ -23,7 +23,7 @@ namespace ElectronicDiary.UI.Views.Lists.SheduleView
             else
             {
                 _grid.ColumnDefinitions[2] = new ColumnDefinition { Width = new GridLength(2.0, GridUnitType.Star) };
-                _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.5, GridUnitType.Star) };
+                _grid.ColumnDefinitions[3] = new ColumnDefinition { Width = new GridLength(0.6, GridUnitType.Star) };
             }
 
             LineElemsCreator.AddLineElems(

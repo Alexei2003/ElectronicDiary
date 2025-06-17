@@ -1,60 +1,791 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.BaseViewElemCreator&lt;TResponse, TRequest, TController, TViewObjectCreator&gt;">
-    <Position X="11" Y="3.25" Width="8" />
+  <Class Name="ElectronicDiary.Main.App" Collapsed="true">
+    <Position X="35.5" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAEAAAEBAAAAAQBIAAAACCAAEIIEECAoAAAEIAAAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\BaseView\BaseViewElemCreator.cs</FileName>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Main\App.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.BaseViewListCreator&lt;TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator&gt;">
-    <Position X="1" Y="3.25" Width="9.75" />
+  <Class Name="ElectronicDiary.Main.MauiProgram" Collapsed="true">
+    <Position X="33.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAEAAAAgAAIAAEACSQAAAIEEAQoAAAFYAAAM=</HashCode>
-      <FileName>Pages\AdminPageComponents\BaseView\BaseViewListCreator.cs</FileName>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Main\MauiProgram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Platforms.Android.MainActivity" Collapsed="true">
+    <Position X="30.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Platforms\Android\MainActivity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Platforms.Android.MainApplication" Collapsed="true">
+    <Position X="32" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Platforms\Android\MainApplication.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Resources.Fonts.FluentUI" Collapsed="true">
+    <Position X="26.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>//////////////////////////////////////////8=</HashCode>
+      <FileName>Resources\Fonts\FluentUI.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Other.Settings" Collapsed="true">
+    <Position X="32" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SaveData\Other\Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Other.UserInfo" Collapsed="true">
+    <Position X="32" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgCAAAAAAAAAAAAEAAAAAiAAAAAAAACAAAQAAAAAAQ=</HashCode>
+      <FileName>SaveData\Other\UserInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Other.UserSettingConstants" Collapsed="true">
+    <Position X="33.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SaveData\Other\UserSettingConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Static.UserData" Collapsed="true">
+    <Position X="30.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEgAEAAAAAAAAAAAAAAAAAQAABAAgIAAAAAAQAE=</HashCode>
+      <FileName>SaveData\Static\UserData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Themes.BlueTheme" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAACAUICAAA=</HashCode>
+      <FileName>SaveData\Themes\BlueTheme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Themes.DarkTheme" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAACAUICAAA=</HashCode>
+      <FileName>SaveData\Themes\DarkTheme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Themes.GreenTheme" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAACAUICAAA=</HashCode>
+      <FileName>SaveData\Themes\GreenTheme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Themes.LightTheme" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAACAUICAAA=</HashCode>
+      <FileName>SaveData\Themes\LightTheme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Themes.RedTheme" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAACAUICAAA=</HashCode>
+      <FileName>SaveData\Themes\RedTheme.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.SaveData.Themes.ThemesMeneger" Collapsed="true">
+    <Position X="26.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SaveData\Themes\ThemesMeneger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Components.Elems.BaseElemsCreator" Collapsed="true">
+    <Position X="26.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIAAEAAAAAAkAAAAAAEAAgAACBIAQAAAAQEAAAAQAAA=</HashCode>
+      <FileName>UI\Components\Elems\BaseElemsCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Components.Elems.LineElemsCreator" Collapsed="true">
+    <Position X="26.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Components\Elems\LineElemsCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.Others.SearchPopup" Collapsed="true">
+    <Position X="28.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgAAAAAAAQAAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Components\Elems\SearchPopup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.Others.ThemedNavigationPage" Collapsed="true">
+    <Position X="37.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Components\Navigation\ThemedNavigationPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Components.Navigation.Navigator" Collapsed="true">
+    <Position X="35.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAAQAAAAAAA=</HashCode>
+      <FileName>UI\Components\Navigation\Navigator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Components.Navigation.ToolbarItemsAdder" Collapsed="true">
+    <Position X="28.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAABAAAACAAAAAAAAAAAAAAAAABAQQAAAAAgAAAAAAA=</HashCode>
+      <FileName>UI\Components\Navigation\ToolbarItemsAdder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Components.Other.PageConstants" Collapsed="true">
+    <Position X="28.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Components\Other\PageConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Pages.AdministrationPage" Collapsed="true">
+    <Position X="28.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Pages\AdministrationPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.General.AdminPage" Collapsed="true">
+    <Position X="32" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACCAAAAAAgAAAAAAIAAAAA=</HashCode>
+      <FileName>UI\Pages\AdminPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.AdminPageComponents.General.PreAdminPage" Collapsed="true">
+    <Position X="32" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Pages\PreAdminPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.OtherPages.BaseUserUIPage" Collapsed="true">
+    <Position X="28.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAQAQAABgEYBCAACiQAARAAgAAAEAIIAEAAA=</HashCode>
+      <FileName>UI\Pages\BaseUserUIPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.OtherPages.EmptyPage" Collapsed="true">
+    <Position X="37.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Pages\EmptyPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.OtherPages.SettignsPage" Collapsed="true">
+    <Position X="30.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAiAAAAAAAACAAIAAAAAAAAQAAAABAAAAAAAg=</HashCode>
+      <FileName>UI\Pages\SettignsPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Pages.LogPage" Collapsed="true">
+    <Position X="28.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>UI\Pages\LogPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.BaseView.BaseViewElemCreator&lt;TResponse, TRequest, TController, TViewObjectCreator&gt;" Collapsed="true">
+    <Position X="14" Y="12.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAEAAAEBAAAAAUBIAAAACCAAEIIkECAoAAAEIAAAA=</HashCode>
+      <FileName>UI\Views\Lists\BaseView\BaseViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.BaseView.BaseViewListCreator&lt;TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator&gt;" Collapsed="true">
+    <Position X="14" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAEBAAAgAAIAAEACSQAAAIEEAQoAAAFYEAAM=</HashCode>
+      <FileName>UI\Views\Lists\BaseView\BaseViewListCreator.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.BaseViewObjectCreator&lt;TResponse, TRequest, TController&gt;">
-    <Position X="19.5" Y="3.25" Width="6.25" />
+  <Class Name="ElectronicDiary.UI.Views.Lists.BaseView.BaseViewObjectCreator&lt;TResponse, TRequest, TController&gt;" Collapsed="true">
+    <Position X="14" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIAgAAAABAAAAEAACAAAACCAAAAIECAAgAAAEIgBAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\BaseView\BaseViewObjectCreator.cs</FileName>
+      <HashCode>AAIAgACAABAAAAEAACAAAACCAAAAIECAAgAAAEIgBAA=</HashCode>
+      <FileName>UI\Views\Lists\BaseView\BaseViewObjectCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.SchoolStudentView.SchoolStudentViewObjectCreator">
-    <Position X="18.5" Y="12.75" Width="8.25" />
+  <Class Name="ElectronicDiary.UI.Views.Lists.ClassView.ClassViewElemCreator" Collapsed="true">
+    <Position X="6.25" Y="14.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\SchoolStudentView\SchoolStudentViewObjectCreator.cs</FileName>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ClassView\ClassViewElemCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.UserView.UserViewElemCreator&lt;TResponse, TRequest, TController, TViewObjectCreator&gt;">
-    <Position X="11" Y="11" Width="8" />
+  <Class Name="ElectronicDiary.UI.Views.Lists.ClassView.ClassViewListCreator" Collapsed="true">
+    <Position X="8.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ClassView\ClassViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ClassView.ClassViewObjectCreator" Collapsed="true">
+    <Position X="10.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ClassView\ClassViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.DiaryView.DiaryViewElemCreator" Collapsed="true">
+    <Position X="24.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>UI\Views\Lists\DiaryView\DiaryViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.DiaryView.DiaryViewListCreator" Collapsed="true">
+    <Position X="4" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CACAAAAAAgAAAAAgAIAAAAAABAABAAAAAAAAAAwAAAI=</HashCode>
+      <FileName>UI\Views\Lists\DiaryView\DiaryViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.DiaryView.DiaryViewObjectCreator" Collapsed="true">
+    <Position X="6.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\DiaryView\DiaryViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.EducationalInstitutionView.EducationalInstitutionViewElemCreator" Collapsed="true">
+    <Position X="19.75" Y="14.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\UserView\UserViewElemCreator.cs</FileName>
+      <FileName>UI\Views\Lists\EducationalInstitutionView\EducationalInstitutionViewElemCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.UserView.UserViewListCreator&lt;TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator&gt;">
-    <Position X="1" Y="12.5" Width="9.75" />
+  <Class Name="ElectronicDiary.UI.Views.Lists.EducationalInstitutionView.EducationalInstitutionViewListCreator" Collapsed="true">
+    <Position X="22" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAQIAAAAAAAAAAAAAAQCAAA=</HashCode>
+      <FileName>UI\Views\Lists\EducationalInstitutionView\EducationalInstitutionViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.EducationalInstitutionView.EducationalInstitutionViewObjectCreator" Collapsed="true">
+    <Position X="24.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAABAAABAAACICAAAAAAAAAAAAAAAAUAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\EducationalInstitutionView\EducationalInstitutionViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.General.AdminPageStatic" Collapsed="true">
+    <Position X="33.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAIAAAgA=</HashCode>
+      <FileName>UI\Views\Lists\General\AdminPageStatic.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.GroupMemberView.GroupMemberViewElemCreator" Collapsed="true">
+    <Position X="4" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAQAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\GroupMemberView\GroupMemberViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.GroupMemberView.GroupMemberViewListCreator" Collapsed="true">
+    <Position X="6.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAAAAwAAAI=</HashCode>
+      <FileName>UI\Views\Lists\GroupMemberView\GroupMemberViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.GroupMemberView.GroupMemberViewObjectCreator" Collapsed="true">
+    <Position X="8.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\GroupMemberView\GroupMemberViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.GroupView.GroupViewElemCreator" Collapsed="true">
+    <Position X="10.75" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\GroupView\GroupViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.GroupView.GroupViewListCreator" Collapsed="true">
+    <Position X="13" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>UI\Views\Lists\GroupView\GroupViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.GroupView.GroupViewObjectCreator" Collapsed="true">
+    <Position X="17.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\GroupView\GroupViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.NewView.NewViewElemCreator" Collapsed="true">
+    <Position X="17.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\NewView\NewViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.NewView.NewsViewListCreator" Collapsed="true">
+    <Position X="19.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>UI\Views\Lists\NewView\NewViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.NewView.NewViewObjectCreator" Collapsed="true">
+    <Position X="22" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\NewView\NewViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.NotificationView.NotificationViewElemCreator" Collapsed="true">
+    <Position X="22" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\NotificationView\NotificationViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.NotificationView.NotificationViewListCreator" Collapsed="true">
+    <Position X="24.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAIAAAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>UI\Views\Lists\NotificationView\NotificationViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.NotificationView.NotificationViewObjectCreator" Collapsed="true">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\NotificationView\NotificationViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.ParentWithStudents.ParentWithStudentsViewListCreator" Collapsed="true">
+    <Position X="15.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\ParentWithStudents\ParentWithStudentsViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.ParentWithStudents.ParentWithtStudentsElemCreator" Collapsed="true">
+    <Position X="13" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\ParentWithStudents\ParentWithtStudentsElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.StudentWithParents.StudenWithtParentsViewElemCreator" Collapsed="true">
+    <Position X="15.25" Y="16" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\StudentWithParents\StudenWithtParentsViewElemCreator.cs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.StudentWithParents.StudenWithtParentsViewListCreator" Collapsed="true">
+    <Position X="17.5" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\StudentWithParents\StudenWithtParentsViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.ParentStudentViewElemCreator&lt;TController&gt;" Collapsed="true">
+    <Position X="14" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAgAAAAAQCAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\ParentStudentViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.ParentStudentViewListCreator&lt;TController, TViewElemCreator&gt;" Collapsed="true">
+    <Position X="16.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAEAAAAAAAAAAAAAAAAAAAEAAAAAAAAQAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\ParentStudentViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentSchoolStudentView.ParentStudentViewObjectCreator&lt;TController&gt;" Collapsed="true">
+    <Position X="19.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentSchoolStudentView\ParentStudentViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.ParentView.ParentViewObjectCreator" Collapsed="true">
+    <Position X="13" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\ParentView\ParentViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.SchoolStudentView.SchoolStudentViewObjectCreator" Collapsed="true">
+    <Position X="15.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\SchoolStudentView\SchoolStudentViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.SheduleView.SheduleViewElemCreator&lt;TViewObjectCreator&gt;" Collapsed="true">
+    <Position X="24.25" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>UI\Views\Lists\SheduleView\SheduleViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.SheduleView.SheduleViewListCreator&lt;TViewElemCreator, TViewObjectCreator&gt;" Collapsed="true">
+    <Position X="4" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAEAAAAQAAAI=</HashCode>
+      <FileName>UI\Views\Lists\SheduleView\SheduleViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.SheduleView.SheduleViewObjectCreator" Collapsed="true">
+    <Position X="6.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\SheduleView\SheduleViewObjectCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.UserView.UserViewElemCreator&lt;TResponse, TRequest, TController, TViewObjectCreator&gt;" Collapsed="true">
+    <Position X="8.5" Y="14.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Lists\UserView\UserViewElemCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Lists.UserView.UserViewListCreator&lt;TResponse, TRequest, TController, TViewElemCreator, TViewObjectCreator&gt;" Collapsed="true">
+    <Position X="10.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAQAEAAAAAAAAAAAIAQAAAAAAAAAAAAAAAAAAQAAAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\UserView\UserViewListCreator.cs</FileName>
+      <FileName>UI\Views\Lists\UserView\UserViewListCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="ElectronicDiary.Pages.AdminPageComponents.UserView.UserViewObjectCreator&lt;TResponse, TRequest, TController&gt;">
-    <Position X="19.5" Y="9.25" Width="6.25" />
+  <Class Name="ElectronicDiary.UI.Views.Lists.UserView.UserViewObjectCreator&lt;TResponse, TRequest, TController&gt;" Collapsed="true">
+    <Position X="14" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAIAABAAABAAACACAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\UserView\UserViewObjectCreator.cs</FileName>
+      <FileName>UI\Views\Lists\UserView\UserViewObjectCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Interface Name="ElectronicDiary.Pages.AdminPageComponents.BaseView.IBaseViewListCreator">
-    <Position X="1.25" Y="1.5" Width="9.5" />
+  <Class Name="ElectronicDiary.UI.Views.Tables.BaseTable.BaseViewTableCreator&lt;THeaderRow, THeaderColumn&gt;" Collapsed="true">
+    <Position X="6.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAIACERAAAIABAMAIAJQQAAIAAEEAAAEiAEIAEkA=</HashCode>
+      <FileName>UI\Views\Tables\BaseTable\BaseViewTableCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Tables.JournalTable.GradebookStudentViewTableCreator" Collapsed="true">
+    <Position X="3.25" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEQAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Tables\GradebookTable\GradebookStudentViewTableCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Tables.GradebookTable.GradebookTeacherViewTableCreator" Collapsed="true">
+    <Position X="5.5" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAEAAAAAAAAEAAgAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>UI\Views\Tables\GradebookTable\GradebookTeacherViewTableCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Tables.QuarterTable.QuarterScoreStudentViewTableCreator" Collapsed="true">
+    <Position X="7.75" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Tables\QuarterTable\QuarterScoreStudentViewTableCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.UI.Views.Tables.QuarterTable.QuarterScoreTeacherViewTableCreator" Collapsed="true">
+    <Position X="10" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UI\Views\Tables\QuarterTable\QuarterScoreTeacherViewTableCreator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.AddressСontroller" Collapsed="true">
+    <Position X="26.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Web\Api\Educations\AddressController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.ClassController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAACAAAEAAAACAgAAAgACAIA=</HashCode>
+      <FileName>Web\Api\Educations\ClassController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.EducationalInstitutionСontroller" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Educations\EducationalInstitutionController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.GradebookController" Collapsed="true">
+    <Position X="28.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAgAAAAACAAAAAABAAAAAAAAAAAAQAAAA=</HashCode>
+      <FileName>Web\Api\Educations\GradebookController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.GroupController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="32" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Educations\GroupController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.GroupInfoController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Educations\GroupInfoController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.QuarterScoreController" Collapsed="true">
+    <Position X="33.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAIAAAAAAAAAAAAgAAgACAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Educations\QuarterScoreController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.ReportController" Collapsed="true">
+    <Position X="37.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Educations\ReportController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.SheduleLessonController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="33.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIg=</HashCode>
+      <FileName>Web\Api\Educations\SheduleLessonController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Educations.YearScoreController" Collapsed="true">
+    <Position X="37.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAYAAAAAAAAAAAAgAAAAAAAAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Educations\YearScoreController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Other.AuthorizationСontroller" Collapsed="true">
+    <Position X="37.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Other\AuthorizationController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Other.HttpClientCustom" Collapsed="true">
+    <Position X="35.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAABEDAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Other\HttpClientCustom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Other.WebConstants" Collapsed="true">
+    <Position X="35.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Other\WebConstants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Social.NewsController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="37.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Social\NewsController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Social.NotificationController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Social\NotificationController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.AdministratorController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAgACAIA=</HashCode>
+      <FileName>Web\Api\Users\AdministrationController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.ParentController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="30.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Users\ParentController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.ParentWithStudentsController" Collapsed="true">
+    <Position X="13" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Web\Api\Users\ParentWithStudentsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.SchoolStudentController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="26.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAEAAAEAAAACAgAAAABCAIA=</HashCode>
+      <FileName>Web\Api\Users\SchoolStudentController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.StudentParentController" Collapsed="true">
+    <Position X="14.25" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAEAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Users\StudentParentController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.StudentWithParentsController" Collapsed="true">
+    <Position X="15.25" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAIA=</HashCode>
+      <FileName>Web\Api\Users\StudentWithParentsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.Api.Users.TeacherController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="35.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIIAAAAAAAAAAAAAAAAAAAAAAAECAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Users\TeacherController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Educations.Other.BaseRequest" Collapsed="true">
+    <Position X="12.75" Y="17.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Educations\Other\BaseRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Educations.ClassRequest" Collapsed="true">
+    <Position X="3.75" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Educations\ClassRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Educations.DiaryRequest" Collapsed="true">
+    <Position X="6" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Educations\DiaryRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Educations.EducationalInstitutionRequest" Collapsed="true">
+    <Position X="8.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEACAAACAAAAAAAAAAQAQAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Educations\EducationalInstitutionRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Educations.GroupRequest" Collapsed="true">
+    <Position X="10.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Web\DTO\Requests\Educations\GroupRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Educations.SheduleLessonRequest" Collapsed="true">
+    <Position X="12.75" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEEAAAAAAAAIAACAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Educations\SheduleLessonRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Social.NewsRequest" Collapsed="true">
+    <Position X="15" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAABEAAAAAAAAAAAAAAAAQEAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Social\NewsRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Users.ParentRequest" Collapsed="true">
+    <Position X="19.5" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Users\ParentRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Users.SchoolStudentRequest" Collapsed="true">
+    <Position X="21.75" Y="21" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Users\SchoolStudentRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Users.StudentParentRequest" Collapsed="true">
+    <Position X="17.25" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAACAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Web\DTO\Requests\Users\StudentParentRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElectronicDiary.Web.DTO.Requests.Users.UserRequest" Collapsed="true">
+    <Position X="20.75" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAACAAAAAAAAAAQAAAAAAAAAACAEAQAAAAAAg=</HashCode>
+      <FileName>Web\DTO\Requests\Users\UserRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ElectronicDiary.SaveData.Themes.IAppTheme" Collapsed="true">
+    <Position X="26.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAQAAAAAAIAAAAAAAAAAAAAAAAAAACAUICAAA=</HashCode>
+      <FileName>SaveData\Themes\IAppTheme.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ElectronicDiary.UI.Views.Lists.BaseView.IBaseViewListCreator" Collapsed="true">
+    <Position X="28.5" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
-      <FileName>Pages\AdminPageComponents\BaseView\BaseViewListCreator.cs</FileName>
+      <FileName>UI\Views\Lists\BaseView\BaseViewListCreator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ElectronicDiary.Web.Api.Other.IController" Collapsed="true">
+    <Position X="30.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAEAAAACAgAAAAACAIA=</HashCode>
+      <FileName>Web\Api\Other\IController.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="14" />

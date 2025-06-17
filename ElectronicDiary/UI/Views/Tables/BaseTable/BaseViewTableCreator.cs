@@ -1,6 +1,4 @@
-﻿using Android.Icu.Number;
-
-using ElectronicDiary.SaveData.Static;
+﻿using ElectronicDiary.SaveData.Static;
 using ElectronicDiary.UI.Components.Elems;
 
 namespace ElectronicDiary.UI.Views.Tables.BaseTable
@@ -24,7 +22,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
         private ScrollView _scrollView = new();
         public ScrollView Create(long id1,
                                  long id2,
-                                 bool readOnly = false)
+                                 bool readOnly = true)
         {
             _id1 = id1;
             _id2 = id2;
@@ -108,9 +106,7 @@ namespace ElectronicDiary.UI.Views.Tables.BaseTable
 
         public void SetSize(object? sender, EventArgs e)
         {
-            var orientation = DeviceDisplay.MainDisplayInfo.Orientation;
-            double scale = orientation == DisplayOrientation.Portrait ? 1.37 : 1.93;
-            _grid.WidthRequest = scale * ((UserData.Settings.Sizes.CellWidthText + _size) + (UserData.Settings.Sizes.CellWidthScore + _size) * (_headerStrColumnArr.Length + 3));
+            _grid.WidthRequest = 3000;
         }
 
         protected virtual View CreateHeaderUI()

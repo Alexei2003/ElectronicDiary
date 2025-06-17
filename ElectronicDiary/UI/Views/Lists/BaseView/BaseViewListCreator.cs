@@ -80,7 +80,7 @@ namespace ElectronicDiary.UI.Views.Lists.BaseView
             {
                 CreateAddButton(vStack);
             }
-            CreateColumnTitle(vStack);
+            //CreateColumnTitle(vStack);
 
             vStack.Add(_listVerticalStack);
 

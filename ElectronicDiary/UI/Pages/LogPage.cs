@@ -24,7 +24,18 @@ namespace ElectronicDiary.Pages
 
             var loginEntry = BaseElemsCreator.CreateEditor(newText => _login = newText, "Логин");
 
-            var passwordEntry = BaseElemsCreator.CreateEditor(newText => _password = newText, "Пароль");
+            var passwordEntry = new Entry
+            {
+                BackgroundColor = UserData.Settings.Theme.AccentColorFields,
+                TextColor = UserData.Settings.Theme.TextColor,
+                PlaceholderColor = UserData.Settings.Theme.PlaceholderColor,
+
+                FontSize = UserData.Settings.Fonts.BaseFontSize,
+                Placeholder = "Пароль",
+                IsPassword = true
+            };
+
+            passwordEntry.TextChanged += (sender, e) => _password = e.NewTextValue;
 
             var toProfilePageButton = BaseElemsCreator.CreateButton("Вход", ToProfilePageButtonClicked);
 

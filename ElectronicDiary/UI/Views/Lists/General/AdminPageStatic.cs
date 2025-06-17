@@ -48,11 +48,11 @@
 #if WINDOWS
             const double coeffFixAndroidWidth = 1;
 #else
-            const double coeffFixAndroidWidth = 5;
+            const double coeffFixAndroidWidth = 6;
 #endif
             countColumn = int.Max((int)(widthWindow * coeffFixAndroidWidth / dpi), 1);
 
-            width = 0.9 * dpi / coeffFixAndroidWidth;
+            width = dpi / coeffFixAndroidWidth;
         }
 
         public static bool OnBackButtonPressed(HorizontalStackLayout mainStack, List<ScrollView> viewList)
